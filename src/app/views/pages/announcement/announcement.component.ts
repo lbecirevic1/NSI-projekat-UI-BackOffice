@@ -16,6 +16,8 @@ export class AnnouncementComponent implements OnInit {
   public liveDemoVisible = false;
   public editFormVisible = false;
 
+  public doubleAnnouncementVisible=false;
+
   public deleteItemId = 0;
   public editAnnouncement: any;
 
@@ -75,6 +77,14 @@ export class AnnouncementComponent implements OnInit {
     this.service.deleteAnnouncement(this.deleteItemId).subscribe();
     this.deleteItemId = 0;
     this.liveDemoVisible = !this.liveDemoVisible;
+  }
+
+  doubleAnnouncement(){
+    this.doubleAnnouncementVisible=!this.doubleAnnouncementVisible;
+  }
+
+  handleDoubleAnnouncement(event:boolean){
+    this.doubleAnnouncementVisible=event;
   }
 
 }
