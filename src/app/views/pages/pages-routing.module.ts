@@ -4,6 +4,7 @@ import { Page404Component } from './page404/page404.component';
 import { Page500Component } from './page500/page500.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import {AnnouncementComponent} from "./announcement/announcement.component";
 
 const routes: Routes = [
   {
@@ -33,7 +34,15 @@ const routes: Routes = [
     data: {
       title: 'Register Page'
     }
-  }
+  },
+  {
+    path: 'announcement',
+    component: AnnouncementComponent,
+    data: {
+      title: 'Announcements Page'
+    }
+  },
+
 ];
 
 @NgModule({

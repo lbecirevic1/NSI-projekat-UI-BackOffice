@@ -12,6 +12,15 @@ export const navItems: INavData[] = [
   },
   {
     title: true,
+    name: 'Utilio'
+  },
+  {
+    name:'Announcements',
+    url:'/announcement'
+  },
+
+  {
+    title: true,
     name: 'Theme'
   },
   {

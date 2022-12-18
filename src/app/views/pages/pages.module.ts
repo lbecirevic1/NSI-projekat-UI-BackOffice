@@ -6,8 +6,27 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { Page404Component } from './page404/page404.component';
 import { Page500Component } from './page500/page500.component';
+import { AnnouncementComponent} from "./announcement/announcement.component";
 import { ButtonModule, CardModule, FormModule, GridModule } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
+import { HttpClientModule} from "@angular/common/http";
+
+import { ReactiveFormsModule } from '@angular/forms';
+
+import {
+  AvatarModule,
+  ButtonGroupModule,
+  ModalModule,
+  NavModule,
+  ProgressModule,
+  TableModule,
+  TabsModule
+} from '@coreui/angular';
+
+
+import { WidgetsModule } from '../widgets/widgets.module';
+
+import { NotificationsModule} from "../notifications/notifications.module";
 
 
 @NgModule({
@@ -15,7 +34,9 @@ import { IconModule } from '@coreui/icons-angular';
     LoginComponent,
     RegisterComponent,
     Page404Component,
-    Page500Component
+    Page500Component,
+    AnnouncementComponent
+
   ],
   imports: [
     CommonModule,
@@ -24,7 +45,25 @@ import { IconModule } from '@coreui/icons-angular';
     ButtonModule,
     GridModule,
     IconModule,
-    FormModule
+    FormModule,
+    CardModule,
+    NavModule,
+    IconModule,
+    TabsModule,
+    CommonModule,
+    GridModule,
+    ProgressModule,
+    ReactiveFormsModule,
+    ButtonModule,
+    FormModule,
+    ButtonModule,
+    ButtonGroupModule,
+    AvatarModule,
+    TableModule,
+    WidgetsModule,
+    NotificationsModule,
+    ModalModule,
+    HttpClientModule
   ]
 })
 export class PagesModule {

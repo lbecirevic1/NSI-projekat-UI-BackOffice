@@ -1,0 +1,97 @@
+<c-card>
+  <div class="me-1" style="padding: 1%">
+    <button cButton color="primary">+ Add new notification</button>
+  </div>
+</c-card>
+<c-card class="mb-4">
+  <c-card-body>
+    <ng-container *ngTemplateOutlet="liveDemo"></ng-container>
+    <table cTable hover>
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Title</th>
+        <th scope="col">Url</th>
+        <th scope="col">Description</th>
+        <th scope="col">Content</th>
+        <th scope="col">Publish Date</th>
+        <th scope="col">Additional Information</th>
+        <th scope="col">Start Date</th>
+        <th scope="col">End Date</th>
+        <th scope="col">Options</th>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-container *ngFor="let value of notifications">
+        <tr>
+          <th scope="row">{{notifications.indexOf(value)+1}}</th>
+          <td>{{value.Title}}</td>
+          <td>{{value.SourceUrl}}</td>
+          <td>{{value.Description}}</td>
+          <td>{{value.Content}}</td>
+          <td>{{value.PublishDate}}</td>
+          <td>{{value.AdditionalInformation}}</td>
+          <td>{{value.ReferenceStartDate}}</td>
+          <td>{{value.ReferenceEndDate}}</td>
+          <c-button-group aria-label="Basic example" role="group">
+            <button cButton color="light" (click)="toggleEditButtonDemo(value)">Edit</button>
+            <button cButton color="danger" (click)="toggleDeleteButton(value.Id)">Delete</button>
+          </c-button-group>
+        </tr>
+      </ng-container>
+      </tbody>
+    </table>
+  </c-card-body>
+</c-card>
+
+<ng-template #liveDemo>
+  <c-modal id="liveDemoModal" [visible]="liveDemoVisible" (visibleChange)="handleLiveDemoChange($event)">
+    <c-modal-header>
+      <h5 cModalTitle>Delete notification</h5>
+      <button (click)="closeDeleteButton()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>Are you sure you want to delete this record?</c-modal-body>
+    <c-modal-footer>
+      <button (click)="closeDeleteButton()" cButton color="secondary">
+        Close
+      </button>
+      <button cButton color="primary" (click)="deleteItem()">Delete</button>
+    </c-modal-footer>
+  </c-modal>
+</ng-template>
+
+<c-modal id="liveEditForm" [visible]="editFormVisible" (visibleChange)="handleEditModalChange($event)">
+  <c-modal-header>
+    Edit form
+  </c-modal-header>
+  <c-modal-body>
+    <form cForm *ngIf=editFormVisible>
+      <div class="mb-3">
+        <label cLabel for="announcementTitleInput1">Title</label>
+        <textarea cFormControl id="announcementTitleInput1" rows="1">{{editAnnouncement.Title}}</textarea>
+      </div>
+      <div class="mb-3">
+        <label cLabel for="announcementTitleInput2">Url</label>
+        <textarea cFormControl id="announcementTitleInput2" rows="1">{{editAnnouncement.SourceUrl}}</textarea>
+      </div>
+      <div class="mb-3">
+        <label cLabel for="announcementTitleInput3">Description</label>
+        <textarea cFormControl id="announcementTitleInput3" rows="1">{{editAnnouncement.Description}}</textarea>
+      </div>
+      <div class="mb-3">
+        <label cLabel for="announcementTitleInput4">Content</label>
+        <textarea cFormControl id="announcementTitleInput4" rows="1">{{editAnnouncement.Content}}</textarea>
+      </div>
+      <div class="mb-3">
+        <label cLabel for="announcementTitleInput5">Additional Information</label>
+        <textarea cFormControl id="announcementTitleInput5" rows="1">{{editAnnouncement.AdditionalInformation}}</textarea>
+      </div>
+    </form>
+  </c-modal-body>
+  <c-modal-footer>
+    <button (click)="toggleEditDemo()" cButton color="secondary">
+      Close
+    </button>
+    <button cButton color="primary" (click)="editItem()">Save changes</button>
+  </c-modal-footer>
+</c-modal>
