@@ -21,15 +21,15 @@ export class SubscriptionsComponent implements OnInit {
   public users: ISubscription[] = [
     {
       Id: 1,
-      FirstName: 'New',
-      LastName: 'Jan 1, 2021',
-      Email: 'Yiorgos Avraamu'
+      FirstName: 'Mujo',
+      LastName: 'Mujic',
+      Email: 'mujomujic@gmail.com'
     },
     {
       Id: 2,
-      FirstName: 'aaaaaaaa',
-      LastName: 'ssssssss',
-      Email: 'aaaaa Avraamu'
+      FirstName: 'Suljo',
+      LastName: 'Suljic',
+      Email: 'suljosuljic@gmail.com'
     } 
   ]
 

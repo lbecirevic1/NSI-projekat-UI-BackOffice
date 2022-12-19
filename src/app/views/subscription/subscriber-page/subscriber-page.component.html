@@ -1,46 +1,102 @@
 <c-row ngPreserveWhitespaces>
-    <c-col xs="12">
-      <c-card class="mb-4">
-        <c-card-header>
-          <strong>Subscriber Table</strong>
-        </c-card-header>
-        <c-card-body>
-         
-            <table [hover]="true" cTable>
-              <thead>
-              <tr>
-                <th scope="col">Topic</th>
-                <th scope="col">Category</th>
-                <th scope="col">Frequency</th>
-                <th scope="col"></th>
-              </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let subscription of subscriptions; index as i" >
-                  <td>
-                    {{ subscription.Topic }}
-                  </td>
-                  <td>
-                    {{ subscription.Category }}
-                  </td>
-                  <td>
-                    {{ subscription.Frequency }}
-                  </td>
-                  <td>
-                    <c-button-group aria-label="Basic example" role="group">
-                        <button cButton class="me-1" color="primary"  (click)="editSubscription( subscription.Topic, subscription.Category)">
-                            Edit
-                          </button>
-                          <button cButton class="me-1" color="danger"(click)="deleteSubscription( subscription.Topic, subscription.Category)">
-                            Delete
-                          </button>
-                      </c-button-group>
-                  </td>
-                  </tr>
-              </tbody>
-            </table>
-            <button cButton color="primary" (click)="addNewSubscription()">Add new</button>
-        </c-card-body>
-      </c-card>
-    </c-col>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>User data</strong>
+        <div class="f-r">
+          <ng-container *ngTemplateOutlet="liveDemo"></ng-container>
+          <!-- <button cButton class="me-1" color="primary"(click)="submitUserForm()">
+            Save
+          </button> -->
+        </div>
+      </c-card-header>
+      <c-card-body>
+          <form cForm [formGroup]="userForm" (ngSubmit)="onSubmitUserForm(userForm)">
+            <div class="row">
+              <div class="mb-3 col-md-4">
+                <label cLabel for="exampleFormControlInput1">Email address</label>
+                <input cFormControl
+                formControlName="Email"
+                id="exampleFormControlInput1"
+                placeholder="name@example.com"
+                type="email"
+                />
+              </div>
+              <div class="mb-3 col-md-4">
+                <label cLabel for="exampleFormControlTextarea1">First Name</label>
+                <input cFormControl id="FirstName" formControlName="FirstName" type="text" >
+              </div>
+              <div class="mb-3 col-md-4">
+                <label cLabel for="exampleFormControlTextarea1">Last Name</label>
+                <input cFormControl id="LastName" formControlName="LastName" type="text" >
+              </div>
+            </div>
+          </form>
+      </c-card-body>
+    </c-card>
+  </c-col>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Subscribtions</strong>
+      </c-card-header>
+      <c-card-body>
+        
+          <table [hover]="true" cTable>
+            <thead>
+            <tr>
+              <th scope="col">Topic</th>
+              <th scope="col">Category</th>
+              <th scope="col">Frequency</th>
+              <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let subscription of subscriptions; index as i" >
+                <td>
+                  {{ subscription.Topic }}
+                </td>
+                <td>
+                  {{ subscription.Category }}
+                </td>
+                <td>
+                  {{ subscription.Frequency }}
+                </td>
+                <td>
+                  <c-button-group aria-label="Basic example" role="group">
+                      <button cButton class="me-1" color="primary"  (click)="editSubscription( subscription.Topic, subscription.Category)">
+                          Edit
+                        </button>
+                        <button cButton class="me-1" color="danger"(click)="deleteSubscription( subscription.Topic, subscription.Category)">
+                          Delete
+                        </button>
+                    </c-button-group>
+                </td>
+                </tr>
+            </tbody>
+          </table>
+          <button cButton color="primary" (click)="addNewSubscription()">Add new</button>
+      </c-card-body>
+    </c-card>
+  </c-col>
 </c-row>
+
+
+<ng-template #liveDemo>
+  <button (click)="toggleLiveDemo()" cButton>Save</button>
+  <c-modal id="liveDemoModal" [visible]="liveDemoVisible" (visibleChange)="handleLiveDemoChange($event)">
+    <c-modal-header>
+      <h5 cModalTitle>Update user data</h5>
+      <button (click)="toggleLiveDemo()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>Are you sure you want to make these updates?</c-modal-body>
+    <c-modal-footer>
+      <button (click)="toggleLiveDemo()" cButton color="secondary">
+        Cancel
+      </button>
+      <button cButton color="primary" (click)="submitUserForm()">Save changes</button>
+    </c-modal-footer>
+  </c-modal>
+</ng-template>
+
+<c-toaster [ngClass]="'p-3'" position="fixed" placement="top-end"></c-toaster>

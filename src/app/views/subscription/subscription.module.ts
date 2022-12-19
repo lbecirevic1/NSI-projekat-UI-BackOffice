@@ -57,7 +57,8 @@ import { SubscriptionRoutingModule } from './subscription-routing.module';
     ButtonGroupModule,
     BreadcrumbModule,
     FormModule,
-    PopoverModule
+    PopoverModule,
+    ReactiveFormsModule
   ],
   declarations: [
     SubscriptionsComponent,
