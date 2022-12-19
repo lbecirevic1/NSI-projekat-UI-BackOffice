@@ -25,7 +25,7 @@ export class SubscriberPageComponent implements OnInit {
     },
     {
       Topic: 'aaaaaaaa',
-      Category: 'ssssssss'
+      Category: 'ssssssss',
       Frequency: 'aaaaa Avraamu'
     } 
   ]
