@@ -1,0 +1,34 @@
+<c-row ngPreserveWhitespaces>
+    <c-col xs="12">
+      <c-card class="mb-4">
+        <c-card-header>
+          <strong>Subscriptions Table</strong>
+        </c-card-header>
+        <c-card-body>
+         
+            <table [hover]="true" cTable>
+              <thead>
+              <tr>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Email</th>
+              </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of users; index as i" [id]="user.Id" (click)="openPageForSubscriber(user.Id)" >
+                  <td>
+                    {{ user.FirstName }}
+                  </td>
+                  <td>
+                    {{ user.LastName }}
+                  </td>
+                  <td>
+                    {{ user.Email }}
+                  </td>
+                  </tr>
+              </tbody>
+            </table>
+        </c-card-body>
+      </c-card>
+    </c-col>
+</c-row>

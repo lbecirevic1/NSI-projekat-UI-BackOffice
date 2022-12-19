@@ -1,0 +1,46 @@
+<c-row ngPreserveWhitespaces>
+    <c-col xs="12">
+      <c-card class="mb-4">
+        <c-card-header>
+          <strong>Subscriber Table</strong>
+        </c-card-header>
+        <c-card-body>
+         
+            <table [hover]="true" cTable>
+              <thead>
+              <tr>
+                <th scope="col">Topic</th>
+                <th scope="col">Category</th>
+                <th scope="col">Frequency</th>
+                <th scope="col"></th>
+              </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let subscription of subscriptions; index as i" >
+                  <td>
+                    {{ subscription.Topic }}
+                  </td>
+                  <td>
+                    {{ subscription.Category }}
+                  </td>
+                  <td>
+                    {{ subscription.Frequency }}
+                  </td>
+                  <td>
+                    <c-button-group aria-label="Basic example" role="group">
+                        <button cButton class="me-1" color="primary"  (click)="editSubscription( subscription.Topic, subscription.Category)">
+                            Edit
+                          </button>
+                          <button cButton class="me-1" color="danger"(click)="deleteSubscription( subscription.Topic, subscription.Category)">
+                            Delete
+                          </button>
+                      </c-button-group>
+                  </td>
+                  </tr>
+              </tbody>
+            </table>
+            <button cButton color="primary" (click)="addNewSubscription()">Add new</button>
+        </c-card-body>
+      </c-card>
+    </c-col>
+</c-row>
