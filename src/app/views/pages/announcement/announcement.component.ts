@@ -21,13 +21,24 @@ export class AnnouncementComponent implements OnInit {
   public deleteItemId = 0;
   public editAnnouncement: any;
 
-  constructor(private service: UtilioService) {}
+  time: Date = new Date();
+
+  bsValue = new Date();
+  bsRangeValue: Date[];
+  maxDate = new Date();
+  minDate = new Date();
+
+  constructor(private service: UtilioService) {
+    this.minDate.setDate(this.minDate.getDate() - 1);
+    this.maxDate.setDate(this.maxDate.getDate() + 7);
+    this.bsRangeValue = [this.bsValue, this.maxDate];
+  }
 
   ngOnInit() {
     this.service.getAnnouncements().subscribe(data => {
 
       for (let i = 0; i < data.length; i++) {
-        let notification = new Announcement(data[i].id, data[i].title, data[i].sourceUrl, data[i].description, data[i].content, data[i].publishDate, data[i].additionalInformation,data[i].referenceStartDate, data[i].referenceEndDate)
+        let notification = new Announcement(data[i].id, data[i].title, data[i].sourceUrl, data[i].description, data[i].content, data[i].rawLog,data[i].uniqueIdentifier, data[i].additionalInformation,data[i].publishDate,data[i].referenceStartDate, data[i].referenceEndDate)
         this.notifications.push(notification);
       }
 
@@ -83,8 +94,10 @@ export class AnnouncementComponent implements OnInit {
     this.doubleAnnouncementVisible=!this.doubleAnnouncementVisible;
   }
 
-  handleDoubleAnnouncement(event:boolean){
+  handleDoubleAnnouncement(event: boolean){
     this.doubleAnnouncementVisible=event;
   }
+
+
 
 }

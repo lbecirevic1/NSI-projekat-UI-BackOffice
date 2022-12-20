@@ -5,8 +5,10 @@ constructor(
             public SourceUrl: string,
             public Description:string,
             public Content:string,
-            public PublishDate: any,
+            public RawLog:string,
+            public UniqueIdentifier:string,
             public AdditionalInformation:string,
+            public PublishDate: any,
             public ReferenceStartDate: any,
             public ReferenceEndDate: any) {
 }

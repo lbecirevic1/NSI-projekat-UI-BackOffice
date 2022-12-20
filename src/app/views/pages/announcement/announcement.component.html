@@ -6,6 +6,8 @@
 <c-card class="mb-4">
   <c-card-body>
     <ng-container *ngTemplateOutlet="liveDemo"></ng-container>
+    <ng-container *ngTemplateOutlet="deleteDemo"></ng-container>
+    <button cButton color="primary" (click)="doubleAnnouncement()">Double notification</button>
     <table cTable hover>
       <thead>
       <tr>
@@ -96,9 +98,7 @@
   </c-modal-footer>
 </c-modal>
 
-<!--button cButton color="primary" (click)="doubleAnnouncement()">Delete</button>
-
-<ng-template>
+<ng-template #deleteDemo>
   <c-modal id="liveDemoModalAlert" [visible]="doubleAnnouncementVisible" (visibleChange)="handleDoubleAnnouncement($event)">
     <c-modal-header>
       <h5 cModalTitle>Double notification alert</h5>
@@ -111,4 +111,4 @@
       </button>
     </c-modal-footer>
   </c-modal>
-</ng-template-->
+</ng-template>

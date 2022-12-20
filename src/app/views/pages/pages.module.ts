@@ -11,7 +11,7 @@ import { ButtonModule, CardModule, FormModule, GridModule } from '@coreui/angula
 import { IconModule } from '@coreui/icons-angular';
 import { HttpClientModule} from "@angular/common/http";
 
-import { ReactiveFormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {
   AvatarModule,
@@ -27,6 +27,7 @@ import {
 import { WidgetsModule } from '../widgets/widgets.module';
 
 import { NotificationsModule} from "../notifications/notifications.module";
+
 
 
 @NgModule({
