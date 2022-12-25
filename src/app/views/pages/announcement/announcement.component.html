@@ -1,45 +1,27 @@
 <c-card>
   <div class="me-1" style="padding: 1%">
-    <button cButton color="primary">+ Add new notification</button>
+    <button cButton color="primary" (click)="toggleCreateAnnouncementButton()">+ Add new notification</button>
   </div>
 </c-card>
 <c-card class="mb-4">
   <c-card-body>
     <ng-container *ngTemplateOutlet="liveDemo"></ng-container>
     <ng-container *ngTemplateOutlet="deleteDemo"></ng-container>
-    <button cButton color="primary" (click)="doubleAnnouncement()">Double notification</button>
+    <ng-container *ngTemplateOutlet="createDemo"></ng-container>
+
     <table cTable hover>
-      <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Title</th>
-        <th scope="col">Url</th>
-        <th scope="col">Description</th>
-        <th scope="col">Content</th>
-        <th scope="col">Publish Date</th>
-        <th scope="col">Additional Information</th>
-        <th scope="col">Start Date</th>
-        <th scope="col">End Date</th>
-        <th scope="col">Options</th>
-      </tr>
-      </thead>
       <tbody>
       <ng-container *ngFor="let value of notifications">
-        <tr>
-          <th scope="row">{{notifications.indexOf(value)+1}}</th>
-          <td>{{value.Title}}</td>
-          <td>{{value.SourceUrl}}</td>
-          <td>{{value.Description}}</td>
-          <td>{{value.Content}}</td>
-          <td>{{value.PublishDate}}</td>
-          <td>{{value.AdditionalInformation}}</td>
-          <td>{{value.ReferenceStartDate}}</td>
-          <td>{{value.ReferenceEndDate}}</td>
+
+          <tr>Title: {{value.Title}}</tr>
+          <tr>Url: {{value.SourceUrl}}</tr>
+          <tr>Description: {{value.Description}}</tr>
+          <tr>Content: {{value.Content}}</tr>
+          <tr>Publish Date: {{value.PublishDate}}</tr>
           <c-button-group aria-label="Basic example" role="group">
             <button cButton color="light" (click)="toggleEditButtonDemo(value)">Edit</button>
             <button cButton color="danger" (click)="toggleDeleteButton(value.Id)">Delete</button>
           </c-button-group>
-        </tr>
       </ng-container>
       </tbody>
     </table>
@@ -98,6 +80,102 @@
   </c-modal-footer>
 </c-modal>
 
+<!-- Form for creating new announcement -->
+<ng-template #createDemo>
+<c-modal id="createForm" [visible]="createFormVisible" (visibleChange)="handleCreateAnnouncement($event)" >
+  <c-modal-header>
+    Create new announcement
+  </c-modal-header>
+  <c-modal-body>
+      <form #createForm="ngForm" *ngIf=createFormVisible>
+        <div class="mb-3">
+          <div class="input-fields">
+            <label cLabel for="title">Provider Id</label>
+            <input cFormControl id="providerId" rows="1" name="newAnnouncProviderId" type="text" ngModel>
+          </div>
+        </div>
+      <div class="mb-3">
+        <div class="input-fields">
+        <label cLabel for="title">Title</label>
+        <input cFormControl id="title" rows="1" name="newAnnouncTitle" type="text" ngModel>
+      </div>
+      <div class="row">
+        <div class="col-md">
+          <div class="mb-3 form-outline datetimepicker">
+            <label cLabel for="startdatepicker">Start date</label>
+            <input cFormControl type="text" value="22/12/2022"  id="startdatepicker"  name="newAnnouncStartDate" ngModel/>
+          </div>
+        </div>
+        <div class="col-md">
+          <div class="mb-3 form-outline datetimepicker">
+            <label cLabel for="startdatepicker">Start time</label>
+            <input cFormControl type="text" value="14:56:03"  id="starttimepicker"  name="newAnnouncStartTime" ngModel/>
+          </div>
+        </div>
+        <div class="col-md">
+          <div class="mb-3 form-outline datetimepicker">
+            <label cLabel for="enddatepicker">End date</label>
+            <input cFormControl type="text" value="22/12/2022" id="enddatepicker" name="newAnnouncEndDate" ngModel/>
+          </div>
+        </div>
+        <div class="col-md">
+          <div class="mb-3 form-outline datetimepicker">
+            <label cLabel for="enddatepicker">End time</label>
+            <input cFormControl type="text" value="14:56:30" id="endtimepicker" name="newAnnouncEndTime" ngModel/>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label cLabel for="url">Url</label>
+        <textarea cFormControl id="url" rows="1" name="newAnnouncUrl" ngModel></textarea>
+      </div>
+      <div class="mb-3">
+        <label cLabel for="description">Description</label>
+        <textarea cFormControl id="description" rows="2" name="newAnnouncDescription" ngModel></textarea>
+      </div>
+      <div class="mb-3">
+        <label cLabel for="content">Content</label>
+        <textarea cFormControl id="content" rows="1" name="newAnnouncContent" ngModel></textarea>
+      </div>
+      <div class="mb-3">
+        <label cLabel for="additionalInformation">Additional Information</label>
+        <textarea cFormControl id="additionalInformation" rows="1"name="newAnnouncAddInfo" ngModel ></textarea>
+      </div>
+      <div class="col">
+        <c-dropdown>
+          <button cButton cDropdownToggle color="secondary">
+            Regions
+          </button>
+          <ul cDropdownMenu>
+            <ng-container *ngFor="let value of regions">
+              <li (click)="regionClicked(value.Id)"><h6>{{value.Name}}</h6></li>
+            </ng-container>
+          </ul>
+        </c-dropdown>
+        <div class="col-md">
+          <c-dropdown>
+            <button cButton cDropdownToggle color="secondary">
+              Streets
+            </button>
+            <ul cDropdownMenu>
+              <ng-container *ngFor="let value of streets">
+                <li (click)="streetClicked(value.Id)">{{value.Name}}</li>
+              </ng-container>
+            </ul>
+          </c-dropdown>
+        </div>
+      </div>
+      </div>
+    </form>
+  </c-modal-body>
+  <c-modal-footer>
+    <button (click)="toggleCreateAnnouncementButton()" cButton color="secondary">
+      Close
+    </button>
+    <button cButton color="primary" type='submit' (click)="submitForm(createForm.value)">Save changes</button>
+  </c-modal-footer>
+</c-modal>
+</ng-template>
 <ng-template #deleteDemo>
   <c-modal id="liveDemoModalAlert" [visible]="doubleAnnouncementVisible" (visibleChange)="handleDoubleAnnouncement($event)">
     <c-modal-header>

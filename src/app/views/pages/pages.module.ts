@@ -7,9 +7,10 @@ import { RegisterComponent } from './register/register.component';
 import { Page404Component } from './page404/page404.component';
 import { Page500Component } from './page500/page500.component';
 import { AnnouncementComponent} from "./announcement/announcement.component";
-import { ButtonModule, CardModule, FormModule, GridModule } from '@coreui/angular';
+import {ButtonModule, CardModule, DropdownModule, FormModule, GridModule} from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
 import { HttpClientModule} from "@angular/common/http";
+
 
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
@@ -27,6 +28,7 @@ import {
 import { WidgetsModule } from '../widgets/widgets.module';
 
 import { NotificationsModule} from "../notifications/notifications.module";
+import {DocsComponentsModule} from "../../../components";
 
 
 
@@ -64,7 +66,10 @@ import { NotificationsModule} from "../notifications/notifications.module";
     WidgetsModule,
     NotificationsModule,
     ModalModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
+    DocsComponentsModule,
+    DropdownModule
   ]
 })
 export class PagesModule {

@@ -1,6 +1,7 @@
 export class Announcement{
 constructor(
-            public Id: number,
+            public Id:number,
+            public ProviderId: number,
             public Title: string,
             public SourceUrl: string,
             public Description:string,
