@@ -1,18 +1,24 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
-import { PagesRoutingModule } from './pages-routing.module';
+import { HttpClientModule } from '@angular/common/http';
+import {
+  ButtonModule,
+  CardModule,
+  DropdownModule,
+  FormModule,
+  GridModule,
+} from '@coreui/angular';
+import { IconModule } from '@coreui/icons-angular';
+import { AnnouncementComponent } from './announcement/announcement.component';
 import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
+import { LogsComponent } from './logs/logs.component';
 import { Page404Component } from './page404/page404.component';
 import { Page500Component } from './page500/page500.component';
-import { AnnouncementComponent} from "./announcement/announcement.component";
-import {ButtonModule, CardModule, DropdownModule, FormModule, GridModule} from '@coreui/angular';
-import { IconModule } from '@coreui/icons-angular';
-import { HttpClientModule} from "@angular/common/http";
+import { PagesRoutingModule } from './pages-routing.module';
+import { RegisterComponent } from './register/register.component';
 
-
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import {
   AvatarModule,
@@ -21,16 +27,13 @@ import {
   NavModule,
   ProgressModule,
   TableModule,
-  TabsModule
+  TabsModule,
 } from '@coreui/angular';
-
 
 import { WidgetsModule } from '../widgets/widgets.module';
 
-import { NotificationsModule} from "../notifications/notifications.module";
-import {DocsComponentsModule} from "../../../components";
-
-
+import { DocsComponentsModule } from '../../../components';
+import { NotificationsModule } from '../notifications/notifications.module';
 
 @NgModule({
   declarations: [
@@ -38,8 +41,8 @@ import {DocsComponentsModule} from "../../../components";
     RegisterComponent,
     Page404Component,
     Page500Component,
-    AnnouncementComponent
-
+    AnnouncementComponent,
+    LogsComponent,
   ],
   imports: [
     CommonModule,
@@ -69,8 +72,7 @@ import {DocsComponentsModule} from "../../../components";
     HttpClientModule,
     FormsModule,
     DocsComponentsModule,
-    DropdownModule
-  ]
+    DropdownModule,
+  ],
 })
-export class PagesModule {
-}
+export class PagesModule {}

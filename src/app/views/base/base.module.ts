@@ -25,7 +25,7 @@ import {
   TableModule,
   TabsModule,
   TooltipModule,
-  UtilitiesModule
+  UtilitiesModule,
 } from '@coreui/angular';
 
 import { IconModule } from '@coreui/icons-angular';
@@ -34,6 +34,7 @@ import { IconModule } from '@coreui/icons-angular';
 import { DocsComponentsModule } from '@docs-components/docs-components.module';
 
 // views
+import { BrowserModule } from '@angular/platform-browser';
 import { AccordionsComponent } from './accordion/accordions.component';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 import { CardsComponent } from './cards/cards.component';
@@ -47,15 +48,15 @@ import { PopoversComponent } from './popovers/popovers.component';
 import { ProgressComponent } from './progress/progress.component';
 import { SpinnersComponent } from './spinners/spinners.component';
 import { TablesComponent } from './tables/tables.component';
-import { TooltipsComponent } from './tooltips/tooltips.component';
 import { TabsComponent } from './tabs/tabs.component';
-
+import { TooltipsComponent } from './tooltips/tooltips.component';
 // Components Routing
 import { BaseRoutingModule } from './base-routing.module';
 
 @NgModule({
   imports: [
     CommonModule,
+    BrowserModule,
     BaseRoutingModule,
     AccordionModule,
     BadgeModule,

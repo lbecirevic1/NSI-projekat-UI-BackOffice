@@ -1,0 +1,16 @@
+<div>
+  <h2>Logs</h2>
+
+  <table cTable hover>
+    <tr>
+      <th>Column 1</th>
+      <th>Column 2</th>
+      <th>Column 3</th>
+    </tr>
+    <tr *ngFor="let log of logs">
+      <td>{{ log.col1 }}</td>
+      <td>{{ log.col2 }}</td>
+      <td>{{ log.col3 }}</td>
+    </tr>
+  </table>
+</div>
