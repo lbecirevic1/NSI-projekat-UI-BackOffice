@@ -4,7 +4,7 @@
       <c-card-header>
         <strong>User data</strong>
         <div class="f-r">
-          <ng-container *ngTemplateOutlet="liveDemo"></ng-container>
+          <ng-container *ngTemplateOutlet="modalUserForm"></ng-container>
           <!-- <button cButton class="me-1" color="primary"(click)="submitUserForm()">
             Save
           </button> -->
@@ -75,6 +75,7 @@
                 </tr>
             </tbody>
           </table>
+          <ng-container *ngTemplateOutlet="modalAddNewSubscription"></ng-container>
           <button cButton color="primary" (click)="addNewSubscription()">Add new</button>
       </c-card-body>
     </c-card>
@@ -82,16 +83,16 @@
 </c-row>
 
 
-<ng-template #liveDemo>
-  <button (click)="toggleLiveDemo()" cButton>Save</button>
-  <c-modal id="liveDemoModal" [visible]="liveDemoVisible" (visibleChange)="handleLiveDemoChange($event)">
+<ng-template #modalUserForm>
+  <button (click)="togglemodalUserForm()" cButton>Save</button>
+  <c-modal id="modalUserFormModal" [visible]="modalUserFormVisible" (visibleChange)="handlemodalUserFormChange($event)">
     <c-modal-header>
       <h5 cModalTitle>Update user data</h5>
-      <button (click)="toggleLiveDemo()" cButtonClose></button>
+      <button (click)="togglemodalUserForm()" cButtonClose></button>
     </c-modal-header>
     <c-modal-body>Are you sure you want to make these updates?</c-modal-body>
     <c-modal-footer>
-      <button (click)="toggleLiveDemo()" cButton color="secondary">
+      <button (click)="togglemodalUserForm()" cButton color="secondary">
         Cancel
       </button>
       <button cButton color="primary" (click)="submitUserForm()">Save changes</button>
@@ -99,4 +100,44 @@
   </c-modal>
 </ng-template>
 
+<ng-template #modalAddNewSubscription>
+  <c-modal id="modalAddNewSubscriptionModal" [visible]="modalAddNewSubscriptionVisible" (visibleChange)="handleModalAddNewSubscriptionChange($event)">
+    <c-modal-header>
+      <h5 cModalTitle>Add new</h5>
+      <button (click)="toggleModalAddNewSubscription()" cButtonClose></button>
+    </c-modal-header>
+    <app-subscription-modal (newItemEvent)="addItem($event)"></app-subscription-modal>
+    <!-- <c-modal-body>
+      <form cForm [formGroup]="addNewSubscriptionForm" (ngSubmit)="onSubmitAddNewSubscriptionForm(addNewSubscriptionForm)">
+        <div class="row">
+          <div class="mb-3 col-md-4">
+            <label cLabel for="exampleFormControlInput1">Email address</label>
+            <input cFormControl
+            formControlName="Email"
+            id="exampleFormControlInput1"
+            placeholder="name@example.com"
+            type="email"
+            />
+          </div>
+          <div class="mb-3 col-md-4">
+            <label cLabel for="exampleFormControlTextarea1">First Name</label>
+            <input cFormControl id="FirstName" formControlName="FirstName" type="text" >
+          </div>
+          <div class="mb-3 col-md-4">
+            <label cLabel for="exampleFormControlTextarea1">Last Name</label>
+            <input cFormControl id="LastName" formControlName="LastName" type="text" >
+          </div>
+        </div>
+      </form>
+    </c-modal-body> -->
+    <c-modal-footer>
+      <button (click)="toggleModalAddNewSubscription()" cButton color="secondary">
+        Cancel
+      </button>
+      <button cButton color="primary" (click)="submitAddNewSubscriptionForm()">Save changes</button>
+    </c-modal-footer>
+    
+  </c-modal>
+  
+</ng-template>
 <c-toaster [ngClass]="'p-3'" position="fixed" placement="top-end"></c-toaster>

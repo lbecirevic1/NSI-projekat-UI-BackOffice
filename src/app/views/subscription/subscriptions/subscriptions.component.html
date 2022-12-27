@@ -3,6 +3,12 @@
       <c-card class="mb-4">
         <c-card-header>
           <strong>Subscriptions Table</strong>
+          <div class="f-r">
+            <ng-container *ngTemplateOutlet="newUserModal"></ng-container>
+            <button cButton class="me-1" color="primary"(click)="openAddUserModal()">
+              Add User
+            </button>
+          </div>
         </c-card-header>
         <c-card-body>
          
@@ -32,3 +38,20 @@
       </c-card>
     </c-col>
 </c-row>
+
+<ng-template #newUserModal>
+  <button (click)="toggleNewUserModal()" cButton>Save</button>
+  <c-modal id="newUserModal" [visible]="newUserModalVisible" (visibleChange)="handleNewUserModalChange($event)">
+    <c-modal-header>
+      <h5 cModalTitle>Update user data</h5>
+      <button (click)="toggleNewUserModal()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>Are you sure you want to make these updates?</c-modal-body>
+    <c-modal-footer>
+      <button (click)="toggleNewUserModal()" cButton color="secondary">
+        Cancel
+      </button>
+      <button cButton color="primary" (click)="submitUserForm()">Add user</button>
+    </c-modal-footer>
+  </c-modal>
+</ng-template>

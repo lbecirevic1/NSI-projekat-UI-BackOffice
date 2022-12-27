@@ -27,7 +27,8 @@ import {
   TabsModule,
   TooltipModule,
   UtilitiesModule,
-  ButtonGroupModule
+  ButtonGroupModule,
+  ToastModule
 } from '@coreui/angular';
 
 import { IconModule } from '@coreui/icons-angular';
@@ -39,6 +40,7 @@ import { DocsComponentsModule } from '@docs-components/docs-components.module';
 
 // Theme Routing
 import { SubscriptionRoutingModule } from './subscription-routing.module';
+import { SubscriptionModalComponent } from './subscription-modal/subscription-modal.component';
 
 @NgModule({
   imports: [
@@ -58,11 +60,13 @@ import { SubscriptionRoutingModule } from './subscription-routing.module';
     BreadcrumbModule,
     FormModule,
     PopoverModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ToastModule
   ],
   declarations: [
     SubscriptionsComponent,
-    SubscriberPageComponent
+    SubscriberPageComponent,
+    SubscriptionModalComponent
   ]
 })
 export class SubscriptionModule {

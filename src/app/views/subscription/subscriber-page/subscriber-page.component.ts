@@ -20,7 +20,11 @@ export class SubscriberPageComponent implements OnInit {
   id: Params | undefined;
   userForm!: FormGroup;
 
-  public liveDemoVisible = false;
+  topic!: string;
+  categories!:[];
+
+  public modalUserFormVisible = false;
+  public modalAddNewSubscriptionVisible = false
   constructor(private activatedRoute: ActivatedRoute) { }
 
   positions = Object.values(ToasterPlacement);
@@ -54,26 +58,34 @@ export class SubscriberPageComponent implements OnInit {
     console.log( topic, category, "Delete")
   }
   addNewSubscription(){
-    console.log("Add new component");
+    console.log("Add new component"); 
+    this.modalAddNewSubscriptionVisible = true;
   }
   onSubmitUserForm(userForm:FormGroup){
     console.log("User form submited", userForm.value);
   }
   submitUserForm(){
     this.onSubmitUserForm(this.userForm);
-    this.liveDemoVisible = false;
-    this.addToast();
+    this.modalUserFormVisible = false;
+    this.addToast("User form submitted");
   }
 
-  toggleLiveDemo() {
-    this.liveDemoVisible = !this.liveDemoVisible;
+  togglemodalUserForm() {
+    this.modalUserFormVisible = !this.modalUserFormVisible;
   }
 
-  handleLiveDemoChange(event: boolean) {
-    this.liveDemoVisible = event;
+  handlemodalUserFormChange(event: boolean) {
+    this.modalUserFormVisible = event;
   }
-  
-  addToast() {
+  toggleModalAddNewSubscription() {
+    this.modalAddNewSubscriptionVisible = !this.modalAddNewSubscriptionVisible;
+   
+  }
+
+  handleModalAddNewSubscriptionChange(event: boolean) {
+    this.modalAddNewSubscriptionVisible = event;
+  }
+  addToast(title: string) {
       let props = {
         autohide: true,
         delay: 5000,
@@ -81,10 +93,21 @@ export class SubscriberPageComponent implements OnInit {
         fade: true,
         closeButton: true,
         color: "success",
-        title: "asdadasdsa"
+        title: title
       };
       console.log(this.viewChildren);
       this.viewChildren.forEach((item)=> item.addToast(AppToastComponent, props, {}));
       console.log("sadsa")
+  }
+  onSubmitAddNewSubscriptionForm(addNewSubscriptionForm:FormGroup){
+    console.log("User form submited", addNewSubscriptionForm.value);
+    this.addToast("Add new Subscription submitted");
+  }
+  submitAddNewSubscriptionForm(){
+
+    this.addToast("Add new Subscription submitted");
+  }
+  addItem(event: any) {
+    console.log("event output", event)
   }
 }
