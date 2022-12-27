@@ -10,7 +10,7 @@ import { AnnouncementComponent} from "./announcement/announcement.component";
 import {ButtonModule, CardModule, DropdownModule, FormModule, GridModule} from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
 import { HttpClientModule} from "@angular/common/http";
-
+import { NgMultiSelectDropDownModule} from "ng-multiselect-dropdown";
 
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
@@ -69,7 +69,8 @@ import {DocsComponentsModule} from "../../../components";
     HttpClientModule,
     FormsModule,
     DocsComponentsModule,
-    DropdownModule
+    DropdownModule,
+    NgMultiSelectDropDownModule.forRoot()
   ]
 })
 export class PagesModule {

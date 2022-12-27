@@ -91,13 +91,15 @@ deleteAnnouncement(notificationId:number){
 
   }
     let body2=JSON.stringify(body);
+  let errorR=false;
     console.log(JSON.stringify(body));
+ this.http.post<any>('https://localhost:7069/api/announcement',body).subscribe(
+     data=>{},
+     error => {console.log(error.status);errorR=true;}
+   )
 
-    return this.http.post<any>('https://localhost:7069/api/announcement',body).subscribe();
-
+    return errorR;
   }
 
-  postAnnouncement2(values:any){
-    console.log(values);
-  }
+
 }

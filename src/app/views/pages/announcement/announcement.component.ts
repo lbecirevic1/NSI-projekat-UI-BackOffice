@@ -5,6 +5,7 @@ import { Announcement} from "../../../models/announcement";
 import {FormBuilder, NgForm} from '@angular/forms';
 import {Region} from "../../../models/region";
 import {Street} from "../../../models/street";
+import { IDropdownSettings } from "ng-multiselect-dropdown";
 
 
 @Component({
@@ -18,10 +19,17 @@ export class AnnouncementComponent implements OnInit {
   @ViewChild('createForm', { static: false }) createForm!: NgForm;
 
   public notifications: Announcement[] = [];
+  dropdownSettings:IDropdownSettings={};
 
   public liveDemoVisible = false;
   public editFormVisible = false;
   public createFormVisible = false;
+
+  public contentDemoVisible=false;
+
+  public addInfoDemoVisible=false;
+
+  public descriptionDemoVisible=false;
 
   public regions: Region[]=[];
 
@@ -34,6 +42,12 @@ export class AnnouncementComponent implements OnInit {
   public formBuilder: any;
 
   title:any;
+
+  public announcementDescription:any;
+
+  public announcementAddInfo:any;
+
+  public announcementContent:any;
 
   public doubleAnnouncementVisible=false;
 
@@ -81,10 +95,11 @@ export class AnnouncementComponent implements OnInit {
         let street=new Street(data[i].id,data[i].name,data[i].createDate,data[i].regionId);
         this.streets.push(street);
       }
-    })
+    });
 
     //  let nova=new Announcement(1,"test","test","test",'test',new Date(2022,12,17),"test",new Date(2022,12,17),new Date(2022,12,17));
     ///this.notifications.push(nova);
+
   }
 
 
@@ -154,28 +169,96 @@ export class AnnouncementComponent implements OnInit {
   }
 
   submitForm(values:any){
-    this.service.postAnnouncement(values.newAnnouncProviderId,values.newAnnouncTitle,
+let resp=this.service.postAnnouncement(values.newAnnouncProviderId,values.newAnnouncTitle,
       values.newAnnouncUrl,values.newAnnouncDescription,values.newAnnouncContent,
       values.newAnnouncAddInfo,values.newAnnouncStartDate,values.newAnnouncEndDate,
       values.newAnnouncStartTime,values.newAnnouncEndTime,this.clickedRegions,this.clickedStreets);
+if(resp==true){
+  this.createFormVisible = !this.createFormVisible;
+  this.handleDoubleAnnouncement(true);
+  this.doubleAnnouncementVisible=true;
+}
   }
 
 streetClicked(streetId:number){
     if(this.clickedStreets.includes(streetId)){
       const index: number = this.clickedStreets.indexOf(streetId);
-      if (index !== -1) {
-        this.clickedStreets.splice(index, 1);
-      }
+     this.clickedStreets.forEach((element,index)=>{
+       if(element==streetId)this.clickedStreets.splice(index,1);
+     })
     }
-    this.clickedStreets.push(streetId);
+    else this.clickedStreets.push(streetId);
     console.log(this.clickedStreets);
 
 }
 
 regionClicked(regionId:number){
-    this.clickedRegions.push(regionId);
-    console.log(regionId);
+    if(this.clickedRegions.includes(regionId)){
+      const index:number=this.clickedRegions.indexOf(regionId);
+      this.clickedRegions.forEach((element,index)=>{
+        if(element==regionId)this.clickedRegions.splice(index,1);
+      })
+    }
+    else this.clickedRegions.push(regionId);
+    console.log(this.clickedRegions);
 }
+
+showDescription(description:string){
+this.announcementDescription=description;
+  this.descriptionDemoVisible = !this.descriptionDemoVisible;
+}
+
+
+showAddInfo(addInfo:string){
+this.announcementAddInfo=addInfo;
+this.addInfoDemoVisible=!this.addInfoDemoVisible;
+}
+
+showContent(content:string){
+this.announcementContent=content;
+this.contentDemoVisible=!this.contentDemoVisible;
+}
+
+handleContentVisible(event:boolean){
+    this.contentDemoVisible=event;
+}
+
+handleAddInfoVisible(event:boolean){
+    this.addInfoDemoVisible=event;
+}
+
+handleDescriptionVisible(event:boolean){
+    this.descriptionDemoVisible=event;
+}
+
+parseDate(date:string){
+  let start=date.indexOf("-")
+  let start2=date.lastIndexOf("-")
+  let time=date.indexOf("T")
+  let godina=date.substring(0,start)
+  let mjesec=date.substring(start+1,start2)
+  let dan=date.substring(start2+1,time)
+
+  if(dan.length==1){
+    dan='0'+dan;
+  }
+  if(mjesec.length==1){
+    mjesec='0'+mjesec;
+  }
+  let end;
+   end=date.length;
+
+  let startT=date.indexOf(":")
+  let startT2=date.lastIndexOf(":")
+  let startH=date.substring(time+1,startT)
+  let startM=date.substring(startT+1,startT2)
+  let startS=date.substring(startT2+1,end)
+
+ let datum=dan+"-"+mjesec+"-"+godina+ " "+startH+":"+startM+":"+startS;
+  return datum;
+}
+
+
 
 
 }
