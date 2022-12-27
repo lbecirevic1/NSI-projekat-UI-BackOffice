@@ -71,17 +71,18 @@ export class SubscriptionsComponent implements OnInit {
   submitUserForm(){
     this.onSubmitUserForm(this.userForm);
     this.newUserModalVisible = false;
-    this.addToast("Confirmation mail has been sent");
+    this.addToast("Warning", "Confirmation mail has been sent!");
   }
-  addToast(title:string) {
+  addToast(title:string, text:string) {
     let props = {
       autohide: true,
       delay: 5000,
       position: ToasterPlacement.TopEnd,
       fade: true,
       closeButton: true,
-      color: "success",
-      title: title
+      color: "warning",
+      title: title,
+      text: text
     };
     console.log(this.viewChildren);
     this.viewChildren.forEach((item)=> item.addToast(AppToastComponent, props, {}));
