@@ -6,13 +6,19 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { Page404Component } from './page404/page404.component';
 import { Page500Component } from './page500/page500.component';
-import { AnnouncementComponent} from "./announcement/announcement.component";
-import {ButtonModule, CardModule, DropdownModule, FormModule, GridModule} from '@coreui/angular';
+import { AnnouncementComponent } from './announcement/announcement.component';
+import {
+  ButtonModule,
+  CardModule,
+  DropdownModule,
+  FormModule,
+  GridModule,
+} from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
-import { HttpClientModule} from "@angular/common/http";
-import { NgMultiSelectDropDownModule} from "ng-multiselect-dropdown";
+import { HttpClientModule } from '@angular/common/http';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import {
   AvatarModule,
@@ -21,16 +27,15 @@ import {
   NavModule,
   ProgressModule,
   TableModule,
-  TabsModule
+  TabsModule,
 } from '@coreui/angular';
-
 
 import { WidgetsModule } from '../widgets/widgets.module';
 
-import { NotificationsModule} from "../notifications/notifications.module";
-import {DocsComponentsModule} from "../../../components";
-
-
+import { NotificationsModule } from '../notifications/notifications.module';
+import { DocsComponentsModule } from '../../../components';
+import { UsersComponent } from './users/users.component';
+import { UserSettingsComponent } from './user-settings/user-settings.component';
 
 @NgModule({
   declarations: [
@@ -38,8 +43,9 @@ import {DocsComponentsModule} from "../../../components";
     RegisterComponent,
     Page404Component,
     Page500Component,
-    AnnouncementComponent
-
+    AnnouncementComponent,
+    UsersComponent,
+    UserSettingsComponent,
   ],
   imports: [
     CommonModule,
@@ -70,8 +76,7 @@ import {DocsComponentsModule} from "../../../components";
     FormsModule,
     DocsComponentsModule,
     DropdownModule,
-    NgMultiSelectDropDownModule.forRoot()
-  ]
+    NgMultiSelectDropDownModule.forRoot(),
+  ],
 })
-export class PagesModule {
-}
+export class PagesModule {}
