@@ -6,8 +6,13 @@ import { AppToastComponent } from '../../notifications/toasters/toast-simple/toa
 
 interface ISubscriber {
   Topic: string;
-  Category: string;
-  Frequency: string;
+  CategoryNumber: number;
+  LastModified: Date;
+}
+
+interface IEditSubscription {
+  UserId: number;
+  Topic: string;
 }
 
 @Component({
@@ -17,11 +22,12 @@ interface ISubscriber {
 })
 
 export class SubscriberPageComponent implements OnInit {
-  id: Params | undefined;
+  id!: number;
   userForm!: FormGroup;
 
   topic!: string;
   categories!:[];
+  informationForEditingSubscription!: IEditSubscription;
 
   public modalUserFormVisible = false;
   public modalAddNewSubscriptionVisible = false
@@ -32,13 +38,13 @@ export class SubscriberPageComponent implements OnInit {
   public subscriptions: ISubscriber[] = [
     {
       Topic: 'Bh Telecom',
-      Category: 'Javne nabavke',
-      Frequency: '1 dnevno'
+      CategoryNumber: 3,
+      LastModified: new Date(2022, 12, 1)
     },
     {
       Topic: 'Opcina Centar',
-      Category: 'Tenderi',
-      Frequency: '2 dnevno'
+      CategoryNumber: 4,
+      LastModified: new Date(2022, 11, 12)
     } 
   ]
   ngOnInit(): void {
@@ -51,11 +57,15 @@ export class SubscriberPageComponent implements OnInit {
     console.log(this.id);
     console.log(this.positions)
   }
-  editSubscription( topic: any, category: any){
-      console.log( topic, category, "Edit")
+  editSubscription( topic: any){
+    this.informationForEditingSubscription = ({UserId:this.id, Topic:topic});
+    this.toggleModalAddNewSubscription()
+    
+    console.log( topic, "Edit")
   }
-  deleteSubscription( topic: any, category: any){
-    console.log( topic, category, "Delete")
+  deleteSubscription( topic: any){
+    console.log( topic,  "Delete")
+    this.subscriptions = this.subscriptions.filter(item=>item.Topic!=topic);
   }
   addNewSubscription(){
     console.log("Add new component"); 
@@ -79,7 +89,6 @@ export class SubscriberPageComponent implements OnInit {
   }
   toggleModalAddNewSubscription() {
     this.modalAddNewSubscriptionVisible = !this.modalAddNewSubscriptionVisible;
-   
   }
 
   handleModalAddNewSubscriptionChange(event: boolean) {
@@ -104,10 +113,14 @@ export class SubscriberPageComponent implements OnInit {
     this.addToast("Add new Subscription submitted");
   }
   submitAddNewSubscriptionForm(){
-
     this.addToast("Add new Subscription submitted");
+    this.subscriptions.push({Topic:this.topic, CategoryNumber:this.categories.length, LastModified:new Date()})
+    this.modalAddNewSubscriptionVisible = false;
   }
   addItem(event: any) {
     console.log("event output", event)
+    this.topic = event.value.topicControl
+    this.categories = event.value.categoryControl;
+    console.log("rezultati", this.topic, this.categories);
   }
 }

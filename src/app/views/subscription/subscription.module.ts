@@ -41,6 +41,7 @@ import { DocsComponentsModule } from '@docs-components/docs-components.module';
 // Theme Routing
 import { SubscriptionRoutingModule } from './subscription-routing.module';
 import { SubscriptionModalComponent } from './subscription-modal/subscription-modal.component';
+import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
   imports: [

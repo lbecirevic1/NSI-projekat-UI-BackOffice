@@ -46,8 +46,8 @@
             <thead>
             <tr>
               <th scope="col">Topic</th>
-              <th scope="col">Category</th>
-              <th scope="col">Frequency</th>
+              <th scope="col">Category Number</th>
+              <th scope="col">Last Modified</th>
               <th scope="col"></th>
             </tr>
             </thead>
@@ -57,17 +57,17 @@
                   {{ subscription.Topic }}
                 </td>
                 <td>
-                  {{ subscription.Category }}
+                  {{ subscription.CategoryNumber }}
                 </td>
                 <td>
-                  {{ subscription.Frequency }}
+                  {{ subscription.LastModified }}
                 </td>
                 <td>
                   <c-button-group aria-label="Basic example" role="group">
-                      <button cButton class="me-1" color="primary"  (click)="editSubscription( subscription.Topic, subscription.Category)">
+                      <button cButton class="me-1" color="primary" (click)="editSubscription(subscription.Topic)">
                           Edit
                         </button>
-                        <button cButton class="me-1" color="danger"(click)="deleteSubscription( subscription.Topic, subscription.Category)">
+                        <button cButton class="me-1" color="danger"(click)="deleteSubscription(subscription.Topic)">
                           Delete
                         </button>
                     </c-button-group>
@@ -101,35 +101,12 @@
 </ng-template>
 
 <ng-template #modalAddNewSubscription>
-  <c-modal id="modalAddNewSubscriptionModal" [visible]="modalAddNewSubscriptionVisible" (visibleChange)="handleModalAddNewSubscriptionChange($event)">
+  <c-modal id="modalAddNewSubscriptionModal" [visible]="modalAddNewSubscriptionVisible" (visibleChange)="handleModalAddNewSubscriptionChange($event)" class="w-80">
     <c-modal-header>
       <h5 cModalTitle>Add new</h5>
       <button (click)="toggleModalAddNewSubscription()" cButtonClose></button>
     </c-modal-header>
-    <app-subscription-modal (newItemEvent)="addItem($event)"></app-subscription-modal>
-    <!-- <c-modal-body>
-      <form cForm [formGroup]="addNewSubscriptionForm" (ngSubmit)="onSubmitAddNewSubscriptionForm(addNewSubscriptionForm)">
-        <div class="row">
-          <div class="mb-3 col-md-4">
-            <label cLabel for="exampleFormControlInput1">Email address</label>
-            <input cFormControl
-            formControlName="Email"
-            id="exampleFormControlInput1"
-            placeholder="name@example.com"
-            type="email"
-            />
-          </div>
-          <div class="mb-3 col-md-4">
-            <label cLabel for="exampleFormControlTextarea1">First Name</label>
-            <input cFormControl id="FirstName" formControlName="FirstName" type="text" >
-          </div>
-          <div class="mb-3 col-md-4">
-            <label cLabel for="exampleFormControlTextarea1">Last Name</label>
-            <input cFormControl id="LastName" formControlName="LastName" type="text" >
-          </div>
-        </div>
-      </form>
-    </c-modal-body> -->
+    <app-subscription-modal (newItemEvent)="addItem($event)" [editSubscriptionInfo]="informationForEditingSubscription"></app-subscription-modal>
     <c-modal-footer>
       <button (click)="toggleModalAddNewSubscription()" cButton color="secondary">
         Cancel

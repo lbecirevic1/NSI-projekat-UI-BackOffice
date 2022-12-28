@@ -1,21 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Output, EventEmitter } from '@angular/core';
+interface IEditSubscription {
+  UserId: number;
+  Topic: string;
+}
 @Component({
   selector: 'app-subscription-modal',
   templateUrl: './subscription-modal.component.html',
   styleUrls: ['./subscription-modal.component.scss']
 })
+
+
+
 export class SubscriptionModalComponent implements OnInit {
 
   // addNewSubscriptionForm!:FormGroup;
   @Output() newItemEvent = new EventEmitter<FormGroup>();
+  @Input() editSubscriptionInfo!:IEditSubscription;
   isSubmitted = false;
-  Topics: any = ['BHT', 'Centar', 'Tennessee', 'Michigan'];
-  Categories: any = ['prva', 'Druga', 'Treca', 'Cetvrta'];
-  selectedCategories: any[] = [] ;
+  editMode = false;
+  Topics: any = ['BHT', 'Centar', 'Novo Sarajevo', 'Neki Topic'];
+  Categories: any = ['Kategorija1', 'Kategorija2', 'Kategorija3', 'Kategorija4'];
+
   constructor(public fb: FormBuilder) { }
-  categoriesSelected = []
   addNewSubscriptionForm = this.fb.group({
     topicControl: [''],
     categoryControl: []
@@ -25,15 +33,13 @@ export class SubscriptionModalComponent implements OnInit {
     this.topicControl?.setValue(e.target.value, {
       onlySelf: true,
     });
-    console.log("Topic changed", this.topicControl);
+    console.log("Topic changed", this.topicControl, e.target.value);
 
     this.newItemEvent.emit(this.addNewSubscriptionForm);
   }
   changeCategory(e: any) {
-    this.categoryControl?.setValue(e.target.value, {
-      onlySelf: true,
-    });
-    console.log("Category changed", this.categoryControl);
+    console.log("Categoris changed", this.categoryControl);
+    this.newItemEvent.emit(this.addNewSubscriptionForm);
   }
   get topicControl() {
     return this.addNewSubscriptionForm.get('topicControl');
@@ -41,22 +47,23 @@ export class SubscriptionModalComponent implements OnInit {
   get categoryControl() {
     return this.addNewSubscriptionForm.get('categoryControl');
   }
-
   ngOnInit(): void {
-
-    
-    // this.addNewSubscriptionForm = new FormGroup({
-    //   Category: new FormControl("Kategorija"),
-    //   Topic: new FormControl("Topic neki")
-    // });
+    console.log(this.editSubscriptionInfo);
+    if(this.editSubscriptionInfo!=null && this.editSubscriptionInfo.UserId!=null && this.editSubscriptionInfo.Topic!=null){
+      this.editMode = true;
+      this.topicControl?.setValue('', {
+        onlySelf: true,
+      });
+      this.categoryControl?.setValue(null, {
+        onlySelf: true,
+      });
+    }
   }
-  // onSubmitAddNewSubscriptionForm(addNewSubscriptionForm:FormGroup){
-  //   console.log("User form submited", addNewSubscriptionForm.value);
-  // }
+
   onSubmit(): void {
     console.log(this.addNewSubscriptionForm);
     this.isSubmitted = true;
     
-      console.log(JSON.stringify(this.addNewSubscriptionForm.value));
+    console.log(JSON.stringify(this.addNewSubscriptionForm.value));
   }
 }
