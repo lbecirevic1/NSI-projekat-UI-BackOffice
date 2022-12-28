@@ -5,9 +5,6 @@
           <strong>Subscriptions Table</strong>
           <div class="f-r">
             <ng-container *ngTemplateOutlet="newUserModal"></ng-container>
-            <button cButton class="me-1" color="primary"(click)="openAddUserModal()">
-              Add User
-            </button>
           </div>
         </c-card-header>
         <c-card-body>
@@ -40,13 +37,35 @@
 </c-row>
 
 <ng-template #newUserModal>
-  <button (click)="toggleNewUserModal()" cButton>Save</button>
-  <c-modal id="newUserModal" [visible]="newUserModalVisible" (visibleChange)="handleNewUserModalChange($event)">
+  <button (click)="toggleNewUserModal()" cButton>Add new user</button>
+  <c-modal id="newUserModal" size="lg" backdrop="static" [visible]="newUserModalVisible" (visibleChange)="handleNewUserModalChange($event)">
     <c-modal-header>
-      <h5 cModalTitle>Update user data</h5>
+      <h5 cModalTitle>Enter user data</h5>
       <button (click)="toggleNewUserModal()" cButtonClose></button>
     </c-modal-header>
-    <c-modal-body>Are you sure you want to make these updates?</c-modal-body>
+    <c-modal-body>
+      <form cForm [formGroup]="userForm" (ngSubmit)="onSubmitUserForm(userForm)">
+        <div class="row">
+          <div class="mb-3 col-md-4">
+            <label cLabel for="exampleFormControlInput1">Email address</label>
+            <input cFormControl
+            formControlName="Email"
+            id="exampleFormControlInput1"
+            placeholder="name@example.com"
+            type="email"
+            />
+          </div>
+          <div class="mb-3 col-md-4">
+            <label cLabel for="exampleFormControlTextarea1">First Name</label>
+            <input cFormControl id="FirstName" formControlName="FirstName" type="text" >
+          </div>
+          <div class="mb-3 col-md-4">
+            <label cLabel for="exampleFormControlTextarea1">Last Name</label>
+            <input cFormControl id="LastName" formControlName="LastName" type="text" >
+          </div>
+        </div>
+      </form>
+    </c-modal-body>
     <c-modal-footer>
       <button (click)="toggleNewUserModal()" cButton color="secondary">
         Cancel
@@ -55,3 +74,5 @@
     </c-modal-footer>
   </c-modal>
 </ng-template>
+
+<c-toaster [ngClass]="'p-3'" position="fixed" placement="top-end"></c-toaster>
