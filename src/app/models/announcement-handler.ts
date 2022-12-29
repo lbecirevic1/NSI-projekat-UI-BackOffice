@@ -1,4 +1,4 @@
-export class AnnouncemenetHandler {
+export class AnnouncementHandler {
     constructor(
         public id: number,
         public identifier: string,
@@ -10,4 +10,16 @@ export class AnnouncemenetHandler {
         public createDate: Date,
         public modiifiedDate: Date
     ) { }
+}
+
+export interface IAnnouncementHandler {
+    id: number,
+    identifier: string,
+    subscriptionIdentifier: string,
+    subscriberIdentifier: string,
+    subscriptionEntryIdentifier: string,
+    lastTimeNotified: Date,
+    numberOfSentAnnouncements: number,
+    createDate: Date,
+    modiifiedDate: Date
 }
