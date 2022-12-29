@@ -1,33 +1,49 @@
 <c-modal-body>
-    <form cForm [formGroup]="addNewSubscriptionForm"
-    (ngSubmit)="onSubmit()"
-     >
-      <div class="row">
-        
-        <div class="mb-3 col-md-6">
-              <select cSelect
-              class="mb-3"
-              (change)="changeTopic($event)"
-              formControlName="topicControl">
-              <option value="" disabled>Choose Topic</option>
-              <option *ngif="this.editMode" selected [ngValue]="editSubscriptionInfo.Topic"> {{editSubscriptionInfo.Topic}}</option>
-              <option *ngFor="let topic of Topics" [ngValue]="topic">
-                {{ topic }}
-              </option>
-            </select>
+  <form cForm [formGroup]="addNewSubscriptionForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="mb-3 col-md-6">
+        <div class="row">
+          <label class="mb-3 text-center"> Select Topic</label>
         </div>
-        <div class="mb-3 col-md-6">
-              <select cSelect multiple
-              class="mb-3"
-              (change)="changeCategory($event)"
-              formControlName="categoryControl"
-            >
-              <option value="" disabled>Choose Category</option>
-              <option *ngFor="let category of Categories" [ngValue]="category">
-                {{ category }}
-              </option>
-            </select>
+        <div class="row p-3">
+
+          <select [attr.disabled]="true"  cSelect  class="mb-3 text-center" (change)="changeTopic($event)" formControlName="topicControl"
+            *ngIf="editSubscriptionInfo && (editSubscriptionInfo | json) != '{}'" >
+            <option value="" disabled>Choose Topic</option>
+            <option *ngFor="let topic of Topics" [ngValue]="topic" [selected]="editSubscriptionInfo.Topic==topic">
+              {{ topic }} Edit
+            </option>
+          </select>
+
+          <select cSelect class="mb-3 text-center" (change)="changeTopic($event)" formControlName="topicControl"
+            *ngIf="!editSubscriptionInfo || (editSubscriptionInfo | json) == '{}'">
+            <option value="" disabled>Choose Topic</option>
+            <option *ngFor="let topic of Topics" [ngValue]="topic">
+              {{ topic }}
+            </option>
+          </select>
+
         </div>
       </div>
-    </form>
+      <div class="mb-3 col-md-6">
+        <div class="row">
+          <label class="mb-3 text-center"> Select Category</label>
+        </div>
+        <div class="row p-3">
+          <select cSelect multiple class="mb-3 text-center" (change)="changeCategory($event)"
+            formControlName="categoryControl">
+            <option value="" disabled>Choose Category</option>
+
+            <option *ngFor="let category of Categories" [ngValue]="category">
+              {{ category }}
+            </option>
+            <option selected *ngFor="let category of SelectedCategories" [ngValue]="category">
+              {{ category }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </form>
+
 </c-modal-body>

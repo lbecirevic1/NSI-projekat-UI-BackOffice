@@ -45,24 +45,24 @@
           <table [hover]="true" cTable>
             <thead>
             <tr>
-              <th scope="col">Topic</th>
-              <th scope="col">Category Number</th>
-              <th scope="col">Last Modified</th>
+              <th scope="col" class="text-center">Topic</th>
+              <th scope="col" class="text-center">Category Number</th>
+              <th scope="col" class="text-center">Last Modified</th>
               <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
               <tr *ngFor="let subscription of subscriptions; index as i" >
-                <td>
+                <td class="text-center">
                   {{ subscription.Topic }}
                 </td>
-                <td>
+                <td class="text-center">
                   {{ subscription.CategoryNumber }}
                 </td>
-                <td>
+                <td class="text-center">
                   {{ subscription.LastModified }}
                 </td>
-                <td>
+                <td class="text-center">
                   <c-button-group aria-label="Basic example" role="group">
                       <button cButton class="me-1" color="primary" (click)="editSubscription(subscription.Topic)">
                           Edit
@@ -101,17 +101,18 @@
 </ng-template>
 
 <ng-template #modalAddNewSubscription>
-  <c-modal id="modalAddNewSubscriptionModal" [visible]="modalAddNewSubscriptionVisible" (visibleChange)="handleModalAddNewSubscriptionChange($event)" class="w-80">
-    <c-modal-header>
+  <c-modal id="modalAddNewSubscriptionModal" alignment="center" size="lg" [visible]="modalAddNewSubscriptionVisible" (visibleChange)="handleModalAddNewSubscriptionChange($event)" class="w-80">
+    <c-modal-header class="text-center">
       <h5 cModalTitle>Add new</h5>
       <button (click)="toggleModalAddNewSubscription()" cButtonClose></button>
     </c-modal-header>
     <app-subscription-modal (newItemEvent)="addItem($event)" [editSubscriptionInfo]="informationForEditingSubscription"></app-subscription-modal>
-    <c-modal-footer>
+    <c-modal-footer >
       <button (click)="toggleModalAddNewSubscription()" cButton color="secondary">
         Cancel
       </button>
-      <button cButton color="primary" (click)="submitAddNewSubscriptionForm()">Save changes</button>
+      <button cButton color="primary" *ngIf="!editMode" (click)="submitAddNewSubscriptionForm()">Add subscription</button>
+      <button cButton color="primary" *ngIf="editMode" (click)="editSubscriptionForm()">Edit subscription</button>
     </c-modal-footer>
     
   </c-modal>

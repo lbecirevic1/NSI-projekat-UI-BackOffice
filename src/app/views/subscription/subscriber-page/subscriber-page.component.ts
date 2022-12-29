@@ -2,12 +2,13 @@ import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ToasterComponent, ToasterPlacement } from '@coreui/angular';
+import { isWhileStatement } from 'typescript/lib/tsserverlibrary';
 import { AppToastComponent } from '../../notifications/toasters/toast-simple/toast.component';
 
 interface ISubscriber {
   Topic: string;
   CategoryNumber: number;
-  LastModified: Date;
+  LastModified: string;
 }
 
 interface IEditSubscription {
@@ -28,7 +29,7 @@ export class SubscriberPageComponent implements OnInit {
   topic!: string;
   categories!:[];
   informationForEditingSubscription!: IEditSubscription;
-
+  editMode!:boolean;
   public modalUserFormVisible = false;
   public modalAddNewSubscriptionVisible = false
   constructor(private activatedRoute: ActivatedRoute) { }
@@ -37,14 +38,14 @@ export class SubscriberPageComponent implements OnInit {
   @ViewChildren(ToasterComponent) viewChildren!: QueryList<ToasterComponent>;
   public subscriptions: ISubscriber[] = [
     {
-      Topic: 'Bh Telecom',
+      Topic: 'BHT',
       CategoryNumber: 3,
-      LastModified: new Date(2022, 12, 1)
+      LastModified: new Date(2022, 12, 1).toLocaleDateString()
     },
     {
-      Topic: 'Opcina Centar',
+      Topic: 'Centar',
       CategoryNumber: 4,
-      LastModified: new Date(2022, 11, 12)
+      LastModified: new Date(2022, 11, 12).toLocaleDateString()
     } 
   ]
   ngOnInit(): void {
@@ -58,18 +59,24 @@ export class SubscriberPageComponent implements OnInit {
     console.log(this.positions)
   }
   editSubscription( topic: any){
+    this.editMode = true;
     this.informationForEditingSubscription = ({UserId:this.id, Topic:topic});
     this.toggleModalAddNewSubscription()
     
-    console.log( topic, "Edit")
+    console.log( this.informationForEditingSubscription, "Edit")
+    // this.informationForEditingSubscription  = {} as IEditSubscription;
   }
   deleteSubscription( topic: any){
     console.log( topic,  "Delete")
     this.subscriptions = this.subscriptions.filter(item=>item.Topic!=topic);
   }
   addNewSubscription(){
-    console.log("Add new component"); 
+    console.log("Add new component", this.informationForEditingSubscription ); 
+    
+    this.informationForEditingSubscription = {} as IEditSubscription;
     this.modalAddNewSubscriptionVisible = true;
+    console.log(this.informationForEditingSubscription , "After")
+    this.editMode = false;
   }
   onSubmitUserForm(userForm:FormGroup){
     console.log("User form submited", userForm.value);
@@ -77,7 +84,7 @@ export class SubscriberPageComponent implements OnInit {
   submitUserForm(){
     this.onSubmitUserForm(this.userForm);
     this.modalUserFormVisible = false;
-    this.addToast("User form submitted");
+    this.addToast("User form submitted", "success");
   }
 
   togglemodalUserForm() {
@@ -87,6 +94,7 @@ export class SubscriberPageComponent implements OnInit {
   handlemodalUserFormChange(event: boolean) {
     this.modalUserFormVisible = event;
   }
+
   toggleModalAddNewSubscription() {
     this.modalAddNewSubscriptionVisible = !this.modalAddNewSubscriptionVisible;
   }
@@ -94,28 +102,53 @@ export class SubscriberPageComponent implements OnInit {
   handleModalAddNewSubscriptionChange(event: boolean) {
     this.modalAddNewSubscriptionVisible = event;
   }
-  addToast(title: string) {
+  addToast(title: string, color:string) {
       let props = {
         autohide: true,
         delay: 5000,
         position: ToasterPlacement.TopEnd,
         fade: true,
         closeButton: true,
-        color: "success",
+        color: color,
         title: title
       };
       console.log(this.viewChildren);
       this.viewChildren.forEach((item)=> item.addToast(AppToastComponent, props, {}));
-      console.log("sadsa")
   }
   onSubmitAddNewSubscriptionForm(addNewSubscriptionForm:FormGroup){
     console.log("User form submited", addNewSubscriptionForm.value);
-    this.addToast("Add new Subscription submitted");
+    this.addToast("Add new Subscription submitted", "success");
   }
   submitAddNewSubscriptionForm(){
-    this.addToast("Add new Subscription submitted");
-    this.subscriptions.push({Topic:this.topic, CategoryNumber:this.categories.length, LastModified:new Date()})
-    this.modalAddNewSubscriptionVisible = false;
+    if(this.topic == null || this.topic == ""){
+      this.addToast("Please select Topic", "danger");
+    }
+    else if(this.categories == null || this.categories.length == 0){
+      this.addToast("Please select category", "danger");
+    }else if(this.subscriptions.find(x => x.Topic == this.topic) != null){
+      this.addToast("Subscription for this Topic already exists", "danger");
+    }else{
+      this.subscriptions.push({Topic:this.topic, CategoryNumber:this.categories.length, LastModified:new Date().toLocaleDateString()})
+      this.modalAddNewSubscriptionVisible = false;
+      this.addToast("New subscription added", "success");
+    }
+  }
+  editSubscriptionForm(){
+    if(this.topic == null || this.topic == ""){
+      this.addToast("Please select Topic", "danger");
+    }
+    else if(this.categories == null || this.categories.length == 0){
+      this.addToast("Please select category", "danger");
+    }else {
+      console.log(this.topic, this.categories, "Unutar edita")
+      var subscription = this.subscriptions.find(x => x.Topic == this.topic);
+      if(subscription != null){
+        subscription.CategoryNumber = this.categories.length;
+        subscription.LastModified = new Date().toLocaleDateString();
+        this.toggleModalAddNewSubscription();
+      }
+
+    }
   }
   addItem(event: any) {
     console.log("event output", event)

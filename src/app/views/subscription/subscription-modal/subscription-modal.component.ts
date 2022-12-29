@@ -11,8 +11,6 @@ interface IEditSubscription {
   styleUrls: ['./subscription-modal.component.scss']
 })
 
-
-
 export class SubscriptionModalComponent implements OnInit {
 
   // addNewSubscriptionForm!:FormGroup;
@@ -20,8 +18,10 @@ export class SubscriptionModalComponent implements OnInit {
   @Input() editSubscriptionInfo!:IEditSubscription;
   isSubmitted = false;
   editMode = false;
+  //Get from backend
   Topics: any = ['BHT', 'Centar', 'Novo Sarajevo', 'Neki Topic'];
   Categories: any = ['Kategorija1', 'Kategorija2', 'Kategorija3', 'Kategorija4'];
+  SelectedCategories: any =[]
 
   constructor(public fb: FormBuilder) { }
   addNewSubscriptionForm = this.fb.group({
@@ -30,11 +30,15 @@ export class SubscriptionModalComponent implements OnInit {
   });
 
   changeTopic(e: any) {
-    this.topicControl?.setValue(e.target.value, {
+    this.topicControl?.setValue(e.target.value.split(': ')[1], {
       onlySelf: true,
     });
-    console.log("Topic changed", this.topicControl, e.target.value);
-
+    console.log("Topic changed", this.topicControl, e.target.value.split(': ')[1]);
+    console.log(this.editSubscriptionInfo, "Edit info")
+    //Get from backend categories that are selected
+    //this.SelectedCategories = 
+    //Get from backend categories that are not selected
+    //this.Categories
     this.newItemEvent.emit(this.addNewSubscriptionForm);
   }
   changeCategory(e: any) {
@@ -48,16 +52,7 @@ export class SubscriptionModalComponent implements OnInit {
     return this.addNewSubscriptionForm.get('categoryControl');
   }
   ngOnInit(): void {
-    console.log(this.editSubscriptionInfo);
-    if(this.editSubscriptionInfo!=null && this.editSubscriptionInfo.UserId!=null && this.editSubscriptionInfo.Topic!=null){
-      this.editMode = true;
-      this.topicControl?.setValue('', {
-        onlySelf: true,
-      });
-      this.categoryControl?.setValue(null, {
-        onlySelf: true,
-      });
-    }
+    console.log("modal init")
   }
 
   onSubmit(): void {
@@ -65,5 +60,17 @@ export class SubscriptionModalComponent implements OnInit {
     this.isSubmitted = true;
     
     console.log(JSON.stringify(this.addNewSubscriptionForm.value));
+  }
+  ngOnChanges() {
+    console.log("Changes", this.editSubscriptionInfo, this.editSubscriptionInfo == {} as IEditSubscription)
+    if (this.editSubscriptionInfo && (this.editSubscriptionInfo.Topic==null || this.editSubscriptionInfo.UserId==null)) {
+          this.addNewSubscriptionForm.reset();
+          console.log("Reseted form")
+    }else if(this.editSubscriptionInfo && this.editSubscriptionInfo.Topic!=this.topicControl?.value){
+        
+        this.topicControl?.setValue(this.editSubscriptionInfo.Topic, {
+          onlySelf: true,
+        });
+    }
   }
 }
