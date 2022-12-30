@@ -1,22 +1,28 @@
-<!-- <c-row ngPreserveWhitespaces>
-  <c-col xs="12">
-    <app-docs-callout name="Handle announcement"></app-docs-callout>
-  </c-col>
-  <c-col xs="12">
-    <c-card class="mb-4">
-      <c-card-header>
-        <strong>Announcement handler</strong> <small>Basic example</small>
-      </c-card-header>
-      <c-card-body>
-        <p class="text-medium-emphasis small">
-          This is the most basic example how does Announcment handler componenet look like
-        </p>
-        <app-docs-example>
-
-   </app-docs-example>
-   </c-card-body>
-    </c-card>
-    </c-col>
-</c-row> -->
-
-<h1> Hello </h1>
+<c-container >
+  <h3 style="text-align:center">Announcement Overview</h3>
+<table [striped]="true" cTable>
+  <thead cTableColor="dark">
+            <tr style="font-size: normal; text-align: center;" fon>
+              <th scope="col" >ID</th>
+              <th scope="col">Identifier</th>
+              <th scope="col">Subscription ID</th>
+              <th scope="col">Subscriber ID</th>
+              <th scope="col">Last notified on</th>
+              <th scope="col">No. sent announcements</th>
+              <th scope="col">Created on</th>
+              <th scope="col">Modified on</th>
+            </tr>
+              </thead>
+              <tr style="font-size: small; text-align: center;" *ngFor="let announcement of announcements">
+                <th scope="row">{{announcement.id}}</th>
+                <th scope="row">{{announcement.identifier}}</th>
+                <th scope="row">{{announcement.subscriptionIdentifier}}</th>
+                <th scope="row">{{announcement.subscriberIdentifier}}</th>
+                <th scope="row">{{announcement.lastTimeNotified}}</th>
+                <th scope="row">{{announcement.numberOfSentAnnouncements}}</th>
+                <th scope="row">{{announcement.createDate}}</th>
+                <th scope="row">{{announcement.modifiedDate}}</th>
+              </tr>
+ 
+</table>
+</c-container>

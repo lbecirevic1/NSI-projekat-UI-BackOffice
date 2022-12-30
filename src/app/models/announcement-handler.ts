@@ -18,8 +18,8 @@ export interface IAnnouncementHandler {
     subscriptionIdentifier: string,
     subscriberIdentifier: string,
     subscriptionEntryIdentifier: string,
-    lastTimeNotified: Date,
+    lastTimeNotified: string,
     numberOfSentAnnouncements: number,
-    createDate: Date,
-    modiifiedDate: Date
+    createDate: string,
+    modifiedDate: string
 }
