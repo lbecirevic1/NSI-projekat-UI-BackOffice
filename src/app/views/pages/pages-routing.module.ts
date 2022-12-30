@@ -5,6 +5,7 @@ import { Page500Component } from './page500/page500.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AnnouncementComponent } from './announcement/announcement.component';
+import { AnnouncementHandlerComponent } from './handle-announcement/handle.announcement.component';
 import { UsersComponent } from './users/users.component';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
 
@@ -45,6 +46,13 @@ const routes: Routes = [
     },
   },
   {
+    path: 'handle-announcements',
+    component: AnnouncementHandlerComponent,
+    data: {
+      title: 'Announcement handle & review',
+    },
+  },
+  {
     path: 'users',
     component: UsersComponent,
     data: {
@@ -64,4 +72,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class PagesRoutingModule {}
+export class PagesRoutingModule { }
