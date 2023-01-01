@@ -36,6 +36,7 @@ import { NotificationsModule } from '../notifications/notifications.module';
 import { DocsComponentsModule } from '../../../components';
 import { UsersComponent } from './users/users.component';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
+import {ListFilterPipe} from "ng-multiselect-dropdown/list-filter.pipe";
 
 @NgModule({
   declarations: [
@@ -45,7 +46,7 @@ import { UserSettingsComponent } from './user-settings/user-settings.component';
     Page500Component,
     AnnouncementComponent,
     UsersComponent,
-    UserSettingsComponent,
+    UserSettingsComponent
   ],
   imports: [
     CommonModule,
@@ -76,7 +77,7 @@ import { UserSettingsComponent } from './user-settings/user-settings.component';
     FormsModule,
     DocsComponentsModule,
     DropdownModule,
-    NgMultiSelectDropDownModule.forRoot(),
-  ],
+    NgMultiSelectDropDownModule
+  ]
 })
 export class PagesModule {}

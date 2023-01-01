@@ -107,5 +107,9 @@ export class UtilioService {
     return this.http.get<IAnnouncementHandler[]>("https://localhost:7069/api/handleAnnouncements");
   }
 
+  getProviders():Observable<any[]>{
+    return this.http.get<any[]>('https://localhost:7069/api/providers')
+  }
+
 
 }

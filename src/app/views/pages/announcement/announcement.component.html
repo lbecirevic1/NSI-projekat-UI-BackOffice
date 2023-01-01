@@ -113,10 +113,17 @@
   <c-modal-body>
       <form #createForm="ngForm" *ngIf=createFormVisible>
         <div class="mb-3">
-          <div class="input-fields">
-            <label cLabel for="title">Provider Id</label>
-            <input cFormControl id="providerId" rows="1" name="newAnnouncProviderId" type="text" ngModel>
-          </div>
+          <ng-multiselect-dropdown
+            [placeholder]="'Providers'"
+            [settings]="dropdownSettingsProviders"
+            [data]="providers"
+            [(ngModel)]="clickedProviders"
+            (onSelect)="onProviderSelect($event)"
+            (onSelectAll)="onSelectAllProviders($event)"
+            (onDeSelect)="onDeselectProviders($event)"
+            (onDeSelectAll)="onDeselectAllProviders($event)"
+          >
+          </ng-multiselect-dropdown>
         </div>
       <div class="mb-3">
         <div class="input-fields">
@@ -151,7 +158,7 @@
       </div>
       <div class="mb-3">
         <label cLabel for="url">Url</label>
-        <textarea cFormControl id="url" rows="1" name="newAnnouncUrl" ngModel></textarea>
+        <textarea cFormControl id="url" rows="2" name="newAnnouncUrl" ngModel></textarea>
       </div>
       <div class="mb-3">
         <label cLabel for="description">Description</label>
@@ -159,37 +166,37 @@
       </div>
       <div class="mb-3">
         <label cLabel for="content">Content</label>
-        <textarea cFormControl id="content" rows="1" name="newAnnouncContent" ngModel></textarea>
+        <textarea cFormControl id="content" rows="3" name="newAnnouncContent" ngModel></textarea>
       </div>
       <div class="mb-3">
         <label cLabel for="additionalInformation">Additional Information</label>
-        <textarea cFormControl id="additionalInformation" rows="1"name="newAnnouncAddInfo" ngModel ></textarea>
+        <textarea cFormControl id="additionalInformation" rows="2"name="newAnnouncAddInfo" ngModel ></textarea>
       </div>
       <div class="mb-2">
-        <c-dropdown>
-          <button cButton cDropdownToggle color="secondary">
-            Regions
-          </button>
-          <ul cDropdownMenu id="regionsDrop">
-            <ng-container *ngFor="let value of regions">
-              <li (click)="regionClicked(value.Id)" style="padding: 5%"><h6>{{value.Name}}</h6></li>
-            </ng-container>
-          </ul>
-        </c-dropdown>
-
-        <div *ngFor="let region of clickedRegions">{{region}}</div>
+        <ng-multiselect-dropdown
+          [placeholder]="'Regions'"
+          [settings]="dropdownSettingsRegions"
+          [data]="regions"
+          [(ngModel)]="clickedRegions"
+          (onSelect)="onRegionSelect($event)"
+          (onSelectAll)="onSelectAllRegions($event)"
+          (onDeSelect)="onDeselectRegions($event)"
+          (onDeSelectAll)="onDeselectAllRegions($event)"
+        >
+        </ng-multiselect-dropdown>
       </div>
-        <div>
-          <c-dropdown>
-            <button cButton cDropdownToggle color="secondary">
-              Streets
-            </button>
-            <ul cDropdownMenu>
-              <ng-container *ngFor="let value of streets">
-                <li (click)="streetClicked(value.Id)" style="padding: 5%">{{value.Name}}</li>
-              </ng-container>
-            </ul>
-          </c-dropdown>
+        <div class="mb-2">
+          <ng-multiselect-dropdown
+            [placeholder]="'Streets'"
+            [settings]="dropdownSettingsStreets"
+            [data]="streets"
+            [(ngModel)]="clickedStreets"
+            (onSelect)="onStreetsSelect($event)"
+            (onSelectAll)="onSelectAllStreets($event)"
+            (onDeSelect)="onDeselectStreets($event)"
+            (onDeSelectAll)="onDeselectAllStreets($event)"
+          >
+          </ng-multiselect-dropdown>
         </div>
       </div>
 

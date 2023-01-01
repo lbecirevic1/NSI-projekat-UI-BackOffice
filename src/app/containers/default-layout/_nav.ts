@@ -10,14 +10,6 @@ export const navItems: INavData[] = [
       text: 'NEW'
     }
   },
-  {
-    title: true,
-    name: 'Utilio'
-  },
-  {
-    name: 'Announcements',
-    url: '/announcement'
-  },
 
   {
     title: true,
@@ -251,6 +243,10 @@ export const navItems: INavData[] = [
       {
         name: 'Announcement Handler',
         url: 'handle-announcements'
+      },
+      {
+        name: 'Announcements',
+        url: '/announcement'
       }
     ]
   },
