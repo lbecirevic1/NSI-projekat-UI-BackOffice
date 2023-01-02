@@ -3,14 +3,16 @@
 
   <table cTable hover>
     <tr>
-      <th>Column 1</th>
-      <th>Column 2</th>
-      <th>Column 3</th>
+      <th>requestStartTime</th>
+      <th>requestEndTime</th>
+      <th>success</th>
+      <th>providerName</th>
     </tr>
     <tr *ngFor="let log of logs">
-      <td>{{ log.col1 }}</td>
-      <td>{{ log.col2 }}</td>
-      <td>{{ log.col3 }}</td>
+      <td>{{ log.requestStartTime }}</td>
+      <td>{{ log.requestEndTime }}</td>
+      <td>{{ log.success }}</td>
+      <td>{{ log.providerName }}</td>
     </tr>
   </table>
 </div>
