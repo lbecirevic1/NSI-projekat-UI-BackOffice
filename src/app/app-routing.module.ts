@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DefaultLayoutComponent } from './containers';
 import { AnnouncementComponent } from './views/pages/announcement/announcement.component';
 import { LoginComponent } from './views/pages/login/login.component';
-import { LogsComponent } from './views/pages/logs/logs.component';
+import { LogsComponent } from './views/logs/logs.component';
 import { Page404Component } from './views/pages/page404/page404.component';
 import { Page500Component } from './views/pages/page500/page500.component';
 import { RegisterComponent } from './views/pages/register/register.component';
@@ -54,6 +54,11 @@ const routes: Routes = [
         path: 'charts',
         loadChildren: () =>
           import('./views/charts/charts.module').then((m) => m.ChartsModule),
+      },
+      {
+        path: 'logs',
+        loadChildren: () =>
+          import('./views/logs/logs.module').then((m) => m.LogsModule),
       },
       {
         path: 'icons',
@@ -113,13 +118,6 @@ const routes: Routes = [
     component: AnnouncementComponent,
     data: {
       title: 'Announcements Page',
-    },
-  },
-  {
-    path: 'logs',
-    component: LogsComponent,
-    data: {
-      title: 'Logs Page',
     },
   },
   {

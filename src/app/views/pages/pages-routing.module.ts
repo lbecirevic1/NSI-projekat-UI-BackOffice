@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AnnouncementComponent } from './announcement/announcement.component';
 import { LoginComponent } from './login/login.component';
-import { LogsComponent } from './logs/logs.component';
 import { Page404Component } from './page404/page404.component';
 import { Page500Component } from './page500/page500.component';
 import { RegisterComponent } from './register/register.component';
@@ -44,13 +43,6 @@ const routes: Routes = [
     component: AnnouncementComponent,
     data: {
       title: 'Announcements Page',
-    },
-  },
-  {
-    path: 'logs',
-    component: LogsComponent,
-    data: {
-      title: 'Logs Page',
     },
   },
   {

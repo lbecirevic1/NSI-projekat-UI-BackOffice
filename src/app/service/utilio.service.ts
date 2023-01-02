@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Announcement } from "../models/announcement";
@@ -107,9 +107,12 @@ export class UtilioService {
       logParameters: {},
     };
 
+    let headers = new HttpHeaders();
+    headers = headers.append('Access-Control-Allow-Origin', '*');
     return this.http.post<any>(
       'https://localhost:7069/api/ProviderAggregator/pagedLogs',
-      body
+      body,
+      {headers}
     );
   }
   postAnnouncement2(values: any) {

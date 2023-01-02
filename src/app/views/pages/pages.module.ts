@@ -12,7 +12,6 @@ import {
 import { IconModule } from '@coreui/icons-angular';
 import { AnnouncementComponent } from './announcement/announcement.component';
 import { LoginComponent } from './login/login.component';
-import { LogsComponent } from './logs/logs.component';
 import { Page404Component } from './page404/page404.component';
 import { Page500Component } from './page500/page500.component';
 import { PagesRoutingModule } from './pages-routing.module';
@@ -46,7 +45,6 @@ import {ListFilterPipe} from "ng-multiselect-dropdown/list-filter.pipe";
     Page404Component,
     Page500Component,
     AnnouncementComponent,
-    LogsComponent,
     UsersComponent,
     UserSettingsComponent
   ],

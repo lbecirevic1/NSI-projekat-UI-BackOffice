@@ -19,11 +19,6 @@ export const navItems: INavData[] = [
     url: '/announcement',
   },
   {
-    name: 'Logs',
-    url: '/logs',
-  },
-
-  {
     title: true,
     name: 'Theme',
   },
@@ -171,6 +166,11 @@ export const navItems: INavData[] = [
     name: 'Charts',
     url: '/charts',
     iconComponent: { name: 'cil-chart-pie' },
+  },
+  {
+    name: 'Logs',
+    url: '/logs',
+    iconComponent: { name: 'cil-columns' },
   },
   {
     name: 'Icons',

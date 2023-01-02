@@ -1,0 +1,22 @@
+<div>
+  <h2>Logs</h2>
+
+  <table cTable>
+    <thead cTableColor="dark">
+      <tr>
+        <th scope="col">requestStartTime</th>
+        <th scope="col">requestEndTime</th>
+        <th scope="col">success</th>
+        <th scope="col">providerName</th>
+      </tr>
+    </thead>
+  
+    <tr *ngFor="let log of logs">
+      <td>{{ log.requestStartTime }}</td>
+      <td>{{ log.requestEndTime }}</td>
+      <td>{{ log.success }}</td>
+      <td>{{ log.providerName }}</td>
+    </tr>
+  </table>
+  
+</div>
