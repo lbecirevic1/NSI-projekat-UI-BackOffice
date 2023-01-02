@@ -64,6 +64,11 @@ const logss = {
 })
 export class LogsComponent implements OnInit {
   public logs: any[] = [];
+  public paging: any = {page: 1,
+  totalRecords: 20,
+  recordsPerPage: 5,
+  pages: 4};
+  public pages: any[] = Array.from({length: this.paging.pages}, (value, key) => key )
   constructor(private service: UtilioService) {}
 
   ngOnInit() {
@@ -73,6 +78,6 @@ export class LogsComponent implements OnInit {
     // });
 
     this.logs = logss.data;
-    console.log('fetch logs', this.logs);
+    console.log('fetch logs', this.logs, this.paging, this.pages);
   }
 }

@@ -1,22 +1,48 @@
-<div>
-  <h2>Logs</h2>
-
-  <table cTable>
-    <thead cTableColor="dark">
-      <tr>
-        <th scope="col">requestStartTime</th>
-        <th scope="col">requestEndTime</th>
-        <th scope="col">success</th>
-        <th scope="col">providerName</th>
-      </tr>
-    </thead>
+<c-row ngPreserveWhitespaces>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Logs Table</strong>
+      </c-card-header>
+      <c-card-body>
+          <table cTable [hover] = 'true'>
+            <thead cTableColor="dark" >
+              <tr>
+                <th scope="col">requestStartTime</th>
+                <th scope="col">requestEndTime</th>
+                <th scope="col">success</th>
+                <th scope="col">providerName</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let log of logs">
+                <td>{{ log.requestStartTime }}</td>
+                <td>{{ log.requestEndTime }}</td>
+                <td>{{ log.success }}</td>
+                <td>{{ log.providerName }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <c-pagination align="end" aria-label="Page navigation example">
+            <c-page-item [disabled]="true">
+              <a cPageLink routerLink="./">Previous</a>
+            </c-page-item>
+            <c-page-item>
+              <a cPageLink routerLink="./">1</a>
+            </c-page-item>
+            <c-page-item>
+              <a cPageLink routerLink="./">2</a>
+            </c-page-item>
+            <c-page-item>
+              <a cPageLink routerLink="./">3</a>
+            </c-page-item>
+            <c-page-item>
+              <a cPageLink routerLink="./">Next</a>
+            </c-page-item>
+          </c-pagination>
+      </c-card-body>
+    </c-card>
+      
+  </c-col>
   
-    <tr *ngFor="let log of logs">
-      <td>{{ log.requestStartTime }}</td>
-      <td>{{ log.requestEndTime }}</td>
-      <td>{{ log.success }}</td>
-      <td>{{ log.providerName }}</td>
-    </tr>
-  </table>
-  
-</div>
+</c-row>
