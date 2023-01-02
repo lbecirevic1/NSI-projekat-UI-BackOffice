@@ -13,6 +13,7 @@ import {
   DropdownModule,
   FormModule,
   GridModule,
+  CollapseModule
 } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
 import { HttpClientModule } from '@angular/common/http';
@@ -38,6 +39,8 @@ import { UsersComponent } from './users/users.component';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
 import {ListFilterPipe} from "ng-multiselect-dropdown/list-filter.pipe";
 
+import { CollapsesComponent } from '../base/collapses/collapses.component';
+
 @NgModule({
   declarations: [
     LoginComponent,
@@ -46,7 +49,7 @@ import {ListFilterPipe} from "ng-multiselect-dropdown/list-filter.pipe";
     Page500Component,
     AnnouncementComponent,
     UsersComponent,
-    UserSettingsComponent
+    UserSettingsComponent,
   ],
   imports: [
     CommonModule,
@@ -77,7 +80,8 @@ import {ListFilterPipe} from "ng-multiselect-dropdown/list-filter.pipe";
     FormsModule,
     DocsComponentsModule,
     DropdownModule,
-    NgMultiSelectDropDownModule
+    NgMultiSelectDropDownModule,
+    CollapseModule
   ]
 })
 export class PagesModule {}

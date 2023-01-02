@@ -8,7 +8,6 @@ import {Street} from "../../../models/street";
 import {UtilioProvider} from "../../../models/utilioProvider";
 import {IDropdownSettings} from "ng-multiselect-dropdown";
 
-
 @Component({
   selector:    'app-announcement',
   templateUrl: './announcement.component.html',
@@ -103,6 +102,16 @@ export class AnnouncementComponent implements OnInit {
   bsRangeValue: Date[];
   maxDate = new Date();
   minDate = new Date();
+
+  additionalInfoVisible = false;
+  public openCoverages = false;
+  public indexSelectedCoverage = 0;
+
+    toggleCollapse(index : number): void {
+    // @ts-ignore
+    this.additionalInfoVisible = !this.additionalInfoVisible;
+    this.indexSelectedCoverage = index;
+  }
 
 
   constructor(private service: UtilioService) {
@@ -459,6 +468,17 @@ onDeselectAllRegions(items:any){
     console.log(this.clickedProviders)
   }
 
+  providerName(itemId:number){
+  let name=''
+  for(let i=0;i<this.providers.length;i++){
+    if(this.providers.at(i)?.Id==itemId){
+      // @ts-ignore
+      name=this.providers.at(i).Name;
+    }
+
+  }
+  return name;
+}
 
 
 }
