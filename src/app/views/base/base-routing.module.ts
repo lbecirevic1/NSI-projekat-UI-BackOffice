@@ -16,7 +16,6 @@ import { TablesComponent } from './tables/tables.component';
 import { TooltipsComponent } from './tooltips/tooltips.component';
 import { TabsComponent } from './tabs/tabs.component';
 import { PlaceholdersComponent } from './placeholders/placeholders.component';
-
 const routes: Routes = [
   {
     path: '',
@@ -133,7 +132,7 @@ const routes: Routes = [
         data: {
           title: 'Tooltips',
         },
-      },
+      }
     ],
   },
 ];
@@ -142,5 +141,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class BaseRoutingModule {}
+export class BaseRoutingModule { }
 

@@ -1,0 +1,36 @@
+<h4 class="mb-3">{{ user.firstName }} {{ user.lastName }}</h4>
+<c-card>
+  <c-card-body>
+    <form [formGroup]="updatedSettingsForm" (ngSubmit)="saveSettings()" cForm>
+      <div formArrayName="settings">
+        <ul
+          cListGroup
+          class="pt-2 px-0"
+          *ngFor="let setting of settingsArray().controls; let i = index"
+        >
+          <div [formGroupName]="i">
+            <h5 cCardTitle>{{ updatedSettings[i].provider }}</h5>
+            <div formArrayName="regions">
+              <div
+                *ngFor="let region of regionArray(i).controls; let j = index"
+                [formGroupName]="j"
+                class="user-settings-region"
+              >
+                <h6 cCardSubtitle class="text-medium-emphasis">
+                  {{ updatedSettings[i].regions[j].regionName }}
+                </h6>
+                <select formControlName="role" cSelect class="my-2">
+                  <option [ngValue]="null" disabled>Choose user role</option>
+                  <option *ngFor="let role of roles" [ngValue]="role">
+                    {{ role }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </ul>
+      </div>
+      <button cButton class="mt-4 mb-3" type="submit">Save settings</button>
+    </form>
+  </c-card-body>
+</c-card>

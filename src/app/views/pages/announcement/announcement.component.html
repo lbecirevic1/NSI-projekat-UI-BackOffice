@@ -1,3 +1,4 @@
+<h1 style="text-align: center">Announcements</h1>
 <c-card>
   <div class="me-1" style="padding: 1%">
     <button cButton color="primary" (click)="toggleCreateAnnouncementButton()">+ Add new notification</button>
@@ -8,20 +9,43 @@
     <ng-container *ngTemplateOutlet="liveDemo"></ng-container>
     <ng-container *ngTemplateOutlet="deleteDemo"></ng-container>
     <ng-container *ngTemplateOutlet="createDemo"></ng-container>
+    <ng-container *ngTemplateOutlet="scrollableLongContent"></ng-container>
+    <ng-container *ngTemplateOutlet="scrollableLongContent2"></ng-container>
+    <ng-container *ngTemplateOutlet="scrollableLongContent3"></ng-container>
+
 
     <table cTable hover>
       <tbody>
+      <th>Title</th>
+      <th>Provider</th>
+      <th>Publish Date&Time</th>
+      <th>Url</th>
+      <th>More...</th>
+      <th>Options</th>
       <ng-container *ngFor="let value of notifications">
+          <tr>
+          <td>{{value.Title}}</td>
+            <td>{{value.ProviderId}}</td>
+        <td>{{parseDate(value.PublishDate)}}</td>
+          <td>{{value.SourceUrl}}</td>
+            <td>
+              <div style="padding: 2%">
+              <button cButton color="light" (click)="showDescription(value.Description)">Description</button>
 
-          <tr>Title: {{value.Title}}</tr>
-          <tr>Url: {{value.SourceUrl}}</tr>
-          <tr>Description: {{value.Description}}</tr>
-          <tr>Content: {{value.Content}}</tr>
-          <tr>Publish Date: {{value.PublishDate}}</tr>
+              </div>
+              <div style="padding: 2%">
+              <button cButton color="light" (click)="showAddInfo(value.AdditionalInformation)">Additional Information</button>
+              </div>
+              <div style="padding: 2%">
+              <button cButton color="light" (click)="showContent(value.Content)">Content</button>
+              </div>
+            </td>
+        <td>
           <c-button-group aria-label="Basic example" role="group">
             <button cButton color="light" (click)="toggleEditButtonDemo(value)">Edit</button>
             <button cButton color="danger" (click)="toggleDeleteButton(value.Id)">Delete</button>
           </c-button-group>
+        </td>
       </ng-container>
       </tbody>
     </table>
@@ -62,8 +86,8 @@
         <label cLabel for="announcementTitleInput3">Description</label>
         <textarea cFormControl id="announcementTitleInput3" rows="1">{{editAnnouncement.Description}}</textarea>
       </div>
+      <label cLabel for="announcementTitleInput4">Content</label>
       <div class="mb-3">
-        <label cLabel for="announcementTitleInput4">Content</label>
         <textarea cFormControl id="announcementTitleInput4" rows="1">{{editAnnouncement.Content}}</textarea>
       </div>
       <div class="mb-3">
@@ -89,10 +113,17 @@
   <c-modal-body>
       <form #createForm="ngForm" *ngIf=createFormVisible>
         <div class="mb-3">
-          <div class="input-fields">
-            <label cLabel for="title">Provider Id</label>
-            <input cFormControl id="providerId" rows="1" name="newAnnouncProviderId" type="text" ngModel>
-          </div>
+          <ng-multiselect-dropdown
+            [placeholder]="'Providers'"
+            [settings]="dropdownSettingsProviders"
+            [data]="providers"
+            [(ngModel)]="clickedProviders"
+            (onSelect)="onProviderSelect($event)"
+            (onSelectAll)="onSelectAllProviders($event)"
+            (onDeSelect)="onDeselectProviders($event)"
+            (onDeSelectAll)="onDeselectAllProviders($event)"
+          >
+          </ng-multiselect-dropdown>
         </div>
       <div class="mb-3">
         <div class="input-fields">
@@ -127,7 +158,7 @@
       </div>
       <div class="mb-3">
         <label cLabel for="url">Url</label>
-        <textarea cFormControl id="url" rows="1" name="newAnnouncUrl" ngModel></textarea>
+        <textarea cFormControl id="url" rows="2" name="newAnnouncUrl" ngModel></textarea>
       </div>
       <div class="mb-3">
         <label cLabel for="description">Description</label>
@@ -135,37 +166,40 @@
       </div>
       <div class="mb-3">
         <label cLabel for="content">Content</label>
-        <textarea cFormControl id="content" rows="1" name="newAnnouncContent" ngModel></textarea>
+        <textarea cFormControl id="content" rows="3" name="newAnnouncContent" ngModel></textarea>
       </div>
       <div class="mb-3">
         <label cLabel for="additionalInformation">Additional Information</label>
-        <textarea cFormControl id="additionalInformation" rows="1"name="newAnnouncAddInfo" ngModel ></textarea>
+        <textarea cFormControl id="additionalInformation" rows="2"name="newAnnouncAddInfo" ngModel ></textarea>
       </div>
-      <div class="col">
-        <c-dropdown>
-          <button cButton cDropdownToggle color="secondary">
-            Regions
-          </button>
-          <ul cDropdownMenu>
-            <ng-container *ngFor="let value of regions">
-              <li (click)="regionClicked(value.Id)"><h6>{{value.Name}}</h6></li>
-            </ng-container>
-          </ul>
-        </c-dropdown>
-        <div class="col-md">
-          <c-dropdown>
-            <button cButton cDropdownToggle color="secondary">
-              Streets
-            </button>
-            <ul cDropdownMenu>
-              <ng-container *ngFor="let value of streets">
-                <li (click)="streetClicked(value.Id)">{{value.Name}}</li>
-              </ng-container>
-            </ul>
-          </c-dropdown>
+      <div class="mb-2">
+        <ng-multiselect-dropdown
+          [placeholder]="'Regions'"
+          [settings]="dropdownSettingsRegions"
+          [data]="regions"
+          [(ngModel)]="clickedRegions"
+          (onSelect)="onRegionSelect($event)"
+          (onSelectAll)="onSelectAllRegions($event)"
+          (onDeSelect)="onDeselectRegions($event)"
+          (onDeSelectAll)="onDeselectAllRegions($event)"
+        >
+        </ng-multiselect-dropdown>
+      </div>
+        <div class="mb-2">
+          <ng-multiselect-dropdown
+            [placeholder]="'Streets'"
+            [settings]="dropdownSettingsStreets"
+            [data]="streets"
+            [(ngModel)]="clickedStreets"
+            (onSelect)="onStreetsSelect($event)"
+            (onSelectAll)="onSelectAllStreets($event)"
+            (onDeSelect)="onDeselectStreets($event)"
+            (onDeSelectAll)="onDeselectAllStreets($event)"
+          >
+          </ng-multiselect-dropdown>
         </div>
       </div>
-      </div>
+
     </form>
   </c-modal-body>
   <c-modal-footer>
@@ -176,8 +210,10 @@
   </c-modal-footer>
 </c-modal>
 </ng-template>
+
+
 <ng-template #deleteDemo>
-  <c-modal id="liveDemoModalAlert" [visible]="doubleAnnouncementVisible" (visibleChange)="handleDoubleAnnouncement($event)">
+  <c-modal id="liveDemoModalAlert" [visible]="doubleAnnouncementVisible">
     <c-modal-header>
       <h5 cModalTitle>Double notification alert</h5>
       <button (click)="doubleAnnouncement()" cButtonClose></button>
@@ -185,6 +221,63 @@
     <c-modal-body>There is the same notification in database.</c-modal-body>
     <c-modal-footer>
       <button (click)="doubleAnnouncement()" cButton color="secondary">
+        Close
+      </button>
+    </c-modal-footer>
+  </c-modal>
+</ng-template>
+
+
+<ng-template #scrollableLongContent>
+  <!--button [cModalToggle]="scrollableLongContentModal.id" cButton>Desciption</button-->
+  <c-modal #scrollableLongContentModal id="scrollableLongContentModal" scrollable [visible]="descriptionDemoVisible" (visibleChange)="handleDescriptionVisible($event)">
+    <c-modal-header>
+      <h5 cModalTitle>Announcement Description</h5>
+      <button [cModalToggle]="scrollableLongContentModal.id" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+<div>{{announcementDescription}}</div>
+    </c-modal-body>
+    <c-modal-footer>
+      <button [cModalToggle]="scrollableLongContentModal.id" cButton color="secondary">
+        Close
+      </button>
+    </c-modal-footer>
+  </c-modal>
+</ng-template>
+
+
+<ng-template #scrollableLongContent2>
+  <!--button [cModalToggle]="scrollableLongContentModal.id" cButton>Desciption</button-->
+  <c-modal #scrollableLongContentModal id="scrollableAddInfoModal" scrollable [visible]="addInfoDemoVisible" (visibleChange)="handleAddInfoVisible($event)">
+    <c-modal-header>
+      <h5 cModalTitle>Announcement Additional Information</h5>
+      <button [cModalToggle]="scrollableLongContentModal.id" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+      <div>{{announcementAddInfo}}</div>
+    </c-modal-body>
+    <c-modal-footer>
+      <button [cModalToggle]="scrollableLongContentModal.id" cButton color="secondary">
+        Close
+      </button>
+    </c-modal-footer>
+  </c-modal>
+</ng-template>
+
+
+<ng-template #scrollableLongContent3>
+  <!--button [cModalToggle]="scrollableLongContentModal.id" cButton>Desciption</button-->
+  <c-modal #scrollableLongContentModal id="scrollableContentModal" scrollable [visible]="contentDemoVisible" (visibleChange)="handleContentVisible($event)">
+    <c-modal-header>
+      <h5 cModalTitle>Announcement Content</h5>
+      <button [cModalToggle]="scrollableLongContentModal.id" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+      <div>{{announcementContent}}</div>
+    </c-modal-body>
+    <c-modal-footer>
+      <button [cModalToggle]="scrollableLongContentModal.id" cButton color="secondary">
         Close
       </button>
     </c-modal-footer>

@@ -8,6 +8,7 @@ import { LogsComponent } from './views/pages/logs/logs.component';
 import { Page404Component } from './views/pages/page404/page404.component';
 import { Page500Component } from './views/pages/page500/page500.component';
 import { RegisterComponent } from './views/pages/register/register.component';
+import { AnnouncementHandlerComponent } from "./views/pages/handle-announcement/handle.announcement.component";
 
 const routes: Routes = [
   {
@@ -120,6 +121,13 @@ const routes: Routes = [
     data: {
       title: 'Logs Page',
     },
+  },
+  {
+    path: 'handle-announcements',
+    component: AnnouncementHandlerComponent,
+    data: {
+      title: 'Announcement handling & review'
+    }
   },
   { path: '**', redirectTo: 'dashboard' },
 ];

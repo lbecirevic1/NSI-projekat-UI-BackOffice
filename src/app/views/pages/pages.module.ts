@@ -17,6 +17,7 @@ import { Page404Component } from './page404/page404.component';
 import { Page500Component } from './page500/page500.component';
 import { PagesRoutingModule } from './pages-routing.module';
 import { RegisterComponent } from './register/register.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -32,8 +33,11 @@ import {
 
 import { WidgetsModule } from '../widgets/widgets.module';
 
-import { DocsComponentsModule } from '../../../components';
 import { NotificationsModule } from '../notifications/notifications.module';
+import { DocsComponentsModule } from '../../../components';
+import { UsersComponent } from './users/users.component';
+import { UserSettingsComponent } from './user-settings/user-settings.component';
+import {ListFilterPipe} from "ng-multiselect-dropdown/list-filter.pipe";
 
 @NgModule({
   declarations: [
@@ -43,6 +47,8 @@ import { NotificationsModule } from '../notifications/notifications.module';
     Page500Component,
     AnnouncementComponent,
     LogsComponent,
+    UsersComponent,
+    UserSettingsComponent
   ],
   imports: [
     CommonModule,
@@ -73,6 +79,7 @@ import { NotificationsModule } from '../notifications/notifications.module';
     FormsModule,
     DocsComponentsModule,
     DropdownModule,
+    NgMultiSelectDropDownModule
   ],
 })
 export class PagesModule {}

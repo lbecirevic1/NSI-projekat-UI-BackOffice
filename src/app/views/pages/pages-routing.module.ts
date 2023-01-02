@@ -6,6 +6,9 @@ import { LogsComponent } from './logs/logs.component';
 import { Page404Component } from './page404/page404.component';
 import { Page500Component } from './page500/page500.component';
 import { RegisterComponent } from './register/register.component';
+import { AnnouncementHandlerComponent } from './handle-announcement/handle.announcement.component';
+import { UsersComponent } from './users/users.component';
+import { UserSettingsComponent } from './user-settings/user-settings.component';
 
 const routes: Routes = [
   {
@@ -48,6 +51,27 @@ const routes: Routes = [
     component: LogsComponent,
     data: {
       title: 'Logs Page',
+    },
+  },
+  {
+    path: 'handle-announcements',
+    component: AnnouncementHandlerComponent,
+    data: {
+      title: 'Announcement handle & review',
+    },
+  },
+  {
+    path: 'users',
+    component: UsersComponent,
+    data: {
+      title: 'Users',
+    },
+  },
+  {
+    path: 'user-settings/:id',
+    component: UserSettingsComponent,
+    data: {
+      title: 'User Settings',
     },
   },
 ];
