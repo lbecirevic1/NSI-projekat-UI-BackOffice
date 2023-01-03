@@ -40,6 +40,13 @@ import { UserSettingsComponent } from './user-settings/user-settings.component';
 import {ListFilterPipe} from "ng-multiselect-dropdown/list-filter.pipe";
 
 import { CollapsesComponent } from '../base/collapses/collapses.component';
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {NgbDatepickerModule, NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
+import {MatInputModule} from "@angular/material/input";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {BrowserModule} from "@angular/platform-browser";
 
 @NgModule({
   declarations: [
@@ -81,7 +88,17 @@ import { CollapsesComponent } from '../base/collapses/collapses.component';
     DocsComponentsModule,
     DropdownModule,
     NgMultiSelectDropDownModule,
-    CollapseModule
+    CollapseModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatInputModule,
+    NgbModule,
+    FormsModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    ReactiveFormsModule
   ]
 })
 export class PagesModule {}

@@ -2,12 +2,21 @@ import {Component, getNgModuleById, OnInit, Provider, ViewChild} from '@angular/
 
 import { UtilioService} from "../../../service/utilio.service";
 import { Announcement} from "../../../models/announcement";
-import {FormBuilder, NgForm} from '@angular/forms';
+import {FormBuilder, FormsModule, NgForm} from '@angular/forms';
 import {Region} from "../../../models/region";
 import {Street} from "../../../models/street";
 import {UtilioProvider} from "../../../models/utilioProvider";
 import {IDropdownSettings} from "ng-multiselect-dropdown";
-
+import {
+  NgbAlertModule,
+  NgbDatepickerModule,
+  NgbDateStruct,
+  NgbTimepicker,
+  NgbTimeStruct,
+  NgbTimepickerModule
+} from "@ng-bootstrap/ng-bootstrap";
+import {formatDate, JsonPipe} from "@angular/common";
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 @Component({
   selector:    'app-announcement',
   templateUrl: './announcement.component.html',
@@ -16,9 +25,15 @@ import {IDropdownSettings} from "ng-multiselect-dropdown";
 
 export class AnnouncementComponent implements OnInit {
 
-  @ViewChild('createForm', { static: false }) createForm!: NgForm;
 
+  @ViewChild('createForm', { static: false }) createForm!: NgForm;
   public notifications: Announcement[] = [];
+  timeStart: NgbTimeStruct = { hour: 0, minute: 0, second: 0 };
+  timeEnd: NgbTimeStruct = { hour: 0, minute: 0, second: 0 };
+  hourStep = 1;
+  minuteStep = 15;
+  secondStep = 30;
+
   dropdownSettingsRegions:IDropdownSettings={
     singleSelection: false,
     idField: 'regions',
@@ -41,14 +56,38 @@ export class AnnouncementComponent implements OnInit {
 
   dropdownSettingsProviders:IDropdownSettings={
     singleSelection: false,
-    idField: 'providers',
-    textField: 'item_text',
+    idField: 'id',
+    textField: 'name',
     selectAllText: 'Select All',
     unSelectAllText: 'UnSelect All',
     itemsShowLimit: 5,
     allowSearchFilter: true
   };
 
+  dropdownSettingsEditProviders:IDropdownSettings={
+    singleSelection: false,
+    idField: 'id',
+    textField: 'name',
+    selectAllText: 'Select All',
+    unSelectAllText: 'UnSelect All',
+    itemsShowLimit: 5,
+    allowSearchFilter: true
+  };
+
+  dropdownSettingsEditRegions:IDropdownSettings={
+    singleSelection: false,
+    idField: 'editRegions',
+    textField: 'Name',
+    selectAllText: 'Select All',
+    unSelectAllText: 'UnSelect All',
+    itemsShowLimit: 5,
+    allowSearchFilter: true
+  };
+
+
+  public modelStartDate: any;
+
+  public modelEndDate:any;
 
   public liveDemoVisible = false;
   public editFormVisible = false;
@@ -71,6 +110,8 @@ export class AnnouncementComponent implements OnInit {
   public clickedRegions:number[]=[];
 
   public clickedProviders:number[]=[]
+
+  public editProviders:any[]=[]
 
   public formBuilder: any;
 
@@ -95,8 +136,8 @@ export class AnnouncementComponent implements OnInit {
 
   public AllProviders:number[]=[];
 
+  public editRegions:number[]=[]
 
-  time: Date = new Date();
 
   bsValue = new Date();
   bsRangeValue: Date[];
@@ -114,7 +155,7 @@ export class AnnouncementComponent implements OnInit {
   }
 
 
-  constructor(private service: UtilioService) {
+  constructor(private service: UtilioService ) {
     this.minDate.setDate(this.minDate.getDate() - 1);
     this.maxDate.setDate(this.maxDate.getDate() + 7);
     this.bsRangeValue = [this.bsValue, this.maxDate];
@@ -180,12 +221,23 @@ export class AnnouncementComponent implements OnInit {
     };
 
     this.dropdownSettingsProviders= {
-      singleSelection: false,
+      singleSelection: true,
+      idField: 'id',
+      textField: 'name',
+      allowSearchFilter: true
+    };
+
+    this.dropdownSettingsEditProviders= {
+      singleSelection: true,
+      idField: 'id',
+      textField: 'name',
+      allowSearchFilter: true
+    };
+
+    this.dropdownSettingsEditRegions= {
+      singleSelection: true,
       idField: 'Id',
       textField: 'Name',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 5,
       allowSearchFilter: true
     };
 
@@ -214,6 +266,14 @@ export class AnnouncementComponent implements OnInit {
       if(element==item.Id)this.clickedProviders.splice(index,1);
     })
     console.log(this.clickedProviders)
+  }
+
+  onDeselectEditProviders(item:any){
+    const index:number=this.editProviders.indexOf(item.Id);
+    this.editProviders.forEach((element,index)=>{
+      if(element==item.Id)this.editProviders.splice(index,1);
+    })
+    console.log(this.editProviders)
   }
 
 
@@ -258,6 +318,19 @@ export class AnnouncementComponent implements OnInit {
     this.providerClicked(item)
   }
 
+  onProviderEditSelect(item: any) {
+    console.log(item)
+    if(this.editProviders.includes(item.Id)){
+      console.log("ima")
+      const index:number=this.editProviders.indexOf(item.Id);
+      this.editProviders.forEach((element,index)=>{
+        if(element==item.Id)this.editProviders.splice(index,1);
+      })
+      console.log(this.editProviders)
+    }
+    this.providerEditClicked(item)
+  }
+
 
   onSelectAll(items: any) {
     console.log(items);
@@ -276,19 +349,40 @@ export class AnnouncementComponent implements OnInit {
   }
 
   toggleEditButtonDemo(item: any) {
-    this.toggleEditDemo();
     this.editAnnouncement = item;
+    let tmp=[]
+    tmp.push(this.getProvider(item.ProviderId))
+    console.log(tmp)
+    this.editProviders=tmp
+    console.log(this.editProviders)
+    this.toggleEditDemo();
+  }
+
+  getProvider(item:any){
+      let returnProvider:any
+    for(let i=0;i<this.providers.length;i++){
+      if(this.providers.at(i)?.Id==item){
+        returnProvider=this.providers.at(i)
+      }
+    }
+    return {id:item,name:returnProvider.Name}
+  }
+
+  getRegions(item:any){
+      let regionsEdit:[]
+
   }
 
   toggleEditDemo() {
     this.editFormVisible = !this.editFormVisible;
-
   }
 
   toggleCreateAnnouncementButton() {
     this.clickedProviders=[];
     this.clickedStreets=[];
     this.clickedRegions=[];
+    this.modelEndDate='';
+    this.modelStartDate='';
     this.createFormVisible = !this.createFormVisible;
   }
 
@@ -301,9 +395,7 @@ export class AnnouncementComponent implements OnInit {
 
 
   handleCreateAnnouncement(event:boolean) {
-    console.log(this.regions)
     this.createAnnouncementVisible=event;
-
   }
   handleEditModalChange(event: boolean) {
     this.editFormVisible = event;
@@ -332,15 +424,36 @@ export class AnnouncementComponent implements OnInit {
   }
 
   submitForm(values:any){
-let resp=this.service.postAnnouncement(values.newAnnouncProviderId,values.newAnnouncTitle,
-      values.newAnnouncUrl,values.newAnnouncDescription,values.newAnnouncContent,
-      values.newAnnouncAddInfo,values.newAnnouncStartDate,values.newAnnouncEndDate,
-      values.newAnnouncStartTime,values.newAnnouncEndTime,this.clickedRegions,this.clickedStreets);
-if(resp==true){
-  this.createFormVisible = !this.createFormVisible;
-  this.handleDoubleAnnouncement(true);
-  this.doubleAnnouncementVisible=true;
+    let providerId=this.clickedProviders.at(0);
+  let startDate='';
+    let endDate='';
+    let startTime='';
+    let endTime='';
+if(this.modelStartDate.day==undefined){
+  startDate=(formatDate(new Date(), 'yyyy-MM-dd', 'en')).toString();
+}else {
+  startDate = this.modelStartDate.year + "-" + this.modelStartDate.month + "-" + this.modelStartDate.day;
 }
+
+if(this.modelEndDate.day==undefined){
+      endDate=(formatDate(new Date(), 'yyyy-MM-dd', 'en')).toString();
+}else {
+  endDate = this.modelEndDate.year + "-" + this.modelEndDate.month + "-" + this.modelEndDate.day;
+    }
+
+startDate=this.dateFormat(this.modelStartDate)
+endDate=this.dateFormat(this.modelEndDate)
+startTime=this.timeFormat(this.timeStart)
+endTime=this.timeFormat(this.timeEnd)
+  if(providerId!=null)
+this.service.postAnnouncement(providerId,values.newAnnouncTitle,
+      values.newAnnouncUrl,values.newAnnouncDescription,values.newAnnouncContent,
+      values.newAnnouncAddInfo,startDate,endDate,
+      startTime,endTime,this.clickedRegions,this.clickedStreets).subscribe(data=>{
+        this.handleCreateAnnouncement(false);
+
+})
+
   }
 
 streetClicked(street:any){
@@ -378,6 +491,18 @@ regionClicked(region:any){
     }
     else this.clickedProviders.push(providerId);
     console.log(this.clickedProviders);
+  }
+
+  providerEditClicked(provider:any){
+    let providerId=provider.Id
+    if(this.editProviders.includes(providerId)){
+      const index:number=this.editProviders.indexOf(providerId);
+      this.editProviders.forEach((element,index)=>{
+        if(element==providerId)this.editProviders.splice(index,1);
+      })
+    }
+    else this.editProviders.push(providerId);
+    console.log(this.editProviders);
   }
 
 showDescription(description:string){
@@ -480,6 +605,38 @@ onDeselectAllRegions(items:any){
   return name;
 }
 
+timeFormat(time:any){
+  let finalTime=''
+  if(time.hour.toString().length==1){
+    finalTime='0'+time.hour+":"
+  }
+  else finalTime=time.hour+":"
+  if(time.minute.toString().length==1){
+    finalTime=finalTime+'0'+time.minute+":"
+  }
+  else finalTime=finalTime+time.minute+":"
+  if(time.second.toString().length==1){
+    finalTime=finalTime+'0'+time.second
+  }
+  else finalTime=finalTime+time.second
+
+  return finalTime
+}
+
+dateFormat(date:any){
+      let finalDate=''
+  finalDate=date.year+"-"
+  if(date.month.toString().length==1){
+    finalDate=finalDate+'0'+date.month+"-"
+  }
+  else finalDate=finalDate+date.month+"-"
+  if(date.day.toString().length==1){
+    finalDate=finalDate+'0'+date.day
+  }
+  else finalDate=finalDate+date.day
+
+  return finalDate
+}
 
 }
 
