@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { CardModule, GridModule, TableModule, UtilitiesModule, PaginationModule } from '@coreui/angular';
+import { CardModule, GridModule, TableModule, UtilitiesModule, PaginationModule, FormModule, ButtonModule } from '@coreui/angular';
 import { ChartjsModule } from '@coreui/angular-chartjs';
 import { IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from '../../icons/icon-subset';
@@ -26,7 +26,9 @@ describe('LogsComponent', () => {
         TableModule, 
         ChartjsModule, 
         DocsComponentsModule,
-        PaginationModule
+        PaginationModule,
+        FormModule, 
+        ButtonModule
       ],
       providers: [IconSetService]
     }).compileComponents();
