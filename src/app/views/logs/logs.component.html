@@ -9,7 +9,7 @@
 
           <div style="display: flex; flex-direction: 'row'">
             <select aria-label="Default select example" cSelect style="margin-bottom: 1rem; width: '60%'; margin-right: 1rem;" (change)="onChange($event, true)">
-              <option value="-1" [selected]="cleared" >Select a provider</option>
+              <option value="-1" [selected]="cleared">Select a provider</option>
               <option *ngFor="let provider of providers" value="{{provider.id}}">{{provider.name}}</option>
             </select>
             <select aria-label="Default select example2" cSelect style="margin-bottom: 1rem; width: '30%';  margin-right: 1rem;" (change)="onChange($event, false)">

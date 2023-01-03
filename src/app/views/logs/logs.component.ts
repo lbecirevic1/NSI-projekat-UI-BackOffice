@@ -64,6 +64,7 @@ export class LogsComponent implements OnInit {
   }
 
   onChange(event: any, isProvider: boolean) {
+    this.cleared = false;
     isProvider ? this.providerId = Number(event.target.value) : 
     this.status = event.target.value === 'true' ? true :  
     event.target.value === 'false' ? false : -1;
