@@ -19,6 +19,8 @@ export class LogsComponent implements OnInit {
   public status: boolean | number = -1;
   public recordsPerPage: number = 5;
   public logParameters: any = {};
+  public sortCriteria: any = [];
+  public asc: number = 0;
   public cleared: boolean = false;
   constructor(private service: UtilioService) {}
 
@@ -35,13 +37,16 @@ export class LogsComponent implements OnInit {
     }});
   }
 
-  ngOnInit() {
-    this.service.getLogs(1, this.recordsPerPage).subscribe((data: LogsResponse) => {
+  setLogs(page: number) {
+    this.service.getLogs(page, this.recordsPerPage, this.logParameters, this.sortCriteria).subscribe((data: LogsResponse) => {
       this.logs = this.createLogsArray(data);
       this.paging = data.paging;
       this.pages = Array.from({length: data.paging.pages || 1}, (value, key) => key + 1)
 
     });
+  }
+  ngOnInit() {
+    this.setLogs(1);
     this.service.getProviders().subscribe(data=>{
      this.providers = data?.map((provider: any) => {return {id: provider.id, name: provider.name}});
     })
@@ -49,18 +54,12 @@ export class LogsComponent implements OnInit {
 
   onPageChange(page: number) {
     this.paging.page = page;
-    this.service.getLogs(this.paging.page, this.recordsPerPage).subscribe((data: any) => {
-      this.logs = this.createLogsArray(data);
-    });
+    this.setLogs(this.paging.page!);
   }
 
   onPageChangeNext(next: boolean) {
     next && this.paging.page ? this.paging.page += 1 : this.paging.page! -= 1;
-
-    this.service.getLogs(this.paging.page!, this.recordsPerPage).subscribe((data: any) => {
-      this.logs = this.createLogsArray(data);
-    });
-
+    this.setLogs(this.paging.page!);
   }
 
   onChange(event: any, isProvider: boolean) {
@@ -72,32 +71,28 @@ export class LogsComponent implements OnInit {
     this.logParameters = {}
     this.providerId !== -1 && event.target.value !== -1 && Object.assign(this.logParameters, {providerId: this.providerId});
     this.status !== -1 && Object.assign(this.logParameters, {success: this.status});
-
-    this.service.getLogs(this.paging.page!, this.recordsPerPage, this.logParameters).subscribe((data: any) => {
-      this.logs = this.createLogsArray(data);
-      this.paging = data.paging;
-      this.pages = Array.from({length: data.paging.pages || 1}, (value, key) => key + 1)
-    });
+    this.setLogs(this.paging.page!);
   }
 
   onChangeNumberOfRows(event: any) {
     this.recordsPerPage = Number(event.target.value);
-    this.service.getLogs(this.paging.page!, this.recordsPerPage, this.logParameters).subscribe((data: any) => {
-      this.logs = this.createLogsArray(data);
-      this.paging = data.paging;
-      this.pages = Array.from({length: data.paging.pages || 1}, (value, key) => key + 1)
-    });
+    this.setLogs(this.paging.page!)
   }
 
   onClearFilter() {
-    console.log("CLICKED!");
     this.logParameters = {};
     this.cleared = true;
-    this.service.getLogs(this.paging.page!, this.recordsPerPage, this.logParameters).subscribe((data: any) => {
-      this.logs = this.createLogsArray(data);
-      this.paging = data.paging;
-      this.pages = Array.from({length: data.paging.pages || 1}, (value, key) => key + 1)
-    });
+    this.setLogs(this.paging.page!);
   }
 
+  onSortColumn(name: string) {
+    this.sortCriteria = [{
+      column: name,
+      order: this.asc,
+      priority: 0
+    }]
+
+    this.setLogs(this.paging.page!);
+    this.asc = !!this.asc ? 0 : 1;
+  }
 }

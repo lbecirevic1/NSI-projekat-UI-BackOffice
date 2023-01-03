@@ -98,13 +98,14 @@ export class UtilioService {
     )
     return errorR;
   }
-  getLogs(page: number, recordsPerPage: number, logParameters: any = {}) {
+  getLogs(page: number, recordsPerPage: number, logParameters: any = {}, sortCriteria: any = undefined) {
     let body = {
       paging: {
         page: page,
         recordsPerPage: recordsPerPage,
       },
       logParameters: logParameters,
+      sortCriteria: sortCriteria
     };
 
     let headers = new HttpHeaders();
