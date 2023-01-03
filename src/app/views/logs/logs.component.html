@@ -6,38 +6,56 @@
       </c-card-header>
       <c-card-body>
           <table cTable [hover] = 'true'>
-            <thead cTableColor="dark" >
+            <thead cTableColor="primary" >
               <tr>
-                <th scope="col">requestStartTime</th>
-                <th scope="col">requestEndTime</th>
-                <th scope="col">success</th>
-                <th scope="col">providerName</th>
+                <th scope="col">Request Start Date</th>
+                <th scope="col">Request Start Time</th>
+                <th scope="col">Request End Date</th>
+                <th scope="col">Request End Time</th>
+                <th scope="col">Status</th>
+                <th scope="col">Provider Name</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let log of logs">
+                <td>{{ log.requestStartDate }}</td>
                 <td>{{ log.requestStartTime }}</td>
+                <td>{{ log.requestEndDate }}</td>
                 <td>{{ log.requestEndTime }}</td>
-                <td>{{ log.success }}</td>
+                <td *ngIf="log.status === 'Success'; else elseBlock">
+                  <c-badge color="success" shape="rounded-pill" style="
+                  width: 5rem; 
+                  height: 1.5rem; 
+                  display: flex; 
+                  align-items: center;
+                  justify-content: center;">{{ log.status }}</c-badge>
+                </td>
+                <ng-template  #elseBlock>
+                  <td><c-badge color="danger" shape="rounded-pill" style="
+                    width: 5rem; 
+                    height: 1.5rem; 
+                    display: flex; 
+                    align-items: center;
+                    justify-content: center;">{{log.status}}</c-badge>
+                  </td>
+                </ng-template>
                 <td>{{ log.providerName }}</td>
               </tr>
             </tbody>
           </table>
-          <c-pagination align="end" aria-label="Page navigation example">
-            <c-page-item [disabled]="true">
-              <a cPageLink routerLink="./">Previous</a>
+          <c-pagination align="end" aria-label="Page navigation example" style=" --cui-pagination-color:red">
+            <c-page-item [disabled]="paging.page === 1">
+              <button cPageLink (click)="onPageChangeNext(false)" style=" --cui-pagination-color: #354053;">Previous</button>
             </c-page-item>
-            <c-page-item>
-              <a cPageLink routerLink="./">1</a>
+            <c-page-item *ngFor="let page of pages" [active]="paging.page === page" style="
+            --cui-pagination-color: #354053; 
+            --cui-pagination-active-bg: #d6d2f8; 
+            --cui-pagination-active-border-color: #d6d2f8; 
+            --cui-pagination-active-color: #354053;">
+              <button cPageLink (click)="onPageChange(page)">{{page}}</button>
             </c-page-item>
-            <c-page-item>
-              <a cPageLink routerLink="./">2</a>
-            </c-page-item>
-            <c-page-item>
-              <a cPageLink routerLink="./">3</a>
-            </c-page-item>
-            <c-page-item>
-              <a cPageLink routerLink="./">Next</a>
+            <c-page-item [disabled]="paging.page === paging.pages">
+              <button cPageLink (click)="onPageChangeNext(true)" style=" --cui-pagination-color: #354053;">Next</button>
             </c-page-item>
           </c-pagination>
       </c-card-body>
