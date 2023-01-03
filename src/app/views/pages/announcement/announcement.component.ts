@@ -17,6 +17,7 @@ import {
 } from "@ng-bootstrap/ng-bootstrap";
 import {formatDate, JsonPipe} from "@angular/common";
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import {LogsResponse, Paging} from "../../../models/log";
 @Component({
   selector:    'app-announcement',
   templateUrl: './announcement.component.html',
@@ -28,6 +29,9 @@ export class AnnouncementComponent implements OnInit {
 
   @ViewChild('createForm', { static: false }) createForm!: NgForm;
   @ViewChild('editAnnouncForm', { static: false }) editAnnouncForm!: NgForm;
+
+  public paging: Paging = {};
+  public pages: number[] = [];
 
   public notifications: Announcement[] = [];
   timeStart: NgbTimeStruct = { hour: 0, minute: 0, second: 0 };
@@ -157,6 +161,7 @@ export class AnnouncementComponent implements OnInit {
   public editRegions:number[]=[]
 
   public editStreets:number[]=[]
+  public recordsPerPage: number = 5;
 
   additionalInfoVisible = false;
   public openCoverages = false;
@@ -173,17 +178,29 @@ export class AnnouncementComponent implements OnInit {
     this.formBuilder = FormBuilder;
 
   }
-
+  setAnnouncements(page: number) {
+    this.service
+      .getPagesAnnouncement(page, this.recordsPerPage)
+      .subscribe(data => {
+        console.log(data.data)
+        this.notifications=[];
+        for (let i = 0; i < data.data.length; i++) {
+          let notification = new Announcement(data.data[i].id, data.data[i].providerId, data.data[i].title,
+            data.data[i].sourceUrl, data.data[i].description, data.data[i].content, data.data[i].rawLog,
+            data.data[i].uniqueIdentifier, data.data[i].additionalInformation, data.data[i].publishDate,
+            data.data[i].referenceStartDate, data.data[i].referenceEndDate)
+          this.notifications.push(notification);
+        }
+        this.paging = data.paging;
+        this.pages = Array.from(
+          { length: data.paging.pages || 1 },
+          (value, key) => key + 1
+        );
+      });
+  }
 
   ngOnInit() {
-    this.service.getAnnouncements().subscribe(data => {
-
-      for (let i = 0; i < data.length; i++) {
-        let notification = new Announcement(data[i].id,data[i].providerId, data[i].title, data[i].sourceUrl, data[i].description, data[i].content, data[i].rawLog,data[i].uniqueIdentifier, data[i].additionalInformation,data[i].publishDate,data[i].referenceStartDate, data[i].referenceEndDate)
-        this.notifications.push(notification);
-      }
-
-    })
+    this.setAnnouncements(1);
 
     this.service.getRegions().subscribe(data=>{
       for(let i=0;i<data.length;i++){
@@ -265,7 +282,22 @@ export class AnnouncementComponent implements OnInit {
 
 
   }
+  onPageChange(page: number) {
+    this.paging.page = page;
+    this.setAnnouncements(this.paging.page!);
+  }
 
+  onPageChangeNext(next: boolean) {
+    if(next && this.paging.page){
+      this.paging.page=this.paging.page+1
+    }
+    else this.paging.page!-=1
+    this.setAnnouncements(this.paging.page!);
+  }
+  onChangeNumberOfRows(event: any) {
+    this.recordsPerPage = Number(event.target.value);
+    this.setAnnouncements(this.paging.page!);
+  }
   onDeselectRegions(item:any){
     const index:number=this.clickedRegions.indexOf(item.Id);
     this.clickedRegions.forEach((element,index)=>{
@@ -344,6 +376,7 @@ export class AnnouncementComponent implements OnInit {
 
   toggleEditButtonDemo(item: any) {
     this.editAnnouncement = item;
+    console.log(item)
     let tmp=[]
     tmp.push(this.getProvider(item.ProviderId))
     this.editProviders=tmp
@@ -695,6 +728,7 @@ export class AnnouncementComponent implements OnInit {
 
 
   saveEdited(announcement:any,values:any){
+    console.log(announcement)
     // @ts-ignore
     let title=document.getElementById('announcementTitleInput1').value;
     // @ts-ignore

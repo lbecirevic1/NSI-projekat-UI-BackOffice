@@ -20,6 +20,19 @@ export class UtilioService {
     return this.http.get<any[]>('https://localhost:7069/api/announcement');
   }
 
+  getPagesAnnouncement(page:number,recordsPerPage:number){
+    let body={
+      paging:{
+        page:page,
+        totalRecords:0,
+        recordsPerPage:recordsPerPage,
+        pages:0
+      }
+    }
+
+    return this.http.post<any>('https://localhost:7069/api/announcement/paged',body);
+  }
+
   deleteAnnouncement(notificationId: number) {
     return this.http.delete<number>(this.apiUrl + 'announcement?id=' + notificationId);
   }
