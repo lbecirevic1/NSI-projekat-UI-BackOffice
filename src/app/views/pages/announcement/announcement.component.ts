@@ -162,7 +162,7 @@ export class AnnouncementComponent implements OnInit {
   public openCoverages = false;
   public indexSelectedCoverage = 0;
 
-    toggleCollapse(index : number): void {
+  toggleCollapse(index : number): void {
     // @ts-ignore
     this.additionalInfoVisible = !this.additionalInfoVisible;
     this.indexSelectedCoverage = index;
@@ -271,7 +271,6 @@ export class AnnouncementComponent implements OnInit {
     this.clickedRegions.forEach((element,index)=>{
       if(element==item.Id)this.clickedRegions.splice(index,1);
     })
-    console.log(this.clickedRegions)
   }
 
   onDeselectStreets(item:any){
@@ -279,7 +278,6 @@ export class AnnouncementComponent implements OnInit {
     this.clickedStreets.forEach((element,index)=>{
       if(element==item.Id)this.clickedStreets.splice(index,1);
     })
-    console.log(this.clickedStreets)
   }
 
   onDeselectProviders(item:any){
@@ -287,7 +285,6 @@ export class AnnouncementComponent implements OnInit {
     this.clickedProviders.forEach((element,index)=>{
       if(element==item.Id)this.clickedProviders.splice(index,1);
     })
-    console.log(this.clickedProviders)
   }
 
   onDeselectEditProviders(item:any){
@@ -295,7 +292,6 @@ export class AnnouncementComponent implements OnInit {
     this.editProviders.forEach((element,index)=>{
       if(element==item.Id)this.editProviders.splice(index,1);
     })
-    console.log(this.editProviders)
   }
 
 
@@ -303,39 +299,32 @@ export class AnnouncementComponent implements OnInit {
   onRegionSelect(item: any) {
     console.log(item)
     if(this.clickedRegions.includes(item.Id)){
-      console.log("ima")
       const index:number=this.clickedRegions.indexOf(item.Id);
       this.clickedRegions.forEach((element,index)=>{
         if(element==item.Id)this.clickedRegions.splice(index,1);
       })
-      console.log(this.clickedRegions)
     }
-   this.regionClicked(item)
+    this.regionClicked(item)
   }
 
 
   onStreetsSelect(item: any) {
     console.log(item)
     if(this.clickedStreets.includes(item.Id)){
-      console.log("ima")
       const index:number=this.clickedStreets.indexOf(item.Id);
       this.clickedStreets.forEach((element,index)=>{
         if(element==item.Id)this.clickedStreets.splice(index,1);
       })
-      console.log(this.clickedStreets)
     }
     this.streetClicked(item)
   }
 
   onProviderSelect(item: any) {
-    console.log(item)
     if(this.clickedProviders.includes(item.Id)){
-      console.log("ima")
       const index:number=this.clickedProviders.indexOf(item.Id);
       this.clickedProviders.forEach((element,index)=>{
         if(element==item.Id)this.clickedProviders.splice(index,1);
       })
-      console.log(this.clickedProviders)
     }
     this.providerClicked(item)
   }
@@ -357,15 +346,12 @@ export class AnnouncementComponent implements OnInit {
     this.editAnnouncement = item;
     let tmp=[]
     tmp.push(this.getProvider(item.ProviderId))
-    console.log(tmp)
     this.editProviders=tmp
-    console.log(this.editProviders)
-    console.log(this.providers)
     this.toggleEditDemo();
   }
 
   getProvider(item:any){
-      let returnProvider:any
+    let returnProvider:any
     for(let i=0;i<this.providers.length;i++){
       if(this.providers.at(i)?.Id==item){
         returnProvider=this.providers.at(i)
@@ -411,14 +397,14 @@ export class AnnouncementComponent implements OnInit {
   }
 
   refreshAnnouncements() {
-  window.location.reload();
+    window.location.reload();
   }
 
   deleteItem() {
-   this.service.deleteAnnouncement(this.deleteItemId).subscribe(data=>{
-     this.deleteItemId = 0;
-     this.liveDemoVisible = !this.liveDemoVisible;
-   });
+    this.service.deleteAnnouncement(this.deleteItemId).subscribe(data=>{
+      this.deleteItemId = 0;
+      this.liveDemoVisible = !this.liveDemoVisible;
+    });
     this.refreshAnnouncements()
   }
 
@@ -432,57 +418,56 @@ export class AnnouncementComponent implements OnInit {
 
   submitForm(values:any){
     let providerId=this.clickedProviders.at(0);
-  let startDate='';
+    let startDate='';
     let endDate='';
     let startTime='';
     let endTime='';
-if(this.modelStartDate.day==undefined){
-  startDate=(formatDate(new Date(), 'yyyy-MM-dd', 'en')).toString();
-}else {
-  startDate=this.dateFormat(this.modelStartDate)
-}
-
-if(this.modelEndDate.day==undefined){
-      endDate=(formatDate(new Date(), 'yyyy-MM-dd', 'en')).toString();
-}else {
-  endDate=this.dateFormat(this.modelEndDate)
+    if(this.modelStartDate.day==undefined){
+      startDate=(formatDate(new Date(), 'yyyy-MM-dd', 'en')).toString();
+    }else {
+      startDate=this.dateFormat(this.modelStartDate)
     }
 
-startTime=this.timeFormat(this.timeStart)
-endTime=this.timeFormat(this.timeEnd)
+    if(this.modelEndDate.day==undefined){
+      endDate=(formatDate(new Date(), 'yyyy-MM-dd', 'en')).toString();
+    }else {
+      endDate=this.dateFormat(this.modelEndDate)
+    }
+
+    startTime=this.timeFormat(this.timeStart)
+    endTime=this.timeFormat(this.timeEnd)
     console.log(startDate)
-  if(providerId!=null)
-this.service.postAnnouncement(providerId,values.newAnnouncTitle,
-      values.newAnnouncUrl,values.newAnnouncDescription,values.newAnnouncContent,
-      values.newAnnouncAddInfo,startDate,endDate,
-      startTime,endTime,this.clickedRegions,this.clickedStreets).subscribe(data=>{
-        this.handleCreateAnnouncement(false);
-        this.createFormVisible=!this.createFormVisible
-        this.refreshAnnouncements()
-},
-error=>{
-        this.createFormVisible=false
-        this.handleCreateAnnouncement(false);
-  this.doubleAnnouncementVisible=!this.doubleAnnouncementVisible
-        this.handleDoubleAnnouncement(true);
-})
+    if(providerId!=null)
+      this.service.postAnnouncement(providerId,values.newAnnouncTitle,
+        values.newAnnouncUrl,values.newAnnouncDescription,values.newAnnouncContent,
+        values.newAnnouncAddInfo,startDate,endDate,
+        startTime,endTime,this.clickedRegions,this.clickedStreets).subscribe(data=>{
+          this.handleCreateAnnouncement(false);
+          this.createFormVisible=!this.createFormVisible
+          this.refreshAnnouncements()
+        },
+        error=>{
+          this.createFormVisible=false
+          this.handleCreateAnnouncement(false);
+          this.doubleAnnouncementVisible=!this.doubleAnnouncementVisible
+          this.handleDoubleAnnouncement(true);
+        })
 
   }
 
-streetClicked(street:any){
+  streetClicked(street:any){
     let streetId=street.Id;
     if(this.clickedStreets.includes(streetId)){
       const index: number = this.clickedStreets.indexOf(streetId);
-     this.clickedStreets.forEach((element,index)=>{
-       if(element==streetId)this.clickedStreets.splice(index,1);
-     })
+      this.clickedStreets.forEach((element,index)=>{
+        if(element==streetId)this.clickedStreets.splice(index,1);
+      })
     }
     else this.clickedStreets.push(streetId);
-    console.log(this.clickedStreets);
 
-}
+  }
 
-regionClicked(region:any){
+  regionClicked(region:any){
     let regionId=region.Id
     if(this.clickedRegions.includes(regionId)){
       const index:number=this.clickedRegions.indexOf(regionId);
@@ -491,8 +476,7 @@ regionClicked(region:any){
       })
     }
     else this.clickedRegions.push(regionId);
-    console.log(this.clickedRegions);
-}
+  }
 
   providerClicked(provider:any){
     let providerId=provider.Id
@@ -503,148 +487,140 @@ regionClicked(region:any){
       })
     }
     else this.clickedProviders.push(providerId);
-    console.log(this.clickedProviders);
   }
 
   providerEditClicked(provider:any){
     let providerId=provider.Id
     this.editProviders.splice(0,1);
     this.editProviders.push(this.getProvider(providerId))
-    console.log(this.editProviders);
   }
 
-showDescription(description:string){
-this.announcementDescription=description;
-  this.descriptionDemoVisible = !this.descriptionDemoVisible;
-}
+  showDescription(description:string){
+    this.announcementDescription=description;
+    this.descriptionDemoVisible = !this.descriptionDemoVisible;
+  }
 
 
-showAddInfo(addInfo:string){
-this.announcementAddInfo=addInfo;
-this.addInfoDemoVisible=!this.addInfoDemoVisible;
-}
+  showAddInfo(addInfo:string){
+    this.announcementAddInfo=addInfo;
+    this.addInfoDemoVisible=!this.addInfoDemoVisible;
+  }
 
-showContent(content:string){
-this.announcementContent=content;
-this.contentDemoVisible=!this.contentDemoVisible;
-}
+  showContent(content:string){
+    this.announcementContent=content;
+    this.contentDemoVisible=!this.contentDemoVisible;
+  }
 
-handleContentVisible(event:boolean){
+  handleContentVisible(event:boolean){
     this.contentDemoVisible=event;
-}
+  }
 
-handleAddInfoVisible(event:boolean){
+  handleAddInfoVisible(event:boolean){
     this.addInfoDemoVisible=event;
-}
+  }
 
-handleDescriptionVisible(event:boolean){
+  handleDescriptionVisible(event:boolean){
     this.descriptionDemoVisible=event;
-}
+  }
 
-parseDate(date:string){
+  parseDate(date:string){
     if(date==null){
       return "/"
     }
-  let start=date.indexOf("-")
-  let start2=date.lastIndexOf("-")
-  let time=date.indexOf("T")
-  let godina=date.substring(0,start)
-  let mjesec=date.substring(start+1,start2)
-  let dan=date.substring(start2+1,time)
+    let start=date.indexOf("-")
+    let start2=date.lastIndexOf("-")
+    let time=date.indexOf("T")
+    let godina=date.substring(0,start)
+    let mjesec=date.substring(start+1,start2)
+    let dan=date.substring(start2+1,time)
 
-  if(dan.length==1){
-    dan='0'+dan;
+    if(dan.length==1){
+      dan='0'+dan;
+    }
+    if(mjesec.length==1){
+      mjesec='0'+mjesec;
+    }
+    let end;
+    end=date.length;
+
+    let startT=date.indexOf(":")
+    let startT2=date.lastIndexOf(":")
+    let startH=date.substring(time+1,startT)
+    let startM=date.substring(startT+1,startT2)
+    let startS=date.substring(startT2+1,end)
+
+    let datum=dan+"-"+mjesec+"-"+godina+ " "+startH+":"+startM+":"+startS;
+    return datum;
   }
-  if(mjesec.length==1){
-    mjesec='0'+mjesec;
+
+  onSelectAllRegions(items:any){
+    this.clickedRegions=this.AllRegions;
   }
-  let end;
-   end=date.length;
 
-  let startT=date.indexOf(":")
-  let startT2=date.lastIndexOf(":")
-  let startH=date.substring(time+1,startT)
-  let startM=date.substring(startT+1,startT2)
-  let startS=date.substring(startT2+1,end)
-
- let datum=dan+"-"+mjesec+"-"+godina+ " "+startH+":"+startM+":"+startS;
-  return datum;
-}
-
-onSelectAllRegions(items:any){
- this.clickedRegions=this.AllRegions;
- console.log(this.clickedRegions);
-}
-
-onDeselectAllRegions(items:any){
+  onDeselectAllRegions(items:any){
     this.clickedRegions=[]
-  console.log(this.clickedRegions)
-}
+  }
 
   onSelectAllStreets(items:any){
     this.clickedStreets=this.AllStreets;
-    console.log(this.clickedStreets);
   }
 
   onDeselectAllStreets(items:any){
     this.clickedStreets=[]
-    console.log(this.clickedStreets)
   }
 
   onSelectAllProviders(items:any){
     this.clickedProviders=this.AllProviders;
-    console.log(this.clickedProviders);
   }
 
   onDeselectAllProviders(items:any){
     this.clickedProviders=[]
-    console.log(this.clickedProviders)
   }
 
   providerName(itemId:number){
-  let name=''
-  for(let i=0;i<this.providers.length;i++){
-    if(this.providers.at(i)?.Id==itemId){
-      // @ts-ignore
-      name=this.providers.at(i).Name;
+    let name=''
+    for(let i=0;i<this.providers.length;i++){
+      if(this.providers.at(i)?.Id==itemId){
+        // @ts-ignore
+        name=this.providers.at(i).Name;
+      }
+
     }
+    return name;
+  }
 
-  }
-  return name;
-}
+  timeFormat(time:any){
+    let finalTime=''
+    if(time.hour.toString().length==1){
+      finalTime='0'+time.hour+":"
+    }
+    else finalTime=time.hour+":"
+    if(time.minute.toString().length==1){
+      finalTime=finalTime+'0'+time.minute+":"
+    }
+    else finalTime=finalTime+time.minute+":"
+    if(time.second.toString().length==1){
+      finalTime=finalTime+'0'+time.second
+    }
+    else finalTime=finalTime+time.second
 
-timeFormat(time:any){
-  let finalTime=''
-  if(time.hour.toString().length==1){
-    finalTime='0'+time.hour+":"
+    return finalTime
   }
-  else finalTime=time.hour+":"
-  if(time.minute.toString().length==1){
-    finalTime=finalTime+'0'+time.minute+":"
-  }
-  else finalTime=finalTime+time.minute+":"
-  if(time.second.toString().length==1){
-    finalTime=finalTime+'0'+time.second
-  }
-  else finalTime=finalTime+time.second
 
-  return finalTime
-}
+  dateFormat(date:any){
+    let finalDate=''
+    finalDate=date.year+"-"
+    if(date.month.toString().length==1){
+      finalDate=finalDate+'0'+date.month+"-"
+    }
+    else finalDate=finalDate+date.month+"-"
+    if(date.day.toString().length==1){
+      finalDate=finalDate+'0'+date.day
+    }
+    else finalDate=finalDate+date.day
 
-dateFormat(date:any){
-      let finalDate=''
-  finalDate=date.year+"-"
-  if(date.month.toString().length==1){
-    finalDate=finalDate+'0'+date.month+"-"
+    return finalDate
   }
-  else finalDate=finalDate+date.month+"-"
-  if(date.day.toString().length==1){
-    finalDate=finalDate+'0'+date.day
-  }
-  else finalDate=finalDate+date.day
-
-  return finalDate
-}
 
   onEditSelectAllRegions(items:any){
     this.editRegions=this.AllRegions;
@@ -659,18 +635,14 @@ dateFormat(date:any){
     this.editRegions.forEach((element,index)=>{
       if(element==item.Id)this.editRegions.splice(index,1);
     })
-    console.log(this.editRegions)
   }
 
   onEditRegionSelect(item: any) {
-    console.log(item)
     if(this.editRegions.includes(item.Id)){
-      console.log("ima")
       const index:number=this.editRegions.indexOf(item.Id);
       this.editRegions.forEach((element,index)=>{
         if(element==item.Id)this.editRegions.splice(index,1);
       })
-      console.log(this.editRegions)
     }
     this.regionEditClicked(item)
   }
@@ -683,7 +655,6 @@ dateFormat(date:any){
       })
     }
     else this.editRegions.push(regionId);
-    console.log(this.editRegions);
   }
 
 
@@ -700,18 +671,14 @@ dateFormat(date:any){
     this.editStreets.forEach((element,index)=>{
       if(element==item.Id)this.editStreets.splice(index,1);
     })
-    console.log(this.editStreets)
   }
 
   onEditStreetSelect(item: any) {
-    console.log(item)
     if(this.editStreets.includes(item.Id)){
-      console.log("ima")
       const index:number=this.editStreets.indexOf(item.Id);
       this.editStreets.forEach((element,index)=>{
         if(element==item.Id)this.editStreets.splice(index,1);
       })
-      console.log(this.editStreets)
     }
     this.streetEditClicked(item)
   }
@@ -724,26 +691,25 @@ dateFormat(date:any){
       })
     }
     else this.editStreets.push(streetId);
-    console.log(this.editStreets);
   }
 
 
   saveEdited(announcement:any,values:any){
-      // @ts-ignore
-  let title=document.getElementById('announcementTitleInput1').value;
-  // @ts-ignore
-  let url=document.getElementById('announcementTitleInput2').value
-  // @ts-ignore
-  let description=document.getElementById('announcementTitleInput3').value
-  // @ts-ignore
-  let content=document.getElementById('announcementTitleInput4').value
-  // @ts-ignore
-  let addInfo=document.getElementById('announcementTitleInput5').value
-  let announcementId=announcement.Id;
+    // @ts-ignore
+    let title=document.getElementById('announcementTitleInput1').value;
+    // @ts-ignore
+    let url=document.getElementById('announcementTitleInput2').value
+    // @ts-ignore
+    let description=document.getElementById('announcementTitleInput3').value
+    // @ts-ignore
+    let content=document.getElementById('announcementTitleInput4').value
+    // @ts-ignore
+    let addInfo=document.getElementById('announcementTitleInput5').value
+    let announcementId=announcement.Id;
     let announcementRaw=announcement.RawLog
     let announcementUnique=announcement.UniqueIdentifier
 
-  let regionsEdit:number[]=[]
+    let regionsEdit:number[]=[]
     for(let i=0;i<this.editRegions.length-1;i++){
       // @ts-ignore
       regionsEdit.push(this.editRegions.at(i).Id)
@@ -783,7 +749,7 @@ dateFormat(date:any){
       this.editFormVisible=!this.editFormVisible
       this.refreshAnnouncements()
     })
-}
+  }
 
 }
 

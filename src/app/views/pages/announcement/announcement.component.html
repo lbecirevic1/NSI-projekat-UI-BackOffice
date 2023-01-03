@@ -32,15 +32,15 @@
         <c-row class="ml-5 pl-5">
           <table cTable hover>
             <thead>
-              <tr class="pt-3 pb-3">
-                <!-- <th></th> -->
-                <th class="announcement-table-col-13">Provider</th>
-                <th class="announcement-table-col-20">Title</th>
-                <th class="announcement-table-col-13">Publish date and time</th>
-                <th class="announcement-table-col-20">Region</th>
-                <!-- <th class="announcement-table-col-10">Streets</th> -->
-                <th class="announcement-table-col-10">Action</th>
-              </tr>
+            <tr class="pt-3 pb-3">
+              <!-- <th></th> -->
+              <th class="announcement-table-col-13">Provider</th>
+              <th class="announcement-table-col-20">Title</th>
+              <th class="announcement-table-col-13">Publish date and time</th>
+              <th class="announcement-table-col-20">Region</th>
+              <!-- <th class="announcement-table-col-10">Streets</th> -->
+              <th class="announcement-table-col-10">Action</th>
+            </tr>
             </thead>
             <tbody>
             <ng-container *ngFor="let value of notifications; let i = index">
@@ -93,67 +93,101 @@
 </ng-template>
 
 <ng-template #editForm>
-<c-modal id="editAnnouncForm" [visible]="editFormVisible" (visibleChange)="handleEditModalChange($event)">
-  <c-modal-header>
-    Edit form
-  </c-modal-header>
-  <c-modal-body>
-    <form cForm #editAnnouncForm="ngForm" *ngIf=editFormVisible>
+  <c-modal id="editAnnouncForm" [visible]="editFormVisible" (visibleChange)="handleEditModalChange($event)">
+    <c-modal-header>
+      Edit form
+    </c-modal-header>
+    <c-modal-body>
+      <form cForm #editAnnouncForm="ngForm" *ngIf=editFormVisible>
 
-      <ng-multiselect-dropdown
-        [placeholder]="'Providers'"
-        [settings]="dropdownSettingsEditProviders"
-        [data]="providers"
-        [ngModel]="editProviders"
-        (onSelect)="providerEditClicked($event)"
-        (onDeSelect)="onDeselectEditProviders($event)"
-        [ngModelOptions]="{standalone: true}"
-      >
-      </ng-multiselect-dropdown>
-      <div class="mb-3">
-        <label cLabel for="announcementTitleInput1">Title</label>
-        <textarea cFormControl id="announcementTitleInput1" rows="1" name="editedTitle">{{editAnnouncement.Title}}</textarea>
-      </div>
-      <div class="mb-3">
-        <label cLabel for="announcementTitleInput2">Url</label>
-        <textarea cFormControl id="announcementTitleInput2" rows="1">{{editAnnouncement.SourceUrl}}</textarea>
-      </div>
-      <div class="mb-3">
-        <label cLabel for="announcementTitleInput3">Description</label>
-        <textarea cFormControl id="announcementTitleInput3" rows="1">{{editAnnouncement.Description}}</textarea>
-      </div>
-      <label cLabel for="announcementTitleInput4">Content</label>
-      <div class="mb-3">
-        <textarea cFormControl id="announcementTitleInput4" rows="1">{{editAnnouncement.Content}}</textarea>
-      </div>
-      <div class="mb-3">
-        <label cLabel for="announcementTitleInput5">Additional Information</label>
-        <textarea cFormControl id="announcementTitleInput5" rows="1">{{editAnnouncement.AdditionalInformation}}</textarea>
-      </div>
+        <ng-multiselect-dropdown
+          [placeholder]="'Providers'"
+          [settings]="dropdownSettingsEditProviders"
+          [data]="providers"
+          [ngModel]="editProviders"
+          (onSelect)="providerEditClicked($event)"
+          (onDeSelect)="onDeselectEditProviders($event)"
+          [ngModelOptions]="{standalone: true}"
+        >
+        </ng-multiselect-dropdown>
+        <div class="mb-3">
+          <label cLabel for="announcementTitleInput1">Title</label>
+          <textarea cFormControl id="announcementTitleInput1" rows="1" name="editedTitle">{{editAnnouncement.Title}}</textarea>
+        </div>
+        <div class="mb-3">
+          <label cLabel for="announcementTitleInput2">Url</label>
+          <textarea cFormControl id="announcementTitleInput2" rows="1">{{editAnnouncement.SourceUrl}}</textarea>
+        </div>
+        <div class="mb-3">
+          <label cLabel for="announcementTitleInput3">Description</label>
+          <textarea cFormControl id="announcementTitleInput3" rows="1">{{editAnnouncement.Description}}</textarea>
+        </div>
+        <label cLabel for="announcementTitleInput4">Content</label>
+        <div class="mb-3">
+          <textarea cFormControl id="announcementTitleInput4" rows="1">{{editAnnouncement.Content}}</textarea>
+        </div>
+        <div class="mb-3">
+          <label cLabel for="announcementTitleInput5">Additional Information</label>
+          <textarea cFormControl id="announcementTitleInput5" rows="1">{{editAnnouncement.AdditionalInformation}}</textarea>
+        </div>
 
-      <div class="row">
-        <div class="col-md">
-          <div class="mb-2 form-outline datetimepicker">
-            <label cLabel>Start date</label>
-            <form class="row row-cols-sm-auto">
-              <div class="col-12">
-                <div class="input-group">
-                  <input
-                    class="form-control"
-                    placeholder="Start date"
-                    name="dp3"
-                    [(ngModel)]="modelEditStartDate"
-                    ngbDatepicker
-                    #d3="ngbDatepicker"
-                  />
-                  <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d3.toggle()" type="button"></button>
+        <div class="row">
+          <div class="col-md">
+            <div class="mb-2 form-outline datetimepicker">
+              <label cLabel>Start date</label>
+              <form class="row row-cols-sm-auto">
+                <div class="col-12">
+                  <div class="input-group">
+                    <input
+                      class="form-control"
+                      placeholder="Start date"
+                      name="dp3"
+                      [(ngModel)]="modelEditStartDate"
+                      ngbDatepicker
+                      #d3="ngbDatepicker"
+                    />
+                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d3.toggle()" type="button"></button>
+                  </div>
                 </div>
+              </form>
+              <div class="col-md">
+                <label cLabel>Start time</label>
+                <ngb-timepicker
+                  [(ngModel)]="timeStartEdit"
+                  [seconds]="true"
+                  [hourStep]="hourStep"
+                  [minuteStep]="minuteStep"
+                  [secondStep]="secondStep"
+                  [ngModelOptions]="{standalone: true}"></ngb-timepicker>
               </div>
-            </form>
+            </div>
+          </div>
+          <div class="row">
+          </div>
+          <div class="col-md">
+            <div class="mb-2 form-outline datetimepicker">
+              <label cLabel>End date</label>
+              <form class="row row-cols-sm-auto">
+                <div class="col-12">
+                  <div class="input-group">
+                    <input
+                      class="form-control"
+                      placeholder="End date"
+                      name="dp4"
+                      [(ngModel)]="modelEditEndDate"
+                      ngbDatepicker
+                      #d4="ngbDatepicker"
+                    />
+                    <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d4.toggle()" type="button"></button>
+                  </div>
+                </div>
+              </form>
+
+            </div>
             <div class="col-md">
-              <label cLabel>Start time</label>
+              <label cLabel>End time</label>
               <ngb-timepicker
-                [(ngModel)]="timeStartEdit"
+                [(ngModel)]="timeEndEdit"
                 [seconds]="true"
                 [hourStep]="hourStep"
                 [minuteStep]="minuteStep"
@@ -162,87 +196,53 @@
             </div>
           </div>
         </div>
-        <div class="row">
+
+        <div class="mb-3">
+          <ng-multiselect-dropdown
+            [placeholder]="'Regions'"
+            [settings]="dropdownSettingsEditRegions"
+            [data]="regions"
+            [(ngModel)]="editRegions"
+            [ngModelOptions]="{standalone: true}"
+            (onSelect)="onEditRegionSelect($event)"
+            (onSelectAll)="onEditSelectAllRegions($event)"
+            (onDeSelect)="onEditDeselectRegions($event)"
+            (onDeSelectAll)="onEditDeselectAllRegions($event)"
+          ></ng-multiselect-dropdown>
         </div>
-        <div class="col-md">
-          <div class="mb-2 form-outline datetimepicker">
-            <label cLabel>End date</label>
-            <form class="row row-cols-sm-auto">
-              <div class="col-12">
-                <div class="input-group">
-                  <input
-                    class="form-control"
-                    placeholder="End date"
-                    name="dp4"
-                    [(ngModel)]="modelEditEndDate"
-                    ngbDatepicker
-                    #d4="ngbDatepicker"
-                  />
-                  <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d4.toggle()" type="button"></button>
-                </div>
-              </div>
-            </form>
 
-          </div>
-          <div class="col-md">
-            <label cLabel>End time</label>
-            <ngb-timepicker
-              [(ngModel)]="timeEndEdit"
-              [seconds]="true"
-              [hourStep]="hourStep"
-              [minuteStep]="minuteStep"
-              [secondStep]="secondStep"
-              [ngModelOptions]="{standalone: true}"></ngb-timepicker>
-          </div>
+        <div class="mb-3">
+          <ng-multiselect-dropdown
+            [placeholder]="'Streets'"
+            [settings]="dropdownSettingsEditStreets"
+            [data]="streets"
+            [(ngModel)]="editStreets"
+            [ngModelOptions]="{standalone: true}"
+            (onSelect)="onEditStreetSelect($event)"
+            (onSelectAll)="onEditSelectAllStreets($event)"
+            (onDeSelect)="onEditDeselectStreets($event)"
+            (onDeSelectAll)="onEditDeselectAllStreets($event)"
+          ></ng-multiselect-dropdown>
         </div>
-      </div>
-
-      <div class="mb-3">
-        <ng-multiselect-dropdown
-          [placeholder]="'Regions'"
-          [settings]="dropdownSettingsEditRegions"
-          [data]="regions"
-          [(ngModel)]="editRegions"
-          [ngModelOptions]="{standalone: true}"
-          (onSelect)="onEditRegionSelect($event)"
-          (onSelectAll)="onEditSelectAllRegions($event)"
-          (onDeSelect)="onEditDeselectRegions($event)"
-          (onDeSelectAll)="onEditDeselectAllRegions($event)"
-        ></ng-multiselect-dropdown>
-      </div>
-
-      <div class="mb-3">
-        <ng-multiselect-dropdown
-          [placeholder]="'Streets'"
-          [settings]="dropdownSettingsEditStreets"
-          [data]="streets"
-          [(ngModel)]="editStreets"
-          [ngModelOptions]="{standalone: true}"
-          (onSelect)="onEditStreetSelect($event)"
-          (onSelectAll)="onEditSelectAllStreets($event)"
-          (onDeSelect)="onEditDeselectStreets($event)"
-          (onDeSelectAll)="onEditDeselectAllStreets($event)"
-        ></ng-multiselect-dropdown>
-      </div>
-    </form>
-  </c-modal-body>
-  <c-modal-footer>
-    <button (click)="toggleEditDemoClose()" cButton color="secondary">
-      Close
-    </button>
-    <button cButton color="primary" type='submit' (click)="saveEdited(editAnnouncement,editAnnouncForm.value)">Save changes</button>
-  </c-modal-footer>
-</c-modal>
+      </form>
+    </c-modal-body>
+    <c-modal-footer>
+      <button (click)="toggleEditDemoClose()" cButton color="secondary">
+        Close
+      </button>
+      <button cButton color="primary" type='submit' (click)="saveEdited(editAnnouncement,editAnnouncForm.value)">Save changes</button>
+    </c-modal-footer>
+  </c-modal>
 </ng-template>
 
 
 <!-- Form for creating new announcement -->
 <ng-template #createDemo>
-<c-modal id="createForm" [visible]="createFormVisible" (visibleChange)="handleCreateAnnouncement($event)">
-  <c-modal-header>
-    Create new announcement
-  </c-modal-header>
-  <c-modal-body>
+  <c-modal id="createForm" [visible]="createFormVisible" (visibleChange)="handleCreateAnnouncement($event)">
+    <c-modal-header>
+      Create new announcement
+    </c-modal-header>
+    <c-modal-body>
       <form #createForm="ngForm" *ngIf=createFormVisible>
         <div class="mb-3">
           <ng-multiselect-dropdown
@@ -255,129 +255,129 @@
           >
           </ng-multiselect-dropdown>
         </div>
-      <div class="mb-3">
-        <div class="input-fields">
-        <label cLabel for="title">Title</label>
-        <input cFormControl id="title" rows="1" name="newAnnouncTitle" type="text" ngModel>
-      </div>
-      <div class="row">
-        <div class="col-md">
-          <div class="mb-2 form-outline datetimepicker">
-            <label cLabel>Start date</label>
-            <form class="row row-cols-sm-auto">
-              <div class="col-12">
-                <div class="input-group">
-                  <input
-                    class="form-control"
-                    placeholder="Start date"
-                    name="dp"
-                    [(ngModel)]="modelStartDate"
-                    ngbDatepicker
-                    #d="ngbDatepicker"
-                  />
-                  <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+        <div class="mb-3">
+          <div class="input-fields">
+            <label cLabel for="title">Title</label>
+            <input cFormControl id="title" rows="1" name="newAnnouncTitle" type="text" ngModel>
+          </div>
+          <div class="row">
+            <div class="col-md">
+              <div class="mb-2 form-outline datetimepicker">
+                <label cLabel>Start date</label>
+                <form class="row row-cols-sm-auto">
+                  <div class="col-12">
+                    <div class="input-group">
+                      <input
+                        class="form-control"
+                        placeholder="Start date"
+                        name="dp"
+                        [(ngModel)]="modelStartDate"
+                        ngbDatepicker
+                        #d="ngbDatepicker"
+                      />
+                      <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+                    </div>
+                  </div>
+                </form>
+                <div class="col-md">
+                  <label cLabel>Start time</label>
+                  <ngb-timepicker
+                    [(ngModel)]="timeStart"
+                    [seconds]="true"
+                    [hourStep]="hourStep"
+                    [minuteStep]="minuteStep"
+                    [secondStep]="secondStep"
+                    [ngModelOptions]="{standalone: true}"></ngb-timepicker>
                 </div>
               </div>
-            </form>
+            </div>
+            <div class="row">
+            </div>
             <div class="col-md">
-              <label cLabel>Start time</label>
-              <ngb-timepicker
-                [(ngModel)]="timeStart"
-                [seconds]="true"
-                [hourStep]="hourStep"
-                [minuteStep]="minuteStep"
-                [secondStep]="secondStep"
-                [ngModelOptions]="{standalone: true}"></ngb-timepicker>
+              <div class="mb-2 form-outline datetimepicker">
+                <label cLabel>End date</label>
+                <form class="row row-cols-sm-auto">
+                  <div class="col-12">
+                    <div class="input-group">
+                      <input
+                        class="form-control"
+                        placeholder="End date"
+                        name="dp2"
+                        [(ngModel)]="modelEndDate"
+                        ngbDatepicker
+                        #d2="ngbDatepicker"
+                      />
+                      <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d2.toggle()" type="button"></button>
+                    </div>
+                  </div>
+                </form>
+
+              </div>
+              <div class="col-md">
+                <label cLabel>End time</label>
+                <ngb-timepicker
+                  [(ngModel)]="timeEnd"
+                  [seconds]="true"
+                  [hourStep]="hourStep"
+                  [minuteStep]="minuteStep"
+                  [secondStep]="secondStep"
+                  [ngModelOptions]="{standalone: true}"></ngb-timepicker>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="row">
-        </div>
-        <div class="col-md">
-          <div class="mb-2 form-outline datetimepicker">
-            <label cLabel>End date</label>
-            <form class="row row-cols-sm-auto">
-              <div class="col-12">
-                <div class="input-group">
-                  <input
-                    class="form-control"
-                    placeholder="End date"
-                    name="dp2"
-                    [(ngModel)]="modelEndDate"
-                    ngbDatepicker
-                    #d2="ngbDatepicker"
-                  />
-                  <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d2.toggle()" type="button"></button>
-                </div>
-              </div>
-            </form>
-
+          <div class="mb-3">
+            <label cLabel for="url">Url</label>
+            <textarea cFormControl id="url" rows="2" name="newAnnouncUrl" ngModel></textarea>
           </div>
-          <div class="col-md">
-            <label cLabel>End time</label>
-            <ngb-timepicker
-              [(ngModel)]="timeEnd"
-              [seconds]="true"
-              [hourStep]="hourStep"
-              [minuteStep]="minuteStep"
-              [secondStep]="secondStep"
-              [ngModelOptions]="{standalone: true}"></ngb-timepicker>
+          <div class="mb-3">
+            <label cLabel for="description">Description</label>
+            <textarea cFormControl id="description" rows="2" name="newAnnouncDescription" ngModel></textarea>
           </div>
-      </div>
-      </div>
-      <div class="mb-3">
-        <label cLabel for="url">Url</label>
-        <textarea cFormControl id="url" rows="2" name="newAnnouncUrl" ngModel></textarea>
-      </div>
-      <div class="mb-3">
-        <label cLabel for="description">Description</label>
-        <textarea cFormControl id="description" rows="2" name="newAnnouncDescription" ngModel></textarea>
-      </div>
-      <div class="mb-3">
-        <label cLabel for="content">Content</label>
-        <textarea cFormControl id="content" rows="3" name="newAnnouncContent" ngModel></textarea>
-      </div>
-      <div class="mb-3">
-        <label cLabel for="additionalInformation">Additional Information</label>
-        <textarea cFormControl id="additionalInformation" rows="2"name="newAnnouncAddInfo" ngModel ></textarea>
-      </div>
-      <div class="mb-2">
-        <ng-multiselect-dropdown
-          [placeholder]="'Regions'"
-          [settings]="dropdownSettingsRegions"
-          [data]="regions"
-          [(ngModel)]="clickedRegions"
-          (onSelect)="onRegionSelect($event)"
-          (onSelectAll)="onSelectAllRegions($event)"
-          (onDeSelect)="onDeselectRegions($event)"
-          (onDeSelectAll)="onDeselectAllRegions($event)"
-        >
-        </ng-multiselect-dropdown>
-      </div>
-        <div class="mb-2">
-          <ng-multiselect-dropdown
-            [placeholder]="'Streets'"
-            [settings]="dropdownSettingsStreets"
-            [data]="streets"
-            [(ngModel)]="clickedStreets"
-            (onSelect)="onStreetsSelect($event)"
-            (onSelectAll)="onSelectAllStreets($event)"
-            (onDeSelect)="onDeselectStreets($event)"
-            (onDeSelectAll)="onDeselectAllStreets($event)"
-          >
-          </ng-multiselect-dropdown>
+          <div class="mb-3">
+            <label cLabel for="content">Content</label>
+            <textarea cFormControl id="content" rows="3" name="newAnnouncContent" ngModel></textarea>
+          </div>
+          <div class="mb-3">
+            <label cLabel for="additionalInformation">Additional Information</label>
+            <textarea cFormControl id="additionalInformation" rows="2"name="newAnnouncAddInfo" ngModel ></textarea>
+          </div>
+          <div class="mb-2">
+            <ng-multiselect-dropdown
+              [placeholder]="'Regions'"
+              [settings]="dropdownSettingsRegions"
+              [data]="regions"
+              [(ngModel)]="clickedRegions"
+              (onSelect)="onRegionSelect($event)"
+              (onSelectAll)="onSelectAllRegions($event)"
+              (onDeSelect)="onDeselectRegions($event)"
+              (onDeSelectAll)="onDeselectAllRegions($event)"
+            >
+            </ng-multiselect-dropdown>
+          </div>
+          <div class="mb-2">
+            <ng-multiselect-dropdown
+              [placeholder]="'Streets'"
+              [settings]="dropdownSettingsStreets"
+              [data]="streets"
+              [(ngModel)]="clickedStreets"
+              (onSelect)="onStreetsSelect($event)"
+              (onSelectAll)="onSelectAllStreets($event)"
+              (onDeSelect)="onDeselectStreets($event)"
+              (onDeSelectAll)="onDeselectAllStreets($event)"
+            >
+            </ng-multiselect-dropdown>
+          </div>
         </div>
-      </div>
 
-    </form>
-  </c-modal-body>
-  <c-modal-footer>
-    <button (click)="toggleCreateAnnouncementButton()" cButton color="secondary">
-      Close
-    </button>
-    <button cButton color="primary" type='submit' (click)="submitForm(createForm.value)">Save changes</button>
-  </c-modal-footer>
-</c-modal>
+      </form>
+    </c-modal-body>
+    <c-modal-footer>
+      <button (click)="toggleCreateAnnouncementButton()" cButton color="secondary">
+        Close
+      </button>
+      <button cButton color="primary" type='submit' (click)="submitForm(createForm.value)">Save changes</button>
+    </c-modal-footer>
+  </c-modal>
 </ng-template>
 
 
