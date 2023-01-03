@@ -1,4 +1,5 @@
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"
+      xmlns="http://www.w3.org/1999/html">
 <c-row class="mt-5">
   <c-col md="1"></c-col>
   <c-col md="10">
@@ -11,13 +12,10 @@
 </c-row>
 
 <c-row class="mt-3">
-  <ng-container *ngTemplateOutlet="liveDemo"></ng-container>
   <ng-container *ngTemplateOutlet="deleteDemo"></ng-container>
+  <ng-container *ngTemplateOutlet="doubleDemo"></ng-container>
   <ng-container *ngTemplateOutlet="createDemo"></ng-container>
   <ng-container *ngTemplateOutlet="editForm"></ng-container>
-  <ng-container *ngTemplateOutlet="scrollableLongContent"></ng-container>
-  <ng-container *ngTemplateOutlet="scrollableLongContent2"></ng-container>
-  <ng-container *ngTemplateOutlet="scrollableLongContent3"></ng-container>
   <c-col md="1"></c-col>
   <c-col md="10">
     <c-card>
@@ -64,7 +62,7 @@
                   <h6 class="pb-0 mb-0">Source url</h6>
                   <p class="pb-0 mb-0">{{value.SourceUrl}}</p>
                   <h6 class="pb-0 mb-0">Description</h6>
-                  <p class="pb-0 mb-0">{{value.Title}}</p>
+                  <p class="pb-0 mb-0">{{value.Description}}</p>
                   <h6 class="pb-0 mb-0">Additional Information</h6>
                   <p class="pb-0">{{value.AdditionalInformation}}</p>
                 </div>
@@ -78,19 +76,7 @@
   </c-col>
 </c-row>
 
-<!-- <c-card>
-    <button (click)="toggleCollapse(1)" cButton class="me-1" color="primary">Button</button>
-    <c-card [ngClass]="'shadow mt-3'" [visible]="additionalInfoVisible" cCollapse>
-      <c-card-body>
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-        richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes
-        anderson cred nesciunt sapiente ea proident.
-      </c-card-body>
-    </c-card>
-</c-card> -->
-
-
-<ng-template #liveDemo>
+<ng-template #deleteDemo>
   <c-modal id="liveDemoModal" [visible]="liveDemoVisible" (visibleChange)="handleLiveDemoChange($event)">
     <c-modal-header>
       <h5 cModalTitle>Delete notification</h5>
@@ -107,31 +93,26 @@
 </ng-template>
 
 <ng-template #editForm>
-<c-modal id="liveEditForm" [visible]="editFormVisible" (visibleChange)="handleEditModalChange($event)">
+<c-modal id="editAnnouncForm" [visible]="editFormVisible" (visibleChange)="handleEditModalChange($event)">
   <c-modal-header>
     Edit form
   </c-modal-header>
   <c-modal-body>
-    <form cForm *ngIf=editFormVisible>
-      <div class="row">
-        <p>Provider before edit: </p>
-        <span>{{getProvider(editAnnouncement.ProviderId)}}</span>
-        <ng-container *ngFor="let provider in editProviders">
-          <span>{{provider.Name}}</span>
-        </ng-container>
-      </div>
+    <form cForm #editAnnouncForm="ngForm" *ngIf=editFormVisible>
+
       <ng-multiselect-dropdown
         [placeholder]="'Providers'"
         [settings]="dropdownSettingsEditProviders"
         [data]="providers"
-        [(ngModel)]="editProviders"
-        (onSelect)="onProviderEditSelect($event)"
+        [ngModel]="editProviders"
+        (onSelect)="providerEditClicked($event)"
         (onDeSelect)="onDeselectEditProviders($event)"
+        [ngModelOptions]="{standalone: true}"
       >
       </ng-multiselect-dropdown>
       <div class="mb-3">
         <label cLabel for="announcementTitleInput1">Title</label>
-        <textarea cFormControl id="announcementTitleInput1" rows="1">{{editAnnouncement.Title}}</textarea>
+        <textarea cFormControl id="announcementTitleInput1" rows="1" name="editedTitle">{{editAnnouncement.Title}}</textarea>
       </div>
       <div class="mb-3">
         <label cLabel for="announcementTitleInput2">Url</label>
@@ -150,25 +131,111 @@
         <textarea cFormControl id="announcementTitleInput5" rows="1">{{editAnnouncement.AdditionalInformation}}</textarea>
       </div>
 
+      <div class="row">
+        <div class="col-md">
+          <div class="mb-2 form-outline datetimepicker">
+            <label cLabel>Start date</label>
+            <form class="row row-cols-sm-auto">
+              <div class="col-12">
+                <div class="input-group">
+                  <input
+                    class="form-control"
+                    placeholder="Start date"
+                    name="dp3"
+                    [(ngModel)]="modelEditStartDate"
+                    ngbDatepicker
+                    #d3="ngbDatepicker"
+                  />
+                  <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d3.toggle()" type="button"></button>
+                </div>
+              </div>
+            </form>
+            <div class="col-md">
+              <label cLabel>Start time</label>
+              <ngb-timepicker
+                [(ngModel)]="timeStartEdit"
+                [seconds]="true"
+                [hourStep]="hourStep"
+                [minuteStep]="minuteStep"
+                [secondStep]="secondStep"
+                [ngModelOptions]="{standalone: true}"></ngb-timepicker>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+        </div>
+        <div class="col-md">
+          <div class="mb-2 form-outline datetimepicker">
+            <label cLabel>End date</label>
+            <form class="row row-cols-sm-auto">
+              <div class="col-12">
+                <div class="input-group">
+                  <input
+                    class="form-control"
+                    placeholder="End date"
+                    name="dp4"
+                    [(ngModel)]="modelEditEndDate"
+                    ngbDatepicker
+                    #d4="ngbDatepicker"
+                  />
+                  <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d4.toggle()" type="button"></button>
+                </div>
+              </div>
+            </form>
+
+          </div>
+          <div class="col-md">
+            <label cLabel>End time</label>
+            <ngb-timepicker
+              [(ngModel)]="timeEndEdit"
+              [seconds]="true"
+              [hourStep]="hourStep"
+              [minuteStep]="minuteStep"
+              [secondStep]="secondStep"
+              [ngModelOptions]="{standalone: true}"></ngb-timepicker>
+          </div>
+        </div>
+      </div>
+
       <div class="mb-3">
         <ng-multiselect-dropdown
           [placeholder]="'Regions'"
           [settings]="dropdownSettingsEditRegions"
           [data]="regions"
           [(ngModel)]="editRegions"
+          [ngModelOptions]="{standalone: true}"
+          (onSelect)="onEditRegionSelect($event)"
+          (onSelectAll)="onEditSelectAllRegions($event)"
+          (onDeSelect)="onEditDeselectRegions($event)"
+          (onDeSelectAll)="onEditDeselectAllRegions($event)"
+        ></ng-multiselect-dropdown>
+      </div>
 
+      <div class="mb-3">
+        <ng-multiselect-dropdown
+          [placeholder]="'Streets'"
+          [settings]="dropdownSettingsEditStreets"
+          [data]="streets"
+          [(ngModel)]="editStreets"
+          [ngModelOptions]="{standalone: true}"
+          (onSelect)="onEditStreetSelect($event)"
+          (onSelectAll)="onEditSelectAllStreets($event)"
+          (onDeSelect)="onEditDeselectStreets($event)"
+          (onDeSelectAll)="onEditDeselectAllStreets($event)"
         ></ng-multiselect-dropdown>
       </div>
     </form>
   </c-modal-body>
   <c-modal-footer>
-    <button (click)="toggleEditDemo()" cButton color="secondary">
+    <button (click)="toggleEditDemoClose()" cButton color="secondary">
       Close
     </button>
-    <button cButton color="primary" >Save changes</button>
+    <button cButton color="primary" type='submit' (click)="saveEdited(editAnnouncement,editAnnouncForm.value)">Save changes</button>
   </c-modal-footer>
 </c-modal>
 </ng-template>
+
+
 <!-- Form for creating new announcement -->
 <ng-template #createDemo>
 <c-modal id="createForm" [visible]="createFormVisible" (visibleChange)="handleCreateAnnouncement($event)">
@@ -314,7 +381,7 @@
 </ng-template>
 
 
-<ng-template #deleteDemo>
+<ng-template #doubleDemo>
   <c-modal id="liveDemoModalAlert" [visible]="doubleAnnouncementVisible">
     <c-modal-header>
       <h5 cModalTitle>Double notification alert</h5>
@@ -330,58 +397,9 @@
 </ng-template>
 
 
-<ng-template #scrollableLongContent>
-  <!--button [cModalToggle]="scrollableLongContentModal.id" cButton>Desciption</button-->
-  <c-modal #scrollableLongContentModal id="scrollableLongContentModal" scrollable [visible]="descriptionDemoVisible" (visibleChange)="handleDescriptionVisible($event)">
-    <c-modal-header>
-      <h5 cModalTitle>Announcement Description</h5>
-      <button [cModalToggle]="scrollableLongContentModal.id" cButtonClose></button>
-    </c-modal-header>
-    <c-modal-body>
-<div>{{announcementDescription}}</div>
-    </c-modal-body>
-    <c-modal-footer>
-      <button [cModalToggle]="scrollableLongContentModal.id" cButton color="secondary">
-        Close
-      </button>
-    </c-modal-footer>
-  </c-modal>
-</ng-template>
 
 
-<ng-template #scrollableLongContent2>
-  <!--button [cModalToggle]="scrollableLongContentModal.id" cButton>Desciption</button-->
-  <c-modal #scrollableLongContentModal id="scrollableAddInfoModal" scrollable [visible]="addInfoDemoVisible" (visibleChange)="handleAddInfoVisible($event)">
-    <c-modal-header>
-      <h5 cModalTitle>Announcement Additional Information</h5>
-      <button [cModalToggle]="scrollableLongContentModal.id" cButtonClose></button>
-    </c-modal-header>
-    <c-modal-body>
-      <div>{{announcementAddInfo}}</div>
-    </c-modal-body>
-    <c-modal-footer>
-      <button [cModalToggle]="scrollableLongContentModal.id" cButton color="secondary">
-        Close
-      </button>
-    </c-modal-footer>
-  </c-modal>
-</ng-template>
 
 
-<ng-template #scrollableLongContent3>
-  <!--button [cModalToggle]="scrollableLongContentModal.id" cButton>Desciption</button-->
-  <c-modal #scrollableLongContentModal id="scrollableContentModal" scrollable [visible]="contentDemoVisible" (visibleChange)="handleContentVisible($event)">
-    <c-modal-header>
-      <h5 cModalTitle>Announcement Content</h5>
-      <button [cModalToggle]="scrollableLongContentModal.id" cButtonClose></button>
-    </c-modal-header>
-    <c-modal-body>
-      <div>{{announcementContent}}</div>
-    </c-modal-body>
-    <c-modal-footer>
-      <button [cModalToggle]="scrollableLongContentModal.id" cButton color="secondary">
-        Close
-      </button>
-    </c-modal-footer>
-  </c-modal>
-</ng-template>
+
+

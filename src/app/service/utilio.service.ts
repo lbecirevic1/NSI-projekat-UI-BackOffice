@@ -6,6 +6,7 @@ import { IAnnouncementHandler } from "../models/announcement-handler"
 
 import { formatDate } from '@angular/common';
 import {randomInt} from "crypto";
+import {end} from "@popperjs/core";
 
 @Injectable({
   providedIn: 'root',
@@ -23,8 +24,35 @@ export class UtilioService {
     return this.http.delete<number>(this.apiUrl + 'announcement?id=' + notificationId);
   }
 
-  editAnnouncement() {
-    //todo
+  editAnnouncement(announcementId:number, providerId:number,title:string,publishDate:string,
+                   startDate:string,endDate:string,startTime: string,
+                   endTime: string,url:any,description:string,
+                   uniqueIdentifier:string,content:string,rawLog:any,addInfo:string,
+                   regions:number[],streets:number[]) {
+
+    let referenceStartDate=startDate+"T"+startTime;
+
+    let referenceEndDate =endDate+"T"+endTime;
+
+    let body = {
+      providerId: providerId,
+      title: title,
+      publishDate: publishDate,
+      referenceStartDate: referenceStartDate,
+      referenceEndDate: referenceEndDate,
+      sourceUrl: url,
+      description: description,
+      uniqueIdentifier: uniqueIdentifier,
+      content: content,
+      rawLog: rawLog,
+      additionalInformation: addInfo,
+      regions: regions,
+      streets: streets,
+      id:announcementId
+
+    }
+console.log(body)
+    return this.http.put('https://localhost:7069/api/announcement?id='+announcementId,body)
   }
 
   getRegions(): Observable<any[]> {
@@ -52,7 +80,7 @@ export class UtilioService {
       referenceEndDate: referenceEndDate,
       sourceUrl: url,
       description: description,
-      uniqueIdentifier: 'test26',
+      uniqueIdentifier: 'test'+(formatDate(new Date(), 'yyyy-MM-ddThh:mm:ss', 'en')).toString(),
       content: content,
       rawLog: 'test',
       additionalInformation: adInfo,
