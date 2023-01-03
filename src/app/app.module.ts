@@ -48,6 +48,9 @@ import {
 
 import { IconModule, IconSetService } from '@coreui/icons-angular';
 import {NgMultiSelectDropDownModule} from "ng-multiselect-dropdown";
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -89,7 +92,10 @@ const APP_CONTAINERS = [
     ListGroupModule,
     CardModule,
     HttpClientModule,
-    NgMultiSelectDropDownModule
+    NgMultiSelectDropDownModule,
+    NgbModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [
     {

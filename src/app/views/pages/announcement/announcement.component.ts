@@ -2,12 +2,21 @@ import {Component, getNgModuleById, OnInit, Provider, ViewChild} from '@angular/
 
 import { UtilioService} from "../../../service/utilio.service";
 import { Announcement} from "../../../models/announcement";
-import {FormBuilder, NgForm} from '@angular/forms';
+import {FormBuilder, FormsModule, NgForm} from '@angular/forms';
 import {Region} from "../../../models/region";
 import {Street} from "../../../models/street";
 import {UtilioProvider} from "../../../models/utilioProvider";
 import {IDropdownSettings} from "ng-multiselect-dropdown";
-
+import {
+  NgbAlertModule,
+  NgbDatepickerModule,
+  NgbDateStruct,
+  NgbTimepicker,
+  NgbTimeStruct,
+  NgbTimepickerModule
+} from "@ng-bootstrap/ng-bootstrap";
+import {formatDate, JsonPipe} from "@angular/common";
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 @Component({
   selector:    'app-announcement',
   templateUrl: './announcement.component.html',
@@ -16,9 +25,19 @@ import {IDropdownSettings} from "ng-multiselect-dropdown";
 
 export class AnnouncementComponent implements OnInit {
 
+
   @ViewChild('createForm', { static: false }) createForm!: NgForm;
+  @ViewChild('editAnnouncForm', { static: false }) editAnnouncForm!: NgForm;
 
   public notifications: Announcement[] = [];
+  timeStart: NgbTimeStruct = { hour: 0, minute: 0, second: 0 };
+  timeEnd: NgbTimeStruct = { hour: 0, minute: 0, second: 0 };
+  timeStartEdit: NgbTimeStruct = { hour: 0, minute: 0, second: 0 };
+  timeEndEdit: NgbTimeStruct = { hour: 0, minute: 0, second: 0 };
+  hourStep = 1;
+  minuteStep = 15;
+  secondStep = 30;
+
   dropdownSettingsRegions:IDropdownSettings={
     singleSelection: false,
     idField: 'regions',
@@ -41,14 +60,52 @@ export class AnnouncementComponent implements OnInit {
 
   dropdownSettingsProviders:IDropdownSettings={
     singleSelection: false,
-    idField: 'providers',
-    textField: 'item_text',
+    idField: 'id',
+    textField: 'name',
     selectAllText: 'Select All',
     unSelectAllText: 'UnSelect All',
     itemsShowLimit: 5,
     allowSearchFilter: true
   };
 
+  dropdownSettingsEditProviders:IDropdownSettings={
+    singleSelection: false,
+    idField: 'id',
+    textField: 'name',
+    selectAllText: 'Select All',
+    unSelectAllText: 'UnSelect All',
+    itemsShowLimit: 5,
+    allowSearchFilter: true
+  };
+
+  dropdownSettingsEditRegions:IDropdownSettings={
+    singleSelection: false,
+    idField: 'editRegions',
+    textField: 'Name',
+    selectAllText: 'Select All',
+    unSelectAllText: 'UnSelect All',
+    itemsShowLimit: 5,
+    allowSearchFilter: true
+  };
+
+  dropdownSettingsEditStreets:IDropdownSettings={
+    singleSelection: false,
+    idField: 'editStreets',
+    textField: 'Name',
+    selectAllText: 'Select All',
+    unSelectAllText: 'UnSelect All',
+    itemsShowLimit: 5,
+    allowSearchFilter: true
+  };
+
+
+  public modelStartDate: any;
+
+  public modelEndDate:any;
+
+  public modelEditStartDate:any;
+
+  public modelEditEndDate:any;
 
   public liveDemoVisible = false;
   public editFormVisible = false;
@@ -71,6 +128,8 @@ export class AnnouncementComponent implements OnInit {
   public clickedRegions:number[]=[];
 
   public clickedProviders:number[]=[]
+
+  public editProviders:any[]=[]
 
   public formBuilder: any;
 
@@ -95,29 +154,22 @@ export class AnnouncementComponent implements OnInit {
 
   public AllProviders:number[]=[];
 
+  public editRegions:number[]=[]
 
-  time: Date = new Date();
-
-  bsValue = new Date();
-  bsRangeValue: Date[];
-  maxDate = new Date();
-  minDate = new Date();
+  public editStreets:number[]=[]
 
   additionalInfoVisible = false;
   public openCoverages = false;
   public indexSelectedCoverage = 0;
 
-    toggleCollapse(index : number): void {
+  toggleCollapse(index : number): void {
     // @ts-ignore
     this.additionalInfoVisible = !this.additionalInfoVisible;
     this.indexSelectedCoverage = index;
   }
 
 
-  constructor(private service: UtilioService) {
-    this.minDate.setDate(this.minDate.getDate() - 1);
-    this.maxDate.setDate(this.maxDate.getDate() + 7);
-    this.bsRangeValue = [this.bsValue, this.maxDate];
+  constructor(private service: UtilioService ) {
     this.formBuilder = FormBuilder;
 
   }
@@ -180,14 +232,36 @@ export class AnnouncementComponent implements OnInit {
     };
 
     this.dropdownSettingsProviders= {
-      singleSelection: false,
+      singleSelection: true,
       idField: 'Id',
       textField: 'Name',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
+      allowSearchFilter: true
+    };
+
+    this.dropdownSettingsEditProviders= {
+      singleSelection: true,
+      idField: 'Id',
+      textField: 'Name',
       itemsShowLimit: 5,
       allowSearchFilter: true
     };
+
+    this.dropdownSettingsEditRegions= {
+      singleSelection: false,
+      idField: 'Id',
+      textField: 'Name',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
+
+    this.dropdownSettingsEditStreets= {
+      singleSelection: false,
+      idField: 'Id',
+      textField: 'Name',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
+
 
 
   }
@@ -197,7 +271,6 @@ export class AnnouncementComponent implements OnInit {
     this.clickedRegions.forEach((element,index)=>{
       if(element==item.Id)this.clickedRegions.splice(index,1);
     })
-    console.log(this.clickedRegions)
   }
 
   onDeselectStreets(item:any){
@@ -205,7 +278,6 @@ export class AnnouncementComponent implements OnInit {
     this.clickedStreets.forEach((element,index)=>{
       if(element==item.Id)this.clickedStreets.splice(index,1);
     })
-    console.log(this.clickedStreets)
   }
 
   onDeselectProviders(item:any){
@@ -213,7 +285,13 @@ export class AnnouncementComponent implements OnInit {
     this.clickedProviders.forEach((element,index)=>{
       if(element==item.Id)this.clickedProviders.splice(index,1);
     })
-    console.log(this.clickedProviders)
+  }
+
+  onDeselectEditProviders(item:any){
+    const index:number=this.editProviders.indexOf(item.Id);
+    this.editProviders.forEach((element,index)=>{
+      if(element==item.Id)this.editProviders.splice(index,1);
+    })
   }
 
 
@@ -221,47 +299,36 @@ export class AnnouncementComponent implements OnInit {
   onRegionSelect(item: any) {
     console.log(item)
     if(this.clickedRegions.includes(item.Id)){
-      console.log("ima")
       const index:number=this.clickedRegions.indexOf(item.Id);
       this.clickedRegions.forEach((element,index)=>{
         if(element==item.Id)this.clickedRegions.splice(index,1);
       })
-      console.log(this.clickedRegions)
     }
-   this.regionClicked(item)
+    this.regionClicked(item)
   }
 
 
   onStreetsSelect(item: any) {
     console.log(item)
     if(this.clickedStreets.includes(item.Id)){
-      console.log("ima")
       const index:number=this.clickedStreets.indexOf(item.Id);
       this.clickedStreets.forEach((element,index)=>{
         if(element==item.Id)this.clickedStreets.splice(index,1);
       })
-      console.log(this.clickedStreets)
     }
     this.streetClicked(item)
   }
 
   onProviderSelect(item: any) {
-    console.log(item)
     if(this.clickedProviders.includes(item.Id)){
-      console.log("ima")
       const index:number=this.clickedProviders.indexOf(item.Id);
       this.clickedProviders.forEach((element,index)=>{
         if(element==item.Id)this.clickedProviders.splice(index,1);
       })
-      console.log(this.clickedProviders)
     }
     this.providerClicked(item)
   }
 
-
-  onSelectAll(items: any) {
-    console.log(items);
-  }
   toggleDeleteButton(itemId: number) {
     this.liveDemoVisible = !this.liveDemoVisible;
     this.deleteItemId = itemId;
@@ -276,19 +343,41 @@ export class AnnouncementComponent implements OnInit {
   }
 
   toggleEditButtonDemo(item: any) {
-    this.toggleEditDemo();
     this.editAnnouncement = item;
+    let tmp=[]
+    tmp.push(this.getProvider(item.ProviderId))
+    this.editProviders=tmp
+    this.toggleEditDemo();
+  }
+
+  getProvider(item:any){
+    let returnProvider:any
+    for(let i=0;i<this.providers.length;i++){
+      if(this.providers.at(i)?.Id==item){
+        returnProvider=this.providers.at(i)
+      }
+    }
+    return returnProvider
   }
 
   toggleEditDemo() {
     this.editFormVisible = !this.editFormVisible;
 
+
   }
 
+  toggleEditDemoClose() {
+    this.editFormVisible = !this.editFormVisible;
+    this.editProviders=[]
+    this.editStreets=[]
+    this.editRegions=[]
+  }
   toggleCreateAnnouncementButton() {
     this.clickedProviders=[];
     this.clickedStreets=[];
     this.clickedRegions=[];
+    this.modelEndDate='';
+    this.modelStartDate='';
     this.createFormVisible = !this.createFormVisible;
   }
 
@@ -301,26 +390,22 @@ export class AnnouncementComponent implements OnInit {
 
 
   handleCreateAnnouncement(event:boolean) {
-    console.log(this.regions)
     this.createAnnouncementVisible=event;
-
   }
   handleEditModalChange(event: boolean) {
     this.editFormVisible = event;
   }
 
   refreshAnnouncements() {
-    this.service.getAnnouncements().subscribe(data => {
-      for (let i = 0; i < data.length; i++) {
-        this.notifications.push(data[i]);
-      }
-    })
+    window.location.reload();
   }
 
   deleteItem() {
-    this.service.deleteAnnouncement(this.deleteItemId).subscribe();
-    this.deleteItemId = 0;
-    this.liveDemoVisible = !this.liveDemoVisible;
+    this.service.deleteAnnouncement(this.deleteItemId).subscribe(data=>{
+      this.deleteItemId = 0;
+      this.liveDemoVisible = !this.liveDemoVisible;
+    });
+    this.refreshAnnouncements()
   }
 
   doubleAnnouncement(){
@@ -332,31 +417,57 @@ export class AnnouncementComponent implements OnInit {
   }
 
   submitForm(values:any){
-let resp=this.service.postAnnouncement(values.newAnnouncProviderId,values.newAnnouncTitle,
-      values.newAnnouncUrl,values.newAnnouncDescription,values.newAnnouncContent,
-      values.newAnnouncAddInfo,values.newAnnouncStartDate,values.newAnnouncEndDate,
-      values.newAnnouncStartTime,values.newAnnouncEndTime,this.clickedRegions,this.clickedStreets);
-if(resp==true){
-  this.createFormVisible = !this.createFormVisible;
-  this.handleDoubleAnnouncement(true);
-  this.doubleAnnouncementVisible=true;
-}
+    let providerId=this.clickedProviders.at(0);
+    let startDate='';
+    let endDate='';
+    let startTime='';
+    let endTime='';
+    if(this.modelStartDate.day==undefined){
+      startDate=(formatDate(new Date(), 'yyyy-MM-dd', 'en')).toString();
+    }else {
+      startDate=this.dateFormat(this.modelStartDate)
+    }
+
+    if(this.modelEndDate.day==undefined){
+      endDate=(formatDate(new Date(), 'yyyy-MM-dd', 'en')).toString();
+    }else {
+      endDate=this.dateFormat(this.modelEndDate)
+    }
+
+    startTime=this.timeFormat(this.timeStart)
+    endTime=this.timeFormat(this.timeEnd)
+    console.log(startDate)
+    if(providerId!=null)
+      this.service.postAnnouncement(providerId,values.newAnnouncTitle,
+        values.newAnnouncUrl,values.newAnnouncDescription,values.newAnnouncContent,
+        values.newAnnouncAddInfo,startDate,endDate,
+        startTime,endTime,this.clickedRegions,this.clickedStreets).subscribe(data=>{
+          this.handleCreateAnnouncement(false);
+          this.createFormVisible=!this.createFormVisible
+          this.refreshAnnouncements()
+        },
+        error=>{
+          this.createFormVisible=false
+          this.handleCreateAnnouncement(false);
+          this.doubleAnnouncementVisible=!this.doubleAnnouncementVisible
+          this.handleDoubleAnnouncement(true);
+        })
+
   }
 
-streetClicked(street:any){
+  streetClicked(street:any){
     let streetId=street.Id;
     if(this.clickedStreets.includes(streetId)){
       const index: number = this.clickedStreets.indexOf(streetId);
-     this.clickedStreets.forEach((element,index)=>{
-       if(element==streetId)this.clickedStreets.splice(index,1);
-     })
+      this.clickedStreets.forEach((element,index)=>{
+        if(element==streetId)this.clickedStreets.splice(index,1);
+      })
     }
     else this.clickedStreets.push(streetId);
-    console.log(this.clickedStreets);
 
-}
+  }
 
-regionClicked(region:any){
+  regionClicked(region:any){
     let regionId=region.Id
     if(this.clickedRegions.includes(regionId)){
       const index:number=this.clickedRegions.indexOf(regionId);
@@ -365,8 +476,7 @@ regionClicked(region:any){
       })
     }
     else this.clickedRegions.push(regionId);
-    console.log(this.clickedRegions);
-}
+  }
 
   providerClicked(provider:any){
     let providerId=provider.Id
@@ -377,109 +487,269 @@ regionClicked(region:any){
       })
     }
     else this.clickedProviders.push(providerId);
-    console.log(this.clickedProviders);
   }
 
-showDescription(description:string){
-this.announcementDescription=description;
-  this.descriptionDemoVisible = !this.descriptionDemoVisible;
-}
+  providerEditClicked(provider:any){
+    let providerId=provider.Id
+    this.editProviders.splice(0,1);
+    this.editProviders.push(this.getProvider(providerId))
+  }
+
+  showDescription(description:string){
+    this.announcementDescription=description;
+    this.descriptionDemoVisible = !this.descriptionDemoVisible;
+  }
 
 
-showAddInfo(addInfo:string){
-this.announcementAddInfo=addInfo;
-this.addInfoDemoVisible=!this.addInfoDemoVisible;
-}
+  showAddInfo(addInfo:string){
+    this.announcementAddInfo=addInfo;
+    this.addInfoDemoVisible=!this.addInfoDemoVisible;
+  }
 
-showContent(content:string){
-this.announcementContent=content;
-this.contentDemoVisible=!this.contentDemoVisible;
-}
+  showContent(content:string){
+    this.announcementContent=content;
+    this.contentDemoVisible=!this.contentDemoVisible;
+  }
 
-handleContentVisible(event:boolean){
+  handleContentVisible(event:boolean){
     this.contentDemoVisible=event;
-}
+  }
 
-handleAddInfoVisible(event:boolean){
+  handleAddInfoVisible(event:boolean){
     this.addInfoDemoVisible=event;
-}
+  }
 
-handleDescriptionVisible(event:boolean){
+  handleDescriptionVisible(event:boolean){
     this.descriptionDemoVisible=event;
-}
+  }
 
-parseDate(date:string){
+  parseDate(date:string){
     if(date==null){
       return "/"
     }
-  let start=date.indexOf("-")
-  let start2=date.lastIndexOf("-")
-  let time=date.indexOf("T")
-  let godina=date.substring(0,start)
-  let mjesec=date.substring(start+1,start2)
-  let dan=date.substring(start2+1,time)
+    let start=date.indexOf("-")
+    let start2=date.lastIndexOf("-")
+    let time=date.indexOf("T")
+    let godina=date.substring(0,start)
+    let mjesec=date.substring(start+1,start2)
+    let dan=date.substring(start2+1,time)
 
-  if(dan.length==1){
-    dan='0'+dan;
+    if(dan.length==1){
+      dan='0'+dan;
+    }
+    if(mjesec.length==1){
+      mjesec='0'+mjesec;
+    }
+    let end;
+    end=date.length;
+
+    let startT=date.indexOf(":")
+    let startT2=date.lastIndexOf(":")
+    let startH=date.substring(time+1,startT)
+    let startM=date.substring(startT+1,startT2)
+    let startS=date.substring(startT2+1,end)
+
+    let datum=dan+"-"+mjesec+"-"+godina+ " "+startH+":"+startM+":"+startS;
+    return datum;
   }
-  if(mjesec.length==1){
-    mjesec='0'+mjesec;
+
+  onSelectAllRegions(items:any){
+    this.clickedRegions=this.AllRegions;
   }
-  let end;
-   end=date.length;
 
-  let startT=date.indexOf(":")
-  let startT2=date.lastIndexOf(":")
-  let startH=date.substring(time+1,startT)
-  let startM=date.substring(startT+1,startT2)
-  let startS=date.substring(startT2+1,end)
-
- let datum=dan+"-"+mjesec+"-"+godina+ " "+startH+":"+startM+":"+startS;
-  return datum;
-}
-
-onSelectAllRegions(items:any){
- this.clickedRegions=this.AllRegions;
- console.log(this.clickedRegions);
-}
-
-onDeselectAllRegions(items:any){
+  onDeselectAllRegions(items:any){
     this.clickedRegions=[]
-  console.log(this.clickedRegions)
-}
+  }
 
   onSelectAllStreets(items:any){
     this.clickedStreets=this.AllStreets;
-    console.log(this.clickedStreets);
   }
 
   onDeselectAllStreets(items:any){
     this.clickedStreets=[]
-    console.log(this.clickedStreets)
   }
 
   onSelectAllProviders(items:any){
     this.clickedProviders=this.AllProviders;
-    console.log(this.clickedProviders);
   }
 
   onDeselectAllProviders(items:any){
     this.clickedProviders=[]
-    console.log(this.clickedProviders)
   }
 
   providerName(itemId:number){
-  let name=''
-  for(let i=0;i<this.providers.length;i++){
-    if(this.providers.at(i)?.Id==itemId){
+    let name=''
+    for(let i=0;i<this.providers.length;i++){
+      if(this.providers.at(i)?.Id==itemId){
+        // @ts-ignore
+        name=this.providers.at(i).Name;
+      }
+
+    }
+    return name;
+  }
+
+  timeFormat(time:any){
+    let finalTime=''
+    if(time.hour.toString().length==1){
+      finalTime='0'+time.hour+":"
+    }
+    else finalTime=time.hour+":"
+    if(time.minute.toString().length==1){
+      finalTime=finalTime+'0'+time.minute+":"
+    }
+    else finalTime=finalTime+time.minute+":"
+    if(time.second.toString().length==1){
+      finalTime=finalTime+'0'+time.second
+    }
+    else finalTime=finalTime+time.second
+
+    return finalTime
+  }
+
+  dateFormat(date:any){
+    let finalDate=''
+    finalDate=date.year+"-"
+    if(date.month.toString().length==1){
+      finalDate=finalDate+'0'+date.month+"-"
+    }
+    else finalDate=finalDate+date.month+"-"
+    if(date.day.toString().length==1){
+      finalDate=finalDate+'0'+date.day
+    }
+    else finalDate=finalDate+date.day
+
+    return finalDate
+  }
+
+  onEditSelectAllRegions(items:any){
+    this.editRegions=this.AllRegions;
+  }
+
+  onEditDeselectAllRegions(items:any){
+    this.editRegions=[]
+  }
+
+  onEditDeselectRegions(item:any){
+    const index:number=this.editRegions.indexOf(item.Id);
+    this.editRegions.forEach((element,index)=>{
+      if(element==item.Id)this.editRegions.splice(index,1);
+    })
+  }
+
+  onEditRegionSelect(item: any) {
+    if(this.editRegions.includes(item.Id)){
+      const index:number=this.editRegions.indexOf(item.Id);
+      this.editRegions.forEach((element,index)=>{
+        if(element==item.Id)this.editRegions.splice(index,1);
+      })
+    }
+    this.regionEditClicked(item)
+  }
+  regionEditClicked(region:any){
+    let regionId=region.Id
+    if(this.editRegions.includes(regionId)){
+      const index:number=this.editRegions.indexOf(regionId);
+      this.editRegions.forEach((element,index)=>{
+        if(element==regionId)this.editRegions.splice(index,1);
+      })
+    }
+    else this.editRegions.push(regionId);
+  }
+
+
+  onEditSelectAllStreets(items:any){
+    this.editStreets=this.AllStreets;
+  }
+
+  onEditDeselectAllStreets(items:any){
+    this.editStreets=[]
+  }
+
+  onEditDeselectStreets(item:any){
+    const index:number=this.editStreets.indexOf(item.Id);
+    this.editStreets.forEach((element,index)=>{
+      if(element==item.Id)this.editStreets.splice(index,1);
+    })
+  }
+
+  onEditStreetSelect(item: any) {
+    if(this.editStreets.includes(item.Id)){
+      const index:number=this.editStreets.indexOf(item.Id);
+      this.editStreets.forEach((element,index)=>{
+        if(element==item.Id)this.editStreets.splice(index,1);
+      })
+    }
+    this.streetEditClicked(item)
+  }
+  streetEditClicked(street:any){
+    let streetId=street.Id
+    if(this.editStreets.includes(streetId)){
+      const index:number=this.editStreets.indexOf(streetId);
+      this.editStreets.forEach((element,index)=>{
+        if(element==streetId)this.editStreets.splice(index,1);
+      })
+    }
+    else this.editStreets.push(streetId);
+  }
+
+
+  saveEdited(announcement:any,values:any){
+    // @ts-ignore
+    let title=document.getElementById('announcementTitleInput1').value;
+    // @ts-ignore
+    let url=document.getElementById('announcementTitleInput2').value
+    // @ts-ignore
+    let description=document.getElementById('announcementTitleInput3').value
+    // @ts-ignore
+    let content=document.getElementById('announcementTitleInput4').value
+    // @ts-ignore
+    let addInfo=document.getElementById('announcementTitleInput5').value
+    let announcementId=announcement.Id;
+    let announcementRaw=announcement.RawLog
+    let announcementUnique=announcement.UniqueIdentifier
+
+    let regionsEdit:number[]=[]
+    for(let i=0;i<this.editRegions.length-1;i++){
       // @ts-ignore
-      name=this.providers.at(i).Name;
+      regionsEdit.push(this.editRegions.at(i).Id)
+    }
+    let streetsEdit:number[]=[]
+    for(let i=0;i<this.editStreets.length-1;i++){
+      // @ts-ignore
+      streetsEdit.push(this.editStreets.at(i).Id)
     }
 
-  }
-  return name;
-}
+    let startDateEdit='';
+    let endDateEdit='';
+    let startTimeEdit='';
+    let endTimeEdit='';
+    if(this.modelEditStartDate==undefined){
+      startDateEdit=(formatDate(new Date(), 'yyyy-MM-dd', 'en')).toString();
+    }else {
+      startDateEdit=this.dateFormat(this.modelEditStartDate)
+    }
 
+    if(this.modelEditEndDate==undefined){
+      endDateEdit=(formatDate(new Date(), 'yyyy-MM-dd', 'en')).toString();
+    }else {
+      endDateEdit=this.dateFormat(this.modelEditEndDate)
+    }
+
+    startTimeEdit=this.timeFormat(this.timeStartEdit)
+    endTimeEdit=this.timeFormat(this.timeEndEdit)
+
+    let publishDate=(formatDate(new Date(), 'yyyy-MM-ddThh:mm:ss', 'en')).toString();
+
+    let providerId=this.editProviders.at(0).Id;
+    this.service.editAnnouncement(announcementId,providerId,title,publishDate,startDateEdit,
+      endDateEdit,startTimeEdit,endTimeEdit,url,description,announcementUnique,content,announcementRaw,addInfo,
+      regionsEdit,streetsEdit).subscribe(data=>{
+      this.handleEditModalChange(false);
+      this.editFormVisible=!this.editFormVisible
+      this.refreshAnnouncements()
+    })
+  }
 
 }
 

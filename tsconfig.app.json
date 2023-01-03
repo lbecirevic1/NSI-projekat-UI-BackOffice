@@ -6,7 +6,8 @@
     "types": [],
     "paths": {
       "@docs-components/*": ["./src/components/*"]
-    }
+    },
+    "experimentalDecorators": true,
   },
   "files": [
     "src/main.ts",
