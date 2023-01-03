@@ -7,6 +7,7 @@ import { RegisterComponent } from './register/register.component';
 import { Page404Component } from './page404/page404.component';
 import { Page500Component } from './page500/page500.component';
 import { AnnouncementComponent } from './announcement/announcement.component';
+import { RegionComponent } from './region/region.component';
 import {
   ButtonModule,
   CardModule,
@@ -48,6 +49,7 @@ import { CollapsesComponent } from '../base/collapses/collapses.component';
     Page404Component,
     Page500Component,
     AnnouncementComponent,
+    RegionComponent,
     UsersComponent,
     UserSettingsComponent,
   ],

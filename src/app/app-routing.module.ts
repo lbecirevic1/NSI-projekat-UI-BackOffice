@@ -7,6 +7,7 @@ import { Page500Component } from './views/pages/page500/page500.component';
 import { LoginComponent } from './views/pages/login/login.component';
 import { RegisterComponent } from './views/pages/register/register.component';
 import { AnnouncementComponent } from "./views/pages/announcement/announcement.component";
+import { RegionComponent } from "./views/pages/region/region.component";
 import { AnnouncementHandlerComponent } from "./views/pages/handle-announcement/handle.announcement.component";
 
 const routes: Routes = [
@@ -115,6 +116,13 @@ const routes: Routes = [
     component: AnnouncementHandlerComponent,
     data: {
       title: 'Announcement handling & review'
+    }
+  },
+  {
+    path: 'region',
+    component: RegionComponent,
+    data: {
+      title: 'Region Page'
     }
   },
   { path: '**', redirectTo: 'dashboard' },

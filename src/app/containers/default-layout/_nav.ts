@@ -247,6 +247,10 @@ export const navItems: INavData[] = [
       {
         name: 'Announcements',
         url: '/announcement'
+      },
+      {
+        name: 'Regions',
+        url: '/region'
       }
     ]
   },
