@@ -5,6 +5,7 @@ import { Announcement } from "../models/announcement";
 import { IAnnouncementHandler } from "../models/announcement-handler"
 
 import { formatDate } from '@angular/common';
+import {randomInt} from "crypto";
 
 @Injectable({
   providedIn: 'root',
@@ -34,45 +35,15 @@ export class UtilioService {
     return this.http.get<any[]>('https://localhost:7069/api/streets')
   }
 
-  postAnnouncement(providerId: string, title: string, url: any, description: string,
+  postAnnouncement(providerId: number, title: string, url: any, description: string,
     content: string, adInfo: string, startDate: string, endDate: string, startTime: string,
-    endTime: string, streets: number[],
-    regions: number[]) {
-    let start = startDate.indexOf("/")
-    let start2 = startDate.lastIndexOf("/")
-    let dan = startDate.substring(0, start)
-    let mjesec = startDate.substring(start + 1, start2)
-    let godina = startDate.substring(start2 + 1, startDate.length)
+    endTime: string, regions: number[],streets:number[]) {
 
-    if (dan.length == 1) {
-      dan = '0' + dan;
-    }
-    if (mjesec.length == 1) {
-      mjesec = '0' + mjesec;
-    }
+    console.log(regions)
+    console.log(streets)
+    let referenceStartDate=startDate+"T"+startTime;
 
-    let startT = startTime.indexOf(":")
-    let startT2 = startTime.lastIndexOf(":")
-    let startH = startTime.substring(0, startT)
-    let startM = startTime.substring(startT + 1, startT2)
-    let startS = startTime.substring(startT2 + 1, startTime.length)
-
-    let end = endDate.indexOf("/")
-    let end2 = endDate.lastIndexOf("/")
-    let danEnd = endDate.substring(0, end)
-    let mjesecEnd = endDate.substring(end + 1, end2)
-    let godinaEnd = endDate.substring(end2 + 1, endDate.length)
-
-    let endT = endTime.indexOf(":")
-    let endT2 = endTime.lastIndexOf(":")
-    let endH = endTime.substring(0, endT)
-    let endM = endTime.substring(endT + 1, endT2)
-    let endS = endTime.substring(endT2 + 1, endTime.length)
-
-    let referenceStartDate = godina + '-' + mjesec + '-' + dan + 'T' + startH + ':' + startM + ':' + startS;
-
-    let referenceEndDate = godinaEnd + '-' + mjesecEnd + '-' + danEnd + 'T' + endH + ':' + endM + ':' + endS;
-
+    let referenceEndDate =endDate+"T"+endTime;
     let body = {
       providerId: providerId,
       title: title,
@@ -81,7 +52,7 @@ export class UtilioService {
       referenceEndDate: referenceEndDate,
       sourceUrl: url,
       description: description,
-      uniqueIdentifier: 'test',
+      uniqueIdentifier: 'test26',
       content: content,
       rawLog: 'test',
       additionalInformation: adInfo,
@@ -90,13 +61,8 @@ export class UtilioService {
 
     }
     let body2 = JSON.stringify(body);
-    let errorR = false;
     console.log(JSON.stringify(body));
-    this.http.post<any>('https://localhost:7069/api/announcement', body).subscribe(
-      data => { },
-      error => { console.log(error.status); errorR = true; }
-    )
-    return errorR;
+    return this.http.post<any>('https://localhost:7069/api/announcement', body)
   }
   getLogs(page: number, recordsPerPage: number, logParameters: any = {}, sortCriteria: any = undefined) {
     let body = {

@@ -8,6 +8,7 @@ import {
   DropdownModule,
   FormModule,
   GridModule,
+  CollapseModule
 } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
 import { AnnouncementComponent } from './announcement/announcement.component';
@@ -36,7 +37,13 @@ import { NotificationsModule } from '../notifications/notifications.module';
 import { DocsComponentsModule } from '../../../components';
 import { UsersComponent } from './users/users.component';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
-import {ListFilterPipe} from "ng-multiselect-dropdown/list-filter.pipe";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
+import {MatInputModule} from "@angular/material/input";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {BrowserModule} from "@angular/platform-browser";
 
 @NgModule({
   declarations: [
@@ -46,7 +53,7 @@ import {ListFilterPipe} from "ng-multiselect-dropdown/list-filter.pipe";
     Page500Component,
     AnnouncementComponent,
     UsersComponent,
-    UserSettingsComponent
+    UserSettingsComponent,
   ],
   imports: [
     CommonModule,
@@ -77,7 +84,18 @@ import {ListFilterPipe} from "ng-multiselect-dropdown/list-filter.pipe";
     FormsModule,
     DocsComponentsModule,
     DropdownModule,
-    NgMultiSelectDropDownModule
-  ],
+    NgMultiSelectDropDownModule,
+    CollapseModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatInputModule,
+    NgbModule,
+    FormsModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    ReactiveFormsModule
+  ]
 })
 export class PagesModule {}
