@@ -1,5 +1,5 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Announcement } from "../models/announcement";
 import { IAnnouncementHandler } from "../models/announcement-handler"
@@ -9,14 +9,12 @@ import {randomInt} from "crypto";
 import {end} from "@popperjs/core";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class UtilioService {
   readonly apiUrl = 'https://localhost:7069/api/';
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   getAnnouncements(): Observable<any[]> {
     return this.http.get<any[]>('https://localhost:7069/api/announcement');
@@ -94,6 +92,28 @@ console.log(body)
     console.log(JSON.stringify(body));
     return this.http.post<any>('https://localhost:7069/api/announcement', body)
   }
+  getLogs(page: number, recordsPerPage: number, logParameters: any = {}, sortCriteria: any = undefined) {
+    let body = {
+      paging: {
+        page: page,
+        recordsPerPage: recordsPerPage,
+      },
+      logParameters: logParameters,
+      sortCriteria: sortCriteria
+    };
+
+    let headers = new HttpHeaders();
+    headers = headers.append('Access-Control-Allow-Origin', '*');
+    return this.http.post<any>(
+      'https://localhost:7069/api/ProviderAggregator/pagedLogs',
+      body,
+      {headers}
+    );
+  }
+  postAnnouncement2(values: any) {
+    console.log(values);
+  }
+
 
   //Handling announcements
   async handleAnnouncements() {

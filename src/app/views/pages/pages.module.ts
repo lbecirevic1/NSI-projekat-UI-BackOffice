@@ -1,12 +1,7 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
-import { PagesRoutingModule } from './pages-routing.module';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
-import { Page404Component } from './page404/page404.component';
-import { Page500Component } from './page500/page500.component';
-import { AnnouncementComponent } from './announcement/announcement.component';
+import { HttpClientModule } from '@angular/common/http';
 import {
   ButtonModule,
   CardModule,
@@ -16,7 +11,12 @@ import {
   CollapseModule
 } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
-import { HttpClientModule } from '@angular/common/http';
+import { AnnouncementComponent } from './announcement/announcement.component';
+import { LoginComponent } from './login/login.component';
+import { Page404Component } from './page404/page404.component';
+import { Page500Component } from './page500/page500.component';
+import { PagesRoutingModule } from './pages-routing.module';
+import { RegisterComponent } from './register/register.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -37,11 +37,8 @@ import { NotificationsModule } from '../notifications/notifications.module';
 import { DocsComponentsModule } from '../../../components';
 import { UsersComponent } from './users/users.component';
 import { UserSettingsComponent } from './user-settings/user-settings.component';
-import {ListFilterPipe} from "ng-multiselect-dropdown/list-filter.pipe";
-
-import { CollapsesComponent } from '../base/collapses/collapses.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
-import {NgbDatepickerModule, NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
 import {MatInputModule} from "@angular/material/input";
