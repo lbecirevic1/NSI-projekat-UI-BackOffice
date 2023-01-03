@@ -27,9 +27,13 @@ export class AnnouncementComponent implements OnInit {
 
 
   @ViewChild('createForm', { static: false }) createForm!: NgForm;
+  @ViewChild('editAnnouncForm', { static: false }) editAnnouncForm!: NgForm;
+
   public notifications: Announcement[] = [];
   timeStart: NgbTimeStruct = { hour: 0, minute: 0, second: 0 };
   timeEnd: NgbTimeStruct = { hour: 0, minute: 0, second: 0 };
+  timeStartEdit: NgbTimeStruct = { hour: 0, minute: 0, second: 0 };
+  timeEndEdit: NgbTimeStruct = { hour: 0, minute: 0, second: 0 };
   hourStep = 1;
   minuteStep = 15;
   secondStep = 30;
@@ -84,10 +88,24 @@ export class AnnouncementComponent implements OnInit {
     allowSearchFilter: true
   };
 
+  dropdownSettingsEditStreets:IDropdownSettings={
+    singleSelection: false,
+    idField: 'editStreets',
+    textField: 'Name',
+    selectAllText: 'Select All',
+    unSelectAllText: 'UnSelect All',
+    itemsShowLimit: 5,
+    allowSearchFilter: true
+  };
+
 
   public modelStartDate: any;
 
   public modelEndDate:any;
+
+  public modelEditStartDate:any;
+
+  public modelEditEndDate:any;
 
   public liveDemoVisible = false;
   public editFormVisible = false;
@@ -138,11 +156,7 @@ export class AnnouncementComponent implements OnInit {
 
   public editRegions:number[]=[]
 
-
-  bsValue = new Date();
-  bsRangeValue: Date[];
-  maxDate = new Date();
-  minDate = new Date();
+  public editStreets:number[]=[]
 
   additionalInfoVisible = false;
   public openCoverages = false;
@@ -156,9 +170,6 @@ export class AnnouncementComponent implements OnInit {
 
 
   constructor(private service: UtilioService ) {
-    this.minDate.setDate(this.minDate.getDate() - 1);
-    this.maxDate.setDate(this.maxDate.getDate() + 7);
-    this.bsRangeValue = [this.bsValue, this.maxDate];
     this.formBuilder = FormBuilder;
 
   }
@@ -222,24 +233,35 @@ export class AnnouncementComponent implements OnInit {
 
     this.dropdownSettingsProviders= {
       singleSelection: true,
-      idField: 'id',
-      textField: 'name',
+      idField: 'Id',
+      textField: 'Name',
       allowSearchFilter: true
     };
 
     this.dropdownSettingsEditProviders= {
       singleSelection: true,
-      idField: 'id',
-      textField: 'name',
+      idField: 'Id',
+      textField: 'Name',
+      itemsShowLimit: 5,
       allowSearchFilter: true
     };
 
     this.dropdownSettingsEditRegions= {
-      singleSelection: true,
+      singleSelection: false,
       idField: 'Id',
       textField: 'Name',
+      itemsShowLimit: 5,
       allowSearchFilter: true
     };
+
+    this.dropdownSettingsEditStreets= {
+      singleSelection: false,
+      idField: 'Id',
+      textField: 'Name',
+      itemsShowLimit: 5,
+      allowSearchFilter: true
+    };
+
 
 
   }
@@ -318,23 +340,6 @@ export class AnnouncementComponent implements OnInit {
     this.providerClicked(item)
   }
 
-  onProviderEditSelect(item: any) {
-    console.log(item)
-    if(this.editProviders.includes(item.Id)){
-      console.log("ima")
-      const index:number=this.editProviders.indexOf(item.Id);
-      this.editProviders.forEach((element,index)=>{
-        if(element==item.Id)this.editProviders.splice(index,1);
-      })
-      console.log(this.editProviders)
-    }
-    this.providerEditClicked(item)
-  }
-
-
-  onSelectAll(items: any) {
-    console.log(items);
-  }
   toggleDeleteButton(itemId: number) {
     this.liveDemoVisible = !this.liveDemoVisible;
     this.deleteItemId = itemId;
@@ -355,6 +360,7 @@ export class AnnouncementComponent implements OnInit {
     console.log(tmp)
     this.editProviders=tmp
     console.log(this.editProviders)
+    console.log(this.providers)
     this.toggleEditDemo();
   }
 
@@ -365,18 +371,21 @@ export class AnnouncementComponent implements OnInit {
         returnProvider=this.providers.at(i)
       }
     }
-    return {id:item,name:returnProvider.Name}
-  }
-
-  getRegions(item:any){
-      let regionsEdit:[]
-
+    return returnProvider
   }
 
   toggleEditDemo() {
     this.editFormVisible = !this.editFormVisible;
+
+
   }
 
+  toggleEditDemoClose() {
+    this.editFormVisible = !this.editFormVisible;
+    this.editProviders=[]
+    this.editStreets=[]
+    this.editRegions=[]
+  }
   toggleCreateAnnouncementButton() {
     this.clickedProviders=[];
     this.clickedStreets=[];
@@ -402,17 +411,15 @@ export class AnnouncementComponent implements OnInit {
   }
 
   refreshAnnouncements() {
-    this.service.getAnnouncements().subscribe(data => {
-      for (let i = 0; i < data.length; i++) {
-        this.notifications.push(data[i]);
-      }
-    })
+  window.location.reload();
   }
 
   deleteItem() {
-    this.service.deleteAnnouncement(this.deleteItemId).subscribe();
-    this.deleteItemId = 0;
-    this.liveDemoVisible = !this.liveDemoVisible;
+   this.service.deleteAnnouncement(this.deleteItemId).subscribe(data=>{
+     this.deleteItemId = 0;
+     this.liveDemoVisible = !this.liveDemoVisible;
+   });
+    this.refreshAnnouncements()
   }
 
   doubleAnnouncement(){
@@ -432,26 +439,32 @@ export class AnnouncementComponent implements OnInit {
 if(this.modelStartDate.day==undefined){
   startDate=(formatDate(new Date(), 'yyyy-MM-dd', 'en')).toString();
 }else {
-  startDate = this.modelStartDate.year + "-" + this.modelStartDate.month + "-" + this.modelStartDate.day;
+  startDate=this.dateFormat(this.modelStartDate)
 }
 
 if(this.modelEndDate.day==undefined){
       endDate=(formatDate(new Date(), 'yyyy-MM-dd', 'en')).toString();
 }else {
-  endDate = this.modelEndDate.year + "-" + this.modelEndDate.month + "-" + this.modelEndDate.day;
+  endDate=this.dateFormat(this.modelEndDate)
     }
 
-startDate=this.dateFormat(this.modelStartDate)
-endDate=this.dateFormat(this.modelEndDate)
 startTime=this.timeFormat(this.timeStart)
 endTime=this.timeFormat(this.timeEnd)
+    console.log(startDate)
   if(providerId!=null)
 this.service.postAnnouncement(providerId,values.newAnnouncTitle,
       values.newAnnouncUrl,values.newAnnouncDescription,values.newAnnouncContent,
       values.newAnnouncAddInfo,startDate,endDate,
       startTime,endTime,this.clickedRegions,this.clickedStreets).subscribe(data=>{
         this.handleCreateAnnouncement(false);
-
+        this.createFormVisible=!this.createFormVisible
+        this.refreshAnnouncements()
+},
+error=>{
+        this.createFormVisible=false
+        this.handleCreateAnnouncement(false);
+  this.doubleAnnouncementVisible=!this.doubleAnnouncementVisible
+        this.handleDoubleAnnouncement(true);
 })
 
   }
@@ -495,13 +508,8 @@ regionClicked(region:any){
 
   providerEditClicked(provider:any){
     let providerId=provider.Id
-    if(this.editProviders.includes(providerId)){
-      const index:number=this.editProviders.indexOf(providerId);
-      this.editProviders.forEach((element,index)=>{
-        if(element==providerId)this.editProviders.splice(index,1);
-      })
-    }
-    else this.editProviders.push(providerId);
+    this.editProviders.splice(0,1);
+    this.editProviders.push(this.getProvider(providerId))
     console.log(this.editProviders);
   }
 
@@ -636,6 +644,145 @@ dateFormat(date:any){
   else finalDate=finalDate+date.day
 
   return finalDate
+}
+
+  onEditSelectAllRegions(items:any){
+    this.editRegions=this.AllRegions;
+  }
+
+  onEditDeselectAllRegions(items:any){
+    this.editRegions=[]
+  }
+
+  onEditDeselectRegions(item:any){
+    const index:number=this.editRegions.indexOf(item.Id);
+    this.editRegions.forEach((element,index)=>{
+      if(element==item.Id)this.editRegions.splice(index,1);
+    })
+    console.log(this.editRegions)
+  }
+
+  onEditRegionSelect(item: any) {
+    console.log(item)
+    if(this.editRegions.includes(item.Id)){
+      console.log("ima")
+      const index:number=this.editRegions.indexOf(item.Id);
+      this.editRegions.forEach((element,index)=>{
+        if(element==item.Id)this.editRegions.splice(index,1);
+      })
+      console.log(this.editRegions)
+    }
+    this.regionEditClicked(item)
+  }
+  regionEditClicked(region:any){
+    let regionId=region.Id
+    if(this.editRegions.includes(regionId)){
+      const index:number=this.editRegions.indexOf(regionId);
+      this.editRegions.forEach((element,index)=>{
+        if(element==regionId)this.editRegions.splice(index,1);
+      })
+    }
+    else this.editRegions.push(regionId);
+    console.log(this.editRegions);
+  }
+
+
+  onEditSelectAllStreets(items:any){
+    this.editStreets=this.AllStreets;
+  }
+
+  onEditDeselectAllStreets(items:any){
+    this.editStreets=[]
+  }
+
+  onEditDeselectStreets(item:any){
+    const index:number=this.editStreets.indexOf(item.Id);
+    this.editStreets.forEach((element,index)=>{
+      if(element==item.Id)this.editStreets.splice(index,1);
+    })
+    console.log(this.editStreets)
+  }
+
+  onEditStreetSelect(item: any) {
+    console.log(item)
+    if(this.editStreets.includes(item.Id)){
+      console.log("ima")
+      const index:number=this.editStreets.indexOf(item.Id);
+      this.editStreets.forEach((element,index)=>{
+        if(element==item.Id)this.editStreets.splice(index,1);
+      })
+      console.log(this.editStreets)
+    }
+    this.streetEditClicked(item)
+  }
+  streetEditClicked(street:any){
+    let streetId=street.Id
+    if(this.editStreets.includes(streetId)){
+      const index:number=this.editStreets.indexOf(streetId);
+      this.editStreets.forEach((element,index)=>{
+        if(element==streetId)this.editStreets.splice(index,1);
+      })
+    }
+    else this.editStreets.push(streetId);
+    console.log(this.editStreets);
+  }
+
+
+  saveEdited(announcement:any,values:any){
+      // @ts-ignore
+  let title=document.getElementById('announcementTitleInput1').value;
+  // @ts-ignore
+  let url=document.getElementById('announcementTitleInput2').value
+  // @ts-ignore
+  let description=document.getElementById('announcementTitleInput3').value
+  // @ts-ignore
+  let content=document.getElementById('announcementTitleInput4').value
+  // @ts-ignore
+  let addInfo=document.getElementById('announcementTitleInput5').value
+  let announcementId=announcement.Id;
+    let announcementRaw=announcement.RawLog
+    let announcementUnique=announcement.UniqueIdentifier
+
+  let regionsEdit:number[]=[]
+    for(let i=0;i<this.editRegions.length-1;i++){
+      // @ts-ignore
+      regionsEdit.push(this.editRegions.at(i).Id)
+    }
+    let streetsEdit:number[]=[]
+    for(let i=0;i<this.editStreets.length-1;i++){
+      // @ts-ignore
+      streetsEdit.push(this.editStreets.at(i).Id)
+    }
+
+    let startDateEdit='';
+    let endDateEdit='';
+    let startTimeEdit='';
+    let endTimeEdit='';
+    if(this.modelEditStartDate==undefined){
+      startDateEdit=(formatDate(new Date(), 'yyyy-MM-dd', 'en')).toString();
+    }else {
+      startDateEdit=this.dateFormat(this.modelEditStartDate)
+    }
+
+    if(this.modelEditEndDate==undefined){
+      endDateEdit=(formatDate(new Date(), 'yyyy-MM-dd', 'en')).toString();
+    }else {
+      endDateEdit=this.dateFormat(this.modelEditEndDate)
+    }
+
+    startTimeEdit=this.timeFormat(this.timeStartEdit)
+    endTimeEdit=this.timeFormat(this.timeEndEdit)
+
+    let publishDate=(formatDate(new Date(), 'yyyy-MM-ddThh:mm:ss', 'en')).toString();
+
+    let providerId=this.editProviders.at(0).Id;
+    this.service.editAnnouncement(announcementId,providerId,title,publishDate,startDateEdit,
+      endDateEdit,startTimeEdit,endTimeEdit,url,description,announcementUnique,content,announcementRaw,addInfo,
+      regionsEdit,streetsEdit).subscribe(data=>{
+      this.handleEditModalChange(false);
+      this.editFormVisible=!this.editFormVisible
+      this.refreshAnnouncements()
+    })
 }
 
 }
