@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UtilioService } from 'src/app/service/utilio.service';
+import { ProviderAccount} from "../../../models/providerAccount";
 
 @Component({
   selector: 'app-users',
@@ -7,38 +9,65 @@ import { Router } from '@angular/router';
   styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent implements OnInit {
-  users: any;
+  users: ProviderAccount[] = [];
 
-  constructor(private router: Router) {}
+  public accounts: ProviderAccount[] = [];
 
-  ngOnInit(): void {
-    this.setData();
+  constructor(private service: UtilioService, private router: Router ) {
+
+  }
+  setAccounts() {
+    this.service
+      .getProviderAccounts()
+      .subscribe((data: any) => {
+        console.log(data)
+        this.accounts=[];
+        for (let i = 0; i < data.length; i++) {
+          let account = new ProviderAccount(data[i].id, data[i].firstName, data[i].lastName,
+            data[i].email, data[i].providerId)
+          this.users.push(account);
+        }
+      });
   }
 
+  ngOnInit() {
+    this.setAccounts();
+    //this.setData();
+  
+  }
+
+  
   setData(): void {
     this.users = [
       {
-        id: 2439,
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'johndoe@email.com',
+        Id: 2439,
+        FirstName: 'John',
+        LastName: 'Doe',
+        Email: 'johndoe@email.com',
+        ProviderId:1
       },
       {
-        id: 2440,
-        firstName: 'Jane',
-        lastName: 'Doe',
-        email: 'janedoe@email.com',
+        Id: 2440,
+        FirstName: 'Jane',
+        LastName: 'Doe',
+        Email: 'janedoe@email.com',
+        ProviderId:1
       },
       {
-        id: 2441,
-        firstName: 'Ime',
-        lastName: 'Prezime',
-        email: 'imeprezime@email.com',
+        Id: 2441,
+        FirstName: 'Ime',
+        LastName: 'Prezime',
+        Email: 'imeprezime@email.com',
+        ProviderId:1
       },
     ];
   }
 
   onClick(id: number): void {
     this.router.navigate(['/pages/user-settings', id]);
+  }
+
+  onDelete(id: number): void {
+
   }
 }

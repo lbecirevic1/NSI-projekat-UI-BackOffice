@@ -11,14 +11,25 @@ import {end} from "@popperjs/core";
 @Injectable({
   providedIn: 'root',
 })
+
+
 export class UtilioService {
   readonly apiUrl = 'https://localhost:7069/api/';
+
+  private headerDict = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Access-Control-Allow-Origin':'*'
+  }
+  
 
   constructor(private http: HttpClient) {}
 
   getAnnouncements(): Observable<any[]> {
     return this.http.get<any[]>('https://localhost:7069/api/announcement');
   }
+
+
 
   getPagesAnnouncement(page:number,recordsPerPage:number){
     let body={
@@ -138,4 +149,7 @@ console.log(body)
   }
 
 
+  getProviderAccounts(): Observable<any[]> {
+    return this.http.get<any[]>('https://localhost:7069/api/provideraccount',  {headers: new HttpHeaders(this.headerDict)});
+  }
 }

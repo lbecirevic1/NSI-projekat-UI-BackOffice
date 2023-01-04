@@ -10,6 +10,7 @@ import { Page500Component } from './views/pages/page500/page500.component';
 import { RegisterComponent } from './views/pages/register/register.component';
 import { RegionComponent } from "./views/pages/region/region.component";
 import { AnnouncementHandlerComponent } from "./views/pages/handle-announcement/handle.announcement.component";
+import { UsersComponent } from './views/pages/users/users.component';
 
 const routes: Routes = [
   {
@@ -135,6 +136,13 @@ const routes: Routes = [
       title: 'Region Page'
     }
   },
+  {
+  path: 'users',
+  component: UsersComponent,
+  data: {
+    title: 'Users Page'
+  }
+},
   { path: '**', redirectTo: 'dashboard' },
 ];
 

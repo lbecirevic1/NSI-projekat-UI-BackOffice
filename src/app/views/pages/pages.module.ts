@@ -69,7 +69,6 @@ import {BrowserModule} from "@angular/platform-browser";
         NavModule,
         IconModule,
         TabsModule,
-        CommonModule,
         GridModule,
         ProgressModule,
         ReactiveFormsModule,
@@ -95,8 +94,6 @@ import {BrowserModule} from "@angular/platform-browser";
         MatInputModule,
         NgbModule,
         FormsModule,
-        BrowserModule,
-        BrowserAnimationsModule,
         ReactiveFormsModule,
         PaginationModule
     ]
