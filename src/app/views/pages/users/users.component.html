@@ -26,18 +26,24 @@
         </c-row>
         <c-row class="mb-5 ml-5">
           <c-col>
-            <c-dropdown class="mb-5 ml-5">
-            <button cButton color="light" cDropdownToggle>Select provider
-            </button>
-            <ul cDropdownMenu>
-              <li><button [routerLink]="[]" cDropdownItem>EPBiH</button></li>
-              <li><button [routerLink]="[]" cDropdownItem>BHTelecom</button></li>
-              <li><button [routerLink]="[]" cDropdownItem>BiHAMK</button></li>
-            </ul></c-dropdown>
+            <label cLabel for="title">Select provider</label>
+            <ng-multiselect-dropdown
+            [placeholder]="'Providers'"
+            [settings]="dropdownSettingsProviders"
+            [data]="providers"
+            [(ngModel)]="clickedProviders"
+            (onSelect)="onProviderSelect($event)"
+            (onDeSelect)="onDeselectProviders($event)"
+          >
+          </ng-multiselect-dropdown>
           </c-col>
 
           <c-col>
-            <input #box (keyup)="0" value="Search" md="30">
+
+            <div class="input-fields">
+              <label cLabel for="title">Search</label>
+              <input title="Search" cFormControl id="title" rows="1" name="newAnnouncTitle" type="text" ngModel>
+            </div>
           </c-col>
         </c-row>
         
