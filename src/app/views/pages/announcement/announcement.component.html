@@ -64,6 +64,7 @@
               <th class="announcement-table-col-20">Title</th>
               <th class="announcement-table-col-13">Publish date and time</th>
               <th class="announcement-table-col-20">Region</th>
+              <th class="announcement-table-col-20">Streets</th>
               <!-- <th class="announcement-table-col-10">Streets</th> -->
               <th class="announcement-table-col-10">Action</th>
             </tr>
@@ -74,7 +75,16 @@
                 <td class="announcement-table-col-13">{{providerName(value.ProviderId)}}</td>
                 <td class="announcement-table-col-20">{{value.Title}}</td>
                 <td class="announcement-table-col-13">{{parseDate(value.PublishDate)}}</td>
-                <td class="announcement-table-col-20">/</td>
+                <td class="announcement-table-col-20">
+                <ng-container *ngFor="let region of value.regions">
+                   <h6>{{region.name}}</h6>
+                </ng-container>
+                </td>
+                <td class="announcement-table-col-20">
+                  <ng-container *ngFor="let street of value.streets">
+                    <h6>{{street.name}}</h6>
+                  </ng-container>
+                </td>
                 <!-- <td class="announcement-table-col-10">/</td> -->
                 <td class="announcement-table-col-10">
                   <c-button-group aria-label="Basic example" role="group">
@@ -252,7 +262,7 @@
             [placeholder]="'Regions'"
             [settings]="dropdownSettingsEditRegions"
             [data]="regions"
-            [(ngModel)]="editRegions"
+            [(ngModel)]="editRegionsAnnouncement"
             [ngModelOptions]="{standalone: true}"
             (onSelect)="onEditRegionSelect($event)"
             (onSelectAll)="onEditSelectAllRegions($event)"
@@ -266,7 +276,7 @@
             [placeholder]="'Streets'"
             [settings]="dropdownSettingsEditStreets"
             [data]="streets"
-            [(ngModel)]="editStreets"
+            [(ngModel)]="editStreetsAnnouncement"
             [ngModelOptions]="{standalone: true}"
             (onSelect)="onEditStreetSelect($event)"
             (onSelectAll)="onEditSelectAllStreets($event)"

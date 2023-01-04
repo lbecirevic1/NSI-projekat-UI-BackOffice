@@ -11,7 +11,9 @@ constructor(
             public AdditionalInformation:string,
             public PublishDate: any,
             public ReferenceStartDate: any,
-            public ReferenceEndDate: any) {
+            public ReferenceEndDate: any,
+            public streets:any=[],
+            public regions:any=[]) {
 }
 
 }

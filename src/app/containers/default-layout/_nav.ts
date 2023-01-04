@@ -165,6 +165,11 @@ export const navItems: INavData[] = [
     iconComponent: { name: 'cil-columns' },
   },
   {
+    name: 'Announcements',
+    url: '/announcement',
+    iconComponent: { name: 'cil-bell' },
+  },
+  {
     name: 'Icons',
     iconComponent: { name: 'cil-star' },
     url: '/icons',
@@ -247,10 +252,6 @@ export const navItems: INavData[] = [
       {
         name: 'Announcement Handler',
         url: 'handle-announcements'
-      },
-      {
-        name: 'Announcements',
-        url: '/announcement'
       },
       {
         name: 'Regions',

@@ -135,6 +135,10 @@ export class AnnouncementComponent implements OnInit {
 
   public editProviders:any[]=[]
 
+  public editStreetsAnnouncement:any[]=[]
+
+  public editRegionsAnnouncement:any[]=[]
+
   public formBuilder: any;
 
   title:any;
@@ -188,8 +192,9 @@ export class AnnouncementComponent implements OnInit {
           let notification = new Announcement(data.data[i].id, data.data[i].providerId, data.data[i].title,
             data.data[i].sourceUrl, data.data[i].description, data.data[i].content, data.data[i].rawLog,
             data.data[i].uniqueIdentifier, data.data[i].additionalInformation, data.data[i].publishDate,
-            data.data[i].referenceStartDate, data.data[i].referenceEndDate)
+            data.data[i].referenceStartDate, data.data[i].referenceEndDate,data.data[i].streets,data.data[i].regions)
           this.notifications.push(notification);
+          console.log(notification)
         }
         this.paging = data.paging;
         this.pages = Array.from(
@@ -380,6 +385,18 @@ export class AnnouncementComponent implements OnInit {
     let tmp=[]
     tmp.push(this.getProvider(item.ProviderId))
     this.editProviders=tmp
+    for(let i=0;i<item.regions.length;i++){
+      this.editRegionsAnnouncement.push({
+        Id:item.regions.at(i).id,
+        Name:item.regions.at(i).name
+      })
+    }
+    for(let i=0;i<item.streets.length;i++){
+      this.editStreetsAnnouncement.push({
+        Id:item.streets.at(i).id,
+        Name:item.streets.at(i).name
+      })
+    }
     this.toggleEditDemo();
   }
 
@@ -404,6 +421,8 @@ export class AnnouncementComponent implements OnInit {
     this.editProviders=[]
     this.editStreets=[]
     this.editRegions=[]
+    this.editRegionsAnnouncement=[]
+    this.editStreetsAnnouncement=[]
   }
   toggleCreateAnnouncementButton() {
     this.clickedProviders=[];
@@ -656,74 +675,65 @@ export class AnnouncementComponent implements OnInit {
   }
 
   onEditSelectAllRegions(items:any){
-    this.editRegions=this.AllRegions;
+    this.editRegionsAnnouncement=this.AllRegions;
   }
 
   onEditDeselectAllRegions(items:any){
-    this.editRegions=[]
+    this.editRegionsAnnouncement=[]
   }
 
   onEditDeselectRegions(item:any){
-    const index:number=this.editRegions.indexOf(item.Id);
-    this.editRegions.forEach((element,index)=>{
-      if(element==item.Id)this.editRegions.splice(index,1);
+    const index:number=this.editRegionsAnnouncement.indexOf(item.Id);
+    this.editRegionsAnnouncement.forEach((element,index)=>{
+      if(element==item.Id)this.editRegionsAnnouncement.splice(index,1);
     })
+    console.log(this.editRegionsAnnouncement)
   }
 
   onEditRegionSelect(item: any) {
-    if(this.editRegions.includes(item.Id)){
-      const index:number=this.editRegions.indexOf(item.Id);
-      this.editRegions.forEach((element,index)=>{
-        if(element==item.Id)this.editRegions.splice(index,1);
+    if(this.editRegionsAnnouncement.includes(item.Id)){
+      const index:number=this.editRegionsAnnouncement.indexOf(item.Id);
+      this.editRegionsAnnouncement.forEach((element,index)=>{
+        if(element==item.Id)this.editRegionsAnnouncement.splice(index,1);
       })
     }
     this.regionEditClicked(item)
   }
   regionEditClicked(region:any){
     let regionId=region.Id
-    if(this.editRegions.includes(regionId)){
-      const index:number=this.editRegions.indexOf(regionId);
-      this.editRegions.forEach((element,index)=>{
-        if(element==regionId)this.editRegions.splice(index,1);
-      })
-    }
-    else this.editRegions.push(regionId);
+  this.editRegionsAnnouncement.push(regionId);
+    this.editRegionsAnnouncement.splice(this.editRegionsAnnouncement.length-1,1);
   }
 
 
   onEditSelectAllStreets(items:any){
-    this.editStreets=this.AllStreets;
+    this.editStreetsAnnouncement=this.AllStreets;
   }
 
   onEditDeselectAllStreets(items:any){
-    this.editStreets=[]
+    this.editStreetsAnnouncement=[]
   }
 
   onEditDeselectStreets(item:any){
-    const index:number=this.editStreets.indexOf(item.Id);
-    this.editStreets.forEach((element,index)=>{
-      if(element==item.Id)this.editStreets.splice(index,1);
+    const index:number=this.editStreetsAnnouncement.indexOf(item.Id);
+    this.editStreetsAnnouncement.forEach((element,index)=>{
+      if(element==item.Id)this.editStreetsAnnouncement.splice(index,1);
     })
   }
 
   onEditStreetSelect(item: any) {
-    if(this.editStreets.includes(item.Id)){
-      const index:number=this.editStreets.indexOf(item.Id);
-      this.editStreets.forEach((element,index)=>{
-        if(element==item.Id)this.editStreets.splice(index,1);
+    if(this.editStreetsAnnouncement.includes(item.Id)){
+      const index:number=this.editStreetsAnnouncement.indexOf(item.Id);
+      this.editStreetsAnnouncement.forEach((element,index)=>{
+        if(element==item.Id)this.editStreetsAnnouncement.splice(index,1);
       })
     }
     this.streetEditClicked(item)
   }
   streetEditClicked(street:any){
     let streetId=street.Id
-    if(this.editStreets.includes(streetId)){
-      const index:number=this.editStreets.indexOf(streetId);
-      this.editStreets.forEach((element,index)=>{
-        if(element==streetId)this.editStreets.splice(index,1);
-      })
-    }
-    else this.editStreets.push(streetId);
+  this.editStreetsAnnouncement.push(streetId);
+    this.editStreetsAnnouncement.splice(this.editStreetsAnnouncement.length-1,1);
   }
 
 
@@ -744,14 +754,15 @@ export class AnnouncementComponent implements OnInit {
     let announcementUnique=announcement.UniqueIdentifier
 
     let regionsEdit:number[]=[]
-    for(let i=0;i<this.editRegions.length-1;i++){
+    console.log(this.editStreetsAnnouncement)
+    for(let i=0;i<this.editRegionsAnnouncement.length;i++){
       // @ts-ignore
-      regionsEdit.push(this.editRegions.at(i).Id)
+      regionsEdit.push(this.editRegionsAnnouncement.at(i).Id)
     }
     let streetsEdit:number[]=[]
-    for(let i=0;i<this.editStreets.length-1;i++){
+    for(let i=0;i<this.editStreetsAnnouncement.length;i++){
       // @ts-ignore
-      streetsEdit.push(this.editStreets.at(i).Id)
+      streetsEdit.push(this.editStreetsAnnouncement.at(i).Id)
     }
 
     let startDateEdit='';

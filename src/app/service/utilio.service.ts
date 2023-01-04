@@ -21,7 +21,7 @@ export class UtilioService {
     'Accept': 'application/json',
     'Access-Control-Allow-Origin':'*'
   }
-  
+
 
   constructor(private http: HttpClient) {}
 
