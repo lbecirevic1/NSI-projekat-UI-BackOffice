@@ -6,8 +6,9 @@ import { AppToastComponent } from '../../notifications/toasters/toast-simple/toa
 interface ISubscription {
   Id:number;
   Email: string;
-  FirstName: string;
-  LastName: string;
+  Name: string;
+  RegionId: number;
+  StreetId: number;
 }
 
 @Component({
@@ -28,23 +29,53 @@ export class SubscriptionsComponent implements OnInit {
   public users: ISubscription[] = [
     {
       Id: 1,
-      FirstName: 'Mujo',
-      LastName: 'Mujic',
-      Email: 'mujomujic@gmail.com'
+      Name: 'Mujo',
+      Email: 'mujomujic@gmail.com',
+      RegionId: 1,
+      StreetId: 1,
+      
     },
     {
       Id: 2,
-      FirstName: 'Suljo',
-      LastName: 'Suljic',
-      Email: 'suljosuljic@gmail.com'
+      Name: 'Suljo',
+      Email: 'suljosuljic@gmail.com',
+      RegionId: 2,
+      StreetId: 2
     } 
+  ]
+
+  regions = [
+    {
+      Id: 1,
+      Name: "Bjelave"
+    },
+    {
+      Id: 2,
+      Name: "Otoka"
+    },
+    {
+      Id: 3,
+      Name: "Grbavica"
+    }
+  ]
+
+  streets = [
+    {
+      Id: 1,
+      Name: "Dr. Fetaha Becirbegovica"
+    },
+    {
+      Id: 2,
+      Name: "Travnicka"
+    }
   ]
 
   ngOnInit(): void {
     this.userForm = new FormGroup({
       Email: new FormControl("mujomujic@gmail.com"),
-      FirstName: new FormControl("Mujo"),
-      LastName: new FormControl("Mujic")
+      Name: new FormControl("Mujo"),
+      Region: new FormControl("1"),
+      Street: new FormControl("2")
     });
   }
 
@@ -86,5 +117,13 @@ export class SubscriptionsComponent implements OnInit {
     };
     console.log(this.viewChildren);
     this.viewChildren.forEach((item)=> item.addToast(AppToastComponent, props, {}));
-}
+  }
+
+  changeRegion(event: any) {
+
+  }
+
+  changeStreet(event: any) {
+
+  }
 }

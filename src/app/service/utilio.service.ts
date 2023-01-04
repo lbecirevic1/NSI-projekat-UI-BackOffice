@@ -16,11 +16,23 @@ export class UtilioService{
     return this.http.get<any[]>('https://localhost:7069/api/announcement');
   }
 
-deleteAnnouncement(notificationId:number){
+  getRegions(): Observable<any[]> {
+    return this.http.get<any[]>('https://localhost:7069/api/regions');
+  }
+
+  getStreets(): Observable<any[]> {
+    return this.http.get<any[]>('https://localhost:7069/api/streets')
+  }
+
+  deleteAnnouncement(notificationId:number){
     return this.http.delete<number>(this.apiUrl+'announcement?id='+notificationId);
   }
 
   editAnnouncement(){
     //todo
+  }
+
+  createSubscriber(subscriber: any): Observable<any>{
+    return this.http.post<any>(this.apiUrl + 'Subscriber/Post', subscriber);
   }
 }

@@ -48,12 +48,40 @@ export class SubscriberPageComponent implements OnInit {
       LastModified: new Date(2022, 11, 12).toLocaleDateString()
     } 
   ]
+
+  regions = [
+    {
+      Id: 1,
+      Name: "Bjelave"
+    },
+    {
+      Id: 2,
+      Name: "Otoka"
+    },
+    {
+      Id: 3,
+      Name: "Grbavica"
+    }
+  ]
+
+  streets = [
+    {
+      Id: 1,
+      Name: "Dr. Fetaha Becirbegovica"
+    },
+    {
+      Id: 2,
+      Name: "Travnicka"
+    }
+  ]
+
   ngOnInit(): void {
     this.id = this.activatedRoute.snapshot.params['id'];
     this.userForm = new FormGroup({
       Email: new FormControl("mujomujic@gmail.com"),
-      FirstName: new FormControl("Mujo"),
-      LastName: new FormControl("Mujic")
+      Name: new FormControl("Mujo"),
+      Region: new FormControl(1),
+      Street: new FormControl(1)
     });
     console.log(this.id);
     console.log(this.positions)
@@ -155,5 +183,11 @@ export class SubscriberPageComponent implements OnInit {
     this.topic = event.value.topicControl
     this.categories = event.value.categoryControl;
     console.log("rezultati", this.topic, this.categories);
+  }
+  changeRegion(event: any) {
+
+  }
+  changeStreet(event: any) {
+
   }
 }

@@ -8,22 +8,17 @@
           </div>
         </c-card-header>
         <c-card-body>
-         
             <table [hover]="true" cTable>
               <thead>
               <tr>
-                <th scope="col">First Name</th>
-                <th scope="col">Last Name</th>
+                <th scope="col">Name</th>
                 <th scope="col">Email</th>
               </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let user of users; index as i" [id]="user.Id" (click)="openPageForSubscriber(user.Id)" >
                   <td>
-                    {{ user.FirstName }}
-                  </td>
-                  <td>
-                    {{ user.LastName }}
+                    {{ user.Name }}
                   </td>
                   <td>
                     {{ user.Email }}
@@ -46,7 +41,7 @@
     <c-modal-body>
       <form cForm [formGroup]="userForm" (ngSubmit)="onSubmitUserForm(userForm)">
         <div class="row">
-          <div class="mb-3 col-md-4">
+          <div class="mb-3 col-md-6">
             <label cLabel for="exampleFormControlInput1">Email address</label>
             <input cFormControl
             formControlName="Email"
@@ -55,15 +50,29 @@
             type="email"
             />
           </div>
-          <div class="mb-3 col-md-4">
-            <label cLabel for="exampleFormControlTextarea1">First Name</label>
-            <input cFormControl id="FirstName" formControlName="FirstName" type="text" >
-          </div>
-          <div class="mb-3 col-md-4">
-            <label cLabel for="exampleFormControlTextarea1">Last Name</label>
-            <input cFormControl id="LastName" formControlName="LastName" type="text" >
+          <div class="mb-3 col-md-6">
+            <label cLabel for="exampleFormControlTextarea1">Name</label>
+            <input cFormControl id="Name" formControlName="Name" type="text" >
           </div>
         </div>
+        <div class="row">
+          <div class="mb-3 col-md-6">
+            <label cLabel for="region">Region</label>
+            <select cSelect  class="mb-3 text-center" (change)="changeRegion($event)" formControlName="Region">
+              <option *ngFor="let region of regions" [ngValue]="region.Id">
+                {{ region.Name }}
+              </option>
+            </select>
+          </div>
+          <div class="mb-3 col-md-6">
+            <label cLabel for="street">Street</label>
+            <select cSelect  class="mb-3 text-center" (change)="changeStreet($event)" formControlName="Street">
+              <option *ngFor="let street of streets" [ngValue]="street.Id">
+                {{ street.Name }}
+              </option>
+            </select>
+          </div>
+        </div>  
       </form>
     </c-modal-body>
     <c-modal-footer>
