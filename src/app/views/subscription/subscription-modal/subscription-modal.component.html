@@ -7,21 +7,29 @@
         </div>
         <div class="row p-3">
 
-          <select [attr.disabled]="true"  cSelect  class="mb-3 text-center" (change)="changeTopic($event)" formControlName="topicControl"
+          <select [attr.disabled]="true" cSelect  class="mb-3 text-center" (change)="changeTopic($event)" formControlName="topicControl"
             *ngIf="editSubscriptionInfo && (editSubscriptionInfo | json) != '{}'" >
             <option value="" disabled>Choose Topic</option>
-            <option *ngFor="let topic of Topics" [ngValue]="topic" [selected]="editSubscriptionInfo.Topic==topic">
-              {{ topic }} Edit
+            <option *ngFor="let topic of topics" [ngValue]="topic.Id" [selected]="topic.Id==editSubscriptionInfo.TopicId">
+              {{ topic.Name }} Edit
             </option>
           </select>
 
-          <select cSelect class="mb-3 text-center" (change)="changeTopic($event)" formControlName="topicControl"
+          <select cSelect  class="mb-3 text-center" (change)="changeTopic($event)" formControlName="topicControl"
+          *ngIf="!editSubscriptionInfo || (editSubscriptionInfo | json) == '{}'" >
+          <option value="" disabled>Choose Topic</option>
+          <option *ngFor="let topic of topics" [ngValue]="topic.Id">
+            {{ topic.Name }} Add
+          </option>
+        </select>
+
+          <!-- <select cSelect class="mb-3 text-center" (change)="changeTopic($event)" formControlName="topicControl"
             *ngIf="!editSubscriptionInfo || (editSubscriptionInfo | json) == '{}'">
             <option value="" disabled>Choose Topic</option>
-            <option *ngFor="let topic of Topics" [ngValue]="topic">
-              {{ topic }}
+            <option *ngFor="let topic of topics" [ngValue]="topic.Id">
+              {{ topic.Name }}
             </option>
-          </select>
+          </select> -->
 
         </div>
       </div>
@@ -34,11 +42,11 @@
             formControlName="categoryControl">
             <option value="" disabled>Choose Category</option>
 
-            <option *ngFor="let category of Categories" [ngValue]="category">
-              {{ category }}
+            <option *ngFor="let category of categories" [ngValue]="category.Id">
+              {{ category.Name }}
             </option>
-            <option selected *ngFor="let category of SelectedCategories" [ngValue]="category">
-              {{ category }}
+            <option selected *ngFor="let category of SelectedCategories" [ngValue]="category.Id">
+              {{ category.Name }}
             </option>
           </select>
         </div>

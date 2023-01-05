@@ -1,19 +1,43 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ToasterComponent, ToasterPlacement } from '@coreui/angular';
-import { isWhileStatement } from 'typescript/lib/tsserverlibrary';
-import { AppToastComponent } from '../../notifications/toasters/toast-simple/toast.component';
-
+import {
+  Component,
+  OnInit,
+  QueryList,
+  ViewChildren
+} from '@angular/core';
+import {
+  FormControl,
+  FormGroup
+} from '@angular/forms';
+import {
+  ActivatedRoute,
+  Params
+} from '@angular/router';
+import {
+  ToasterComponent,
+  ToasterPlacement
+} from '@coreui/angular';
+import {
+  isWhileStatement
+} from 'typescript/lib/tsserverlibrary';
+import {
+  AppToastComponent
+} from '../../notifications/toasters/toast-simple/toast.component';
+import {
+  UtilioService
+} from "../../../service/utilio.service";
+interface ITopic {
+  Id: number;
+  Name: string;
+}
 interface ISubscriber {
-  Topic: string;
+  Topic: ITopic;
   CategoryNumber: number;
   LastModified: string;
 }
 
 interface IEditSubscription {
   UserId: number;
-  Topic: string;
+  TopicId: number;
 }
 
 @Component({
@@ -26,31 +50,35 @@ export class SubscriberPageComponent implements OnInit {
   id!: number;
   userForm!: FormGroup;
 
-  topic!: string;
-  categories!:[];
+  topic!: ITopic;
+  categories!: [];
   informationForEditingSubscription!: IEditSubscription;
-  editMode!:boolean;
+  editMode!: boolean;
   public modalUserFormVisible = false;
   public modalAddNewSubscriptionVisible = false
-  constructor(private activatedRoute: ActivatedRoute) { }
+  constructor(private activatedRoute: ActivatedRoute, private service: UtilioService) {}
 
   positions = Object.values(ToasterPlacement);
-  @ViewChildren(ToasterComponent) viewChildren!: QueryList<ToasterComponent>;
-  public subscriptions: ISubscriber[] = [
-    {
-      Topic: 'BHT',
+  @ViewChildren(ToasterComponent) viewChildren!: QueryList < ToasterComponent > ;
+  public subscriptions: ISubscriber[] = [{
+      Topic: {
+        Id: 1,
+        Name: "TopicNeki"
+      },
       CategoryNumber: 3,
       LastModified: new Date(2022, 12, 1).toLocaleDateString()
     },
     {
-      Topic: 'Centar',
+      Topic: {
+        Id: 2,
+        Name: "Centar"
+      },
       CategoryNumber: 4,
       LastModified: new Date(2022, 11, 12).toLocaleDateString()
-    } 
+    }
   ]
 
-  regions = [
-    {
+  regions = [{
       Id: 1,
       Name: "Bjelave"
     },
@@ -64,8 +92,7 @@ export class SubscriberPageComponent implements OnInit {
     }
   ]
 
-  streets = [
-    {
+  streets = [{
       Id: 1,
       Name: "Dr. Fetaha Becirbegovica"
     },
@@ -74,9 +101,53 @@ export class SubscriberPageComponent implements OnInit {
       Name: "Travnicka"
     }
   ]
+  public Topics:any[] = [];
+  //Prave vrijednosti 
 
+  //CHANGE promijeniti u subscriptions
+  public SubscriptionsForUser: any[] = [];
   ngOnInit(): void {
     this.id = this.activatedRoute.snapshot.params['id'];
+    //ODKOMENTARISATI--------------------------------------------------
+
+    // this.service.getSubscriberById(this.id)
+    // .subscribe(data => {
+    //   console.log(data)
+    //   //TODO ovako treba biti
+
+    //   this.userForm = new FormGroup({
+    //     Email: new FormControl(data.email),
+    //     Name: new FormControl(data.name),
+    //     Region: new FormControl(data.regionId),
+    //     Street: new FormControl(data.streetId)
+    //   });
+    // });
+
+    // this.service.getSubscribtionsBySubscriberId(this.id)
+    // .subscribe(data=>{
+    //   this.SubscriptionsForUser = data.subscriptionEntry;
+
+    // });
+    // this.service.getProviders()
+    //   .subscribe(data=>{
+    //     this.Topics = data;
+    //   });
+    
+    this.Topics  = [
+      {
+        Id: 1,
+        Name: "TopicNeki"
+      },
+      {
+        Id: 2,
+        Name: "Centar"
+      },
+      {
+        Id: 3,
+        Name: "BHT"
+      }
+    ]
+
     this.userForm = new FormGroup({
       Email: new FormControl("mujomujic@gmail.com"),
       Name: new FormControl("Mujo"),
@@ -84,32 +155,35 @@ export class SubscriberPageComponent implements OnInit {
       Street: new FormControl(1)
     });
     console.log(this.id);
-    console.log(this.positions)
   }
-  editSubscription( topic: any){
+  editSubscription(topicId: any) {
     this.editMode = true;
-    this.informationForEditingSubscription = ({UserId:this.id, Topic:topic});
+    this.informationForEditingSubscription = ({
+      UserId: this.id,
+      TopicId: topicId
+    });
     this.toggleModalAddNewSubscription()
-    
-    console.log( this.informationForEditingSubscription, "Edit")
+
+    console.log(this.informationForEditingSubscription, "Edit")
     // this.informationForEditingSubscription  = {} as IEditSubscription;
   }
-  deleteSubscription( topic: any){
-    console.log( topic,  "Delete")
-    this.subscriptions = this.subscriptions.filter(item=>item.Topic!=topic);
+  deleteSubscription(topic: any) {
+    console.log(topic, "Delete")
+    this.subscriptions = this.subscriptions.filter(item => item.Topic != topic);
   }
-  addNewSubscription(){
-    console.log("Add new component", this.informationForEditingSubscription ); 
-    
+  addNewSubscription() {
+    console.log("Add new component", this.informationForEditingSubscription);
+
     this.informationForEditingSubscription = {} as IEditSubscription;
     this.modalAddNewSubscriptionVisible = true;
-    console.log(this.informationForEditingSubscription , "After")
+    console.log(this.informationForEditingSubscription, "After")
     this.editMode = false;
   }
-  onSubmitUserForm(userForm:FormGroup){
+  onSubmitUserForm(userForm: FormGroup) {
     console.log("User form submited", userForm.value);
+    //TODO Update info for user with Id 
   }
-  submitUserForm(){
+  submitUserForm() {
     this.onSubmitUserForm(this.userForm);
     this.modalUserFormVisible = false;
     this.addToast("User form submitted", "success");
@@ -130,47 +204,45 @@ export class SubscriberPageComponent implements OnInit {
   handleModalAddNewSubscriptionChange(event: boolean) {
     this.modalAddNewSubscriptionVisible = event;
   }
-  addToast(title: string, color:string) {
-      let props = {
-        autohide: true,
-        delay: 5000,
-        position: ToasterPlacement.TopEnd,
-        fade: true,
-        closeButton: true,
-        color: color,
-        title: title
-      };
-      console.log(this.viewChildren);
-      this.viewChildren.forEach((item)=> item.addToast(AppToastComponent, props, {}));
-  }
-  onSubmitAddNewSubscriptionForm(addNewSubscriptionForm:FormGroup){
+
+  onSubmitAddNewSubscriptionForm(addNewSubscriptionForm: FormGroup) {
     console.log("User form submited", addNewSubscriptionForm.value);
     this.addToast("Add new Subscription submitted", "success");
   }
-  submitAddNewSubscriptionForm(){
-    if(this.topic == null || this.topic == ""){
+
+  submitAddNewSubscriptionForm() {
+
+    if (this.topic == null || this.topic.Name == "") {
       this.addToast("Please select Topic", "danger");
-    }
-    else if(this.categories == null || this.categories.length == 0){
+    } else if (this.categories == null || this.categories.length == 0) {
       this.addToast("Please select category", "danger");
-    }else if(this.subscriptions.find(x => x.Topic == this.topic) != null){
+    } else if (this.subscriptions.find(x => x.Topic.Id == this.topic.Id) != null) {
       this.addToast("Subscription for this Topic already exists", "danger");
-    }else{
-      this.subscriptions.push({Topic:this.topic, CategoryNumber:this.categories.length, LastModified:new Date().toLocaleDateString()})
+    } else {
+      var newSubscription = {
+        Topic: {
+          Id: this.topic.Id,
+          Name: this.topic.Name
+        },
+        CategoryNumber: this.categories.length,
+        LastModified: new Date().toLocaleDateString()
+      }
+      console.log("Subscription to be added", newSubscription)
+      this.subscriptions.push(newSubscription)
       this.modalAddNewSubscriptionVisible = false;
       this.addToast("New subscription added", "success");
     }
   }
-  editSubscriptionForm(){
-    if(this.topic == null || this.topic == ""){
+  editSubscriptionForm() {
+    if (this.topic == null || this.topic.Name == "") {
       this.addToast("Please select Topic", "danger");
-    }
-    else if(this.categories == null || this.categories.length == 0){
+    } else if (this.categories == null || this.categories.length == 0) {
       this.addToast("Please select category", "danger");
-    }else {
+    } else {
       console.log(this.topic, this.categories, "Unutar edita")
-      var subscription = this.subscriptions.find(x => x.Topic == this.topic);
-      if(subscription != null){
+      var subscription = this.subscriptions.find(x => x.Topic.Id == this.topic.Id);
+      //Ovdje imamo topic i kategorije, i treba spasiti ovo u bazi za subscriberA
+      if (subscription != null) {
         subscription.CategoryNumber = this.categories.length;
         subscription.LastModified = new Date().toLocaleDateString();
         this.toggleModalAddNewSubscription();
@@ -179,9 +251,19 @@ export class SubscriberPageComponent implements OnInit {
     }
   }
   addItem(event: any) {
-    console.log("event output", event)
-    this.topic = event.value.topicControl
-    this.categories = event.value.categoryControl;
+    console.log(this.topic, "topic prije")
+    console.log("event output", event, event.value.topicControl, this.Topics)
+    if(event.value.topicControl && event.value.topicControl!=null && event.value.topicControl!=''){
+      console.log('event.value.topicControl u ifu', event.value.topicControl)
+      this.topic = this.Topics.find(item => item.Id.toString() == event.value.topicControl);
+    }
+    // this.topicId = event.value.topicControl;
+    // // this.topicName = this.Topics.find(item => item.Id == event.value.topicControl).Name;
+    // this.topic = this.Topics.find(item => item.Id == this.topicId);
+    if(event.value.categoryControl){
+      this.categories = event.value.categoryControl;
+    }
+    
     console.log("rezultati", this.topic, this.categories);
   }
   changeRegion(event: any) {
@@ -189,5 +271,18 @@ export class SubscriberPageComponent implements OnInit {
   }
   changeStreet(event: any) {
 
+  }
+  addToast(title: string, color: string) {
+    let props = {
+      autohide: true,
+      delay: 5000,
+      position: ToasterPlacement.TopEnd,
+      fade: true,
+      closeButton: true,
+      color: color,
+      title: title
+    };
+    console.log(this.viewChildren);
+    this.viewChildren.forEach((item) => item.addToast(AppToastComponent, props, {}));
   }
 }

@@ -11,19 +11,19 @@
             <table [hover]="true" cTable>
               <thead>
               <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
+                <th class="text-center">Name</th>
+                <th class="text-center">Email</th>
               </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let user of users; index as i" [id]="user.Id" (click)="openPageForSubscriber(user.Id)" >
-                  <td>
+                  <td class="text-center">
                     {{ user.Name }}
                   </td>
-                  <td>
+                  <td class="text-center">
                     {{ user.Email }}
                   </td>
-                  </tr>
+                </tr>
               </tbody>
             </table>
         </c-card-body>

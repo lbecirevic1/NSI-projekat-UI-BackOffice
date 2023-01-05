@@ -13,18 +13,19 @@
       <c-card-body>
           <form cForm [formGroup]="userForm" (ngSubmit)="onSubmitUserForm(userForm)">
             <div class="row">
-              <div class="mb-3 col-md-6">
+              <div class="mb-3 col-md-6 ">
                 <label cLabel for="exampleFormControlInput1">Email address</label>
                 <input cFormControl
                 formControlName="Email"
                 id="exampleFormControlInput1"
                 placeholder="name@example.com"
                 type="email"
+                class="text-center"
                 />
               </div>
               <div class="mb-3 col-md-6">
                 <label cLabel for="exampleFormControlTextarea1">Name</label>
-                <input cFormControl id="Name" formControlName="Name" type="text" >
+                <input cFormControl id="Name" formControlName="Name" placeholder="Name" type="text" class="text-center" >
               </div>
             </div>
             <div class="row">
@@ -60,7 +61,7 @@
             <thead>
             <tr>
               <th scope="col" class="text-center">Topic</th>
-              <th scope="col" class="text-center">Category Number</th>
+              <th scope="col" class="text-center">Categories Number</th>
               <th scope="col" class="text-center">Last Modified</th>
               <th scope="col"></th>
             </tr>
@@ -68,7 +69,7 @@
             <tbody>
               <tr *ngFor="let subscription of subscriptions; index as i" >
                 <td class="text-center">
-                  {{ subscription.Topic }}
+                  {{ subscription.Topic.Name }}
                 </td>
                 <td class="text-center">
                   {{ subscription.CategoryNumber }}
@@ -78,10 +79,10 @@
                 </td>
                 <td class="text-center">
                   <c-button-group aria-label="Basic example" role="group">
-                      <button cButton class="me-1" color="primary" (click)="editSubscription(subscription.Topic)">
+                      <button cButton class="me-1" color="primary" (click)="editSubscription(subscription.Topic.Id)">
                           Edit
                         </button>
-                        <button cButton class="me-1" color="danger"(click)="deleteSubscription(subscription.Topic)">
+                        <button cButton class="me-1" color="danger"(click)="deleteSubscription(subscription.Topic.Id)">
                           Delete
                         </button>
                     </c-button-group>
