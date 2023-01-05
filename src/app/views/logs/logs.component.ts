@@ -24,19 +24,29 @@ export class LogsComponent implements OnInit {
   public reqEndDateAsc: number = 0;
   public providerNameAsc: number = 0;
   public cleared: boolean = false;
+  public req: string = '';
+  public res?: string = '';
+
   constructor(private service: UtilioService) {}
 
   createLogsArray(data: LogsResponse) {
     return data.data?.map((log: Log) => {
       return {
         id: log.id,
-        requestStartDate: dayjs(log.requestStartTime).format('MMM D, YYYY'),
-        requestStartTime: dayjs(log.requestStartTime).format('HH:mm:ss'),
-        requestEndDate: dayjs(log.requestEndTime).format('MMM D, YYYY'),
-        requestEndTime: dayjs(log.requestEndTime).format('HH:mm:ss'),
+        requestStartDate: dayjs(log.requestStartTime).format(
+          'MMM D, YYYY HH:mm:ss'
+        ),
+        requestEndDate: !!log.requestEndTime
+          ? dayjs(log.requestEndTime).format('MMM D, YYYY HH:mm:ss')
+          : '',
         status: log.success ? 'Success' : 'Failure',
         providerName: log.providerName,
         providerId: log.providerId,
+        numberOfAnnouncements: log.numberOfAnnouncements,
+        isRequestSent: log.isRequestSent,
+        requestContent: log.requestContent,
+        responseContent: log.responseContent,
+        more: false,
       };
     });
   }
@@ -137,17 +147,5 @@ export class LogsComponent implements OnInit {
     ];
 
     this.setLogs(this.paging.page!);
-  }
-  onSortColumn(name: string) {
-    this.sortCriteria = [
-      {
-        column: name,
-        order: this.asc,
-        priority: 0,
-      },
-    ];
-
-    this.setLogs(this.paging.page!);
-    this.asc = !!this.asc ? 0 : 1;
   }
 }
