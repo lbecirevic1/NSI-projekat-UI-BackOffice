@@ -2,6 +2,7 @@ import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToasterComponent, ToasterPlacement } from '@coreui/angular';
+import { UtilioService } from 'src/app/service/utilio.service';
 import { AppToastComponent } from '../../notifications/toasters/toast-simple/toast.component';
 interface ISubscription {
   Id:number;
@@ -20,7 +21,7 @@ interface ISubscription {
 
 export class SubscriptionsComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private service: UtilioService ) { }
 
   public newUserModalVisible = false;
   userForm!: FormGroup;
@@ -69,14 +70,45 @@ export class SubscriptionsComponent implements OnInit {
       Name: "Travnicka"
     }
   ]
-
+ public Users:any[] = []
+ public Regions:any[] = []
+ public Streets:any[] = []
+ 
   ngOnInit(): void {
-    this.userForm = new FormGroup({
-      Email: new FormControl("mujomujic@gmail.com"),
-      Name: new FormControl("Mujo"),
-      Region: new FormControl("1"),
-      Street: new FormControl("2")
+    this.service
+    .getSubscribers()
+    .subscribe(data => {
+
+      data.forEach(item =>
+        this.Users.push(
+        {
+          Id: item.id,
+          Name: item.name,
+          Email: item.email,
+          RegionId: item.regionID,
+          StreetId: item.streetID
+        }
+      ));
+
     });
+    this.userForm = new FormGroup({
+      Email: new FormControl(""),
+      Name: new FormControl(""),
+      Region: new FormControl(""),
+      Street: new FormControl("")
+    });
+
+    this.service
+      .getRegions()
+      .subscribe(data => {
+        this.Regions = data;
+      });
+
+    this.service
+      .getStreets()
+      .subscribe(data => {
+        this.Streets = data;
+      });
   }
 
   openPageForSubscriber(id: number){
@@ -98,11 +130,27 @@ export class SubscriptionsComponent implements OnInit {
   
   onSubmitUserForm(userForm:FormGroup){
     console.log("User form submited", userForm.value);
+    this.newUserModalVisible = false;
+    this.addToast("Warning", "Confirmation mail has been sent!");
+    var newSubscriber = {
+      name: userForm.value.Name,
+      streetID: userForm.value.Street,
+      regionID: userForm.value.Region,
+      email: userForm.value.Email
+    }
+    console.log(newSubscriber, "User to be added")
+    this.service
+    .createSubscriber(newSubscriber)
+    .subscribe(data=>{
+      this.addToast("Success", "User is created");
+    })
+    //obrisati ovo nakon sto se napravi dodavanje
+
+    this.users.push({Id:this.users.length+1, Name:newSubscriber.name, Email:newSubscriber.email, RegionId:newSubscriber.regionID, StreetId:newSubscriber.regionID})
+
   }
   submitUserForm(){
     this.onSubmitUserForm(this.userForm);
-    this.newUserModalVisible = false;
-    this.addToast("Warning", "Confirmation mail has been sent!");
   }
   addToast(title:string, text:string) {
     let props = {

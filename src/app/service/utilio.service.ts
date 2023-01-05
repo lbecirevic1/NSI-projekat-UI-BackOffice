@@ -35,4 +35,22 @@ export class UtilioService{
   createSubscriber(subscriber: any): Observable<any>{
     return this.http.post<any>(this.apiUrl + 'Subscriber/Post', subscriber);
   }
+  updateSubscriber(subscriber:any): Observable<any>{
+    return this.http.put<any>(this.apiUrl + 'Subscriber/Update', subscriber);
+  }
+  getSubscribers(): Observable<any[]>{
+    return this.http.get<any[]>(this.apiUrl + 'Subscriber/GetSubscribers');
+  }
+  getSubscriberById(id:number): Observable<any[]>{
+    return this.http.get<any[]>(this.apiUrl + 'Subscriber/GetSubscriber/' + id );
+  }
+  getSubscribtionsBySubscriberId(id:number): Observable<any>{
+    return this.http.get<any>(this.apiUrl + 'Subscriber/GetSubscribtionsBySubscriberId/' + id );
+  }
+  getProviders():Observable<any[]>{
+    return this.http.get<any[]>(this.apiUrl + 'providers');
+  }
+  addSubscriptionForUser(subscription:any ): Observable<any>{
+    return this.http.post<any>(this.apiUrl + 'Subscription/Post', subscription);
+  }
 }
