@@ -5,7 +5,11 @@ export class Log {
     public requestEndTime: Date,
     public success: boolean,
     public providerName: string,
-    public providerId: number
+    public providerId: number,
+    public numberOfAnnouncements: number,
+    public isRequestSent: boolean,
+    public requestContent: string,
+    public responseContent: string
   ) {}
 }
 
@@ -31,11 +35,14 @@ export class LogWithTime {
   constructor(
     public id: number,
     public requestStartDate: string,
-    public requestStartTime: string,
     public requestEndDate: string,
-    public requestEndTime: string,
     public status: string,
     public providerName: string,
     public providerId: number,
+    public numberOfAnnouncements: number,
+    public isRequestSent: boolean,
+    public requestContent: string,
+    public responseContent: string,
+    public more: boolean,
   ) {}
 }

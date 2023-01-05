@@ -1,8 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { BadgeModule, CardModule, GridModule, TableModule, PaginationModule, FormModule, ButtonModule} from '@coreui/angular';
+import {
+  BadgeModule,
+  CardModule,
+  GridModule,
+  TableModule,
+  PaginationModule,
+  FormModule,
+  ButtonModule,
+  AccordionModule,
+  SharedModule,
+} from '@coreui/angular';
 import { ChartjsModule } from '@coreui/angular-chartjs';
+import { IconModule } from '@coreui/icons-angular';
 
 import { LogsComponent } from './logs.component';
 import { LogsRoutingModule } from './logs-routing.module';
@@ -21,8 +32,10 @@ import { DocsComponentsModule } from '@docs-components/docs-components.module';
     TableModule,
     PaginationModule,
     FormModule,
-    ButtonModule
-  ]
+    ButtonModule,
+    IconModule,
+    AccordionModule,
+    SharedModule,
+  ],
 })
-export class LogsModule {
-}
+export class LogsModule {}

@@ -1,11 +1,22 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { CardModule, GridModule, TableModule, UtilitiesModule, PaginationModule, FormModule, ButtonModule } from '@coreui/angular';
+import {
+  CardModule,
+  GridModule,
+  TableModule,
+  UtilitiesModule,
+  PaginationModule,
+  FormModule,
+  ButtonModule,
+  AccordionModule,
+  SharedModule,
+} from '@coreui/angular';
 import { ChartjsModule } from '@coreui/angular-chartjs';
 import { IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from '../../icons/icon-subset';
 import { LogsComponent } from './logs.component';
 import { DocsComponentsModule } from '../../../components';
+import { IconModule } from '@coreui/icons-angular';
 
 describe('LogsComponent', () => {
   let component: LogsComponent;
@@ -16,21 +27,24 @@ describe('LogsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [LogsComponent],
       imports: [
-        GridModule, 
-        CardModule, 
-        TableModule, 
-        GridModule, 
-        UtilitiesModule, 
-        GridModule, 
-        CardModule, 
-        TableModule, 
-        ChartjsModule, 
+        GridModule,
+        CardModule,
+        TableModule,
+        GridModule,
+        UtilitiesModule,
+        GridModule,
+        CardModule,
+        TableModule,
+        ChartjsModule,
         DocsComponentsModule,
         PaginationModule,
-        FormModule, 
-        ButtonModule
+        FormModule,
+        ButtonModule,
+        IconModule,
+        AccordionModule,
+        SharedModule,
       ],
-      providers: [IconSetService]
+      providers: [IconSetService],
     }).compileComponents();
   }));
 
