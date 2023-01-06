@@ -1,11 +1,9 @@
-export class ProviderAccount{
-    constructor(
-                public Id:number,
-                public FirstName: string,
-                public LastName: string,
-                public Email: string,
-                public ProviderId:number) {
-    }
-    
-    }
-    
+export class ProviderAccount {
+  constructor(
+    public id: number,
+    public firstName: string,
+    public lastName: string,
+    public email: string,
+    public providerId: number
+  ) {}
+}

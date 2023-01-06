@@ -1,5 +1,8 @@
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"
-      xmlns="http://www.w3.org/1999/html">
+<link
+  href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  rel="stylesheet"
+  xmlns="http://www.w3.org/1999/html"
+/>
 <c-row class="mt-5">
   <c-col md="1"></c-col>
   <c-col md="10">
@@ -12,7 +15,7 @@
 </c-row>
 
 <c-row class="mt-3">
-<c-col md="1"></c-col>
+  <c-col md="1"></c-col>
   <c-col md="10">
     <c-card>
       <c-card-body class="pl-5 ml-5 mt-1 shadow">
@@ -20,67 +23,147 @@
           <c-col>
             <h4 cCardTitle>Accounts list</h4>
           </c-col>
-          <c-col style="text-align:right">
-            <button cButton color="secondary">Add new user</button>
+          <c-col style="text-align: right">
+            <button cButton color="secondary" (click)="toggleAccountForm()">
+              Add new user
+            </button>
           </c-col>
         </c-row>
         <c-row class="mb-5 ml-5">
           <c-col>
             <label cLabel for="title">Select provider</label>
             <ng-multiselect-dropdown
-            [placeholder]="'Providers'"
-            [settings]="dropdownSettingsProviders"
-            [data]="providers"
-            [(ngModel)]="clickedProviders"
-            (onSelect)="onProviderSelect($event)"
-            (onDeSelect)="onDeselectProviders($event)"
-          >
-          </ng-multiselect-dropdown>
+              [placeholder]="'Providers'"
+              [settings]="dropdownSettingsProviders"
+              [data]="providers"
+              [(ngModel)]="clickedProviders"
+              (onSelect)="onProviderSelect($event)"
+              (onDeSelect)="onDeselectProviders($event)"
+            >
+            </ng-multiselect-dropdown>
           </c-col>
 
           <c-col>
-
             <div class="input-fields">
               <label cLabel for="title">Search</label>
-              <input title="Search" cFormControl id="title" rows="1" name="newAnnouncTitle" type="text" ngModel>
+              <input
+                title="Search"
+                cFormControl
+                id="title"
+                rows="1"
+                name="newAnnouncTitle"
+                type="text"
+                ngModel
+              />
             </div>
           </c-col>
         </c-row>
-        
+
         <c-row class="ml-5 pl-5">
           <table cTable hover>
             <thead>
-            <tr class="pt-3 pb-3">
-              <!-- <th></th> -->
-              <th class="announcement-table-col-13">First name</th>
-              <th class="announcement-table-col-20">Last name</th>
-              <th class="announcement-table-col-13">Email</th>
-              <th class="announcement-table-col-30">Role</th>
-              <!-- <th class="announcement-table-col-10">Streets</th> -->
-              <th class="announcement-table-col-20">Action</th>
-            </tr>
+              <tr class="pt-3 pb-3">
+                <!-- <th></th> -->
+                <th class="announcement-table-col-13">First name</th>
+                <th class="announcement-table-col-20">Last name</th>
+                <th class="announcement-table-col-13">Email</th>
+                <th class="announcement-table-col-30">Role</th>
+                <!-- <th class="announcement-table-col-10">Streets</th> -->
+                <th class="announcement-table-col-20">Action</th>
+              </tr>
             </thead>
             <tbody>
               <tr
-              *ngFor="let user of users; let i = index"
-              class="users-table-row"
-            >
-              <td scope="row">{{ user.FirstName }}</td>
-              <td>{{ user.LastName }}</td>
-              <td>{{ user.Email }}</td>
-              <td></td>
-              <td>
-                <div class="d-grid gap-2 d-md-flex justify-content-md">
-                <button cButton color="success"
-                (click)="onClick(user.Id)">Edit</button>
-                <button cButton color="danger" 
-                (click)="onDelete(user.Id)">Delete</button></div></td>
-            </tr>
+                *ngFor="let user of users; let i = index"
+                class="users-table-row"
+              >
+                <td scope="row">{{ user.firstName }}</td>
+                <td>{{ user.lastName }}</td>
+                <td>{{ user.email }}</td>
+                <td></td>
+                <td>
+                  <div class="d-grid gap-2 d-md-flex justify-content-md">
+                    <button cButton color="success" (click)="onEdit(user.id)">
+                      Edit
+                    </button>
+                    <button cButton color="danger" (click)="onDelete(user.id)">
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
             </tbody>
           </table>
         </c-row>
-        
       </c-card-body>
     </c-card>
   </c-col>
 </c-row>
+
+<c-modal
+  [visible]="formVisible"
+  (formVisibleChange)="handleAccountFormChange($event)"
+>
+  <c-modal-header>
+    <h5 cModalTitle>
+      {{ accountForm.value.firstName ? EDIT_USER : CREATE_USER }}
+    </h5>
+    <button (click)="toggleAccountForm()" cButtonClose></button>
+  </c-modal-header>
+
+  <form cForm [formGroup]="accountForm" (ngSubmit)="onSubmit()">
+    <c-modal-body>
+      <p>Please fill in the data for the user</p>
+      <c-input-group class="mb-3">
+        <span cInputGroupText id="addon-wrapping">First name</span>
+        <input formControlName="firstName" cFormControl />
+      </c-input-group>
+
+      <c-input-group class="mb-3">
+        <span cInputGroupText id="addon-wrapping">Last name</span>
+        <input formControlName="lastName" cFormControl />
+      </c-input-group>
+
+      <c-input-group class="mb-3">
+        <span cInputGroupText id="basic-addon1">Email</span>
+        <input cFormControl formControlName="email" placeholder="Email" />
+      </c-input-group>
+
+      <label cLabel>Select a provider this account belongs to</label>
+      <select cSelect class="mb-3">
+        <option>Select a provider</option>
+        <option value="1">EPBIH</option>
+        <option value="2">BHTelecom</option>
+        <option value="3">Example</option>
+      </select>
+
+      <h6 class="mb-2">Account roles</h6>
+      <c-card class="px-2 py-2 mb-2">
+        <h6>Viewer Role</h6>
+        <p>Select a region this role applies to below</p>
+        <app-regions-select class="mb-2"></app-regions-select>
+      </c-card>
+
+      <c-card class="px-2 py-2 mb-2">
+        <h6>Editor Role</h6>
+        <p>Select a region this role applies to below</p>
+        <app-regions-select class="mb-2"></app-regions-select>
+      </c-card>
+
+      <c-card class="px-2 py-2 mb-2">
+        <h6>Admin Role</h6>
+        <p>Select a region this role applies to below</p>
+        <app-regions-select class="mb-2"></app-regions-select>
+      </c-card>
+    </c-modal-body>
+
+    <c-modal-footer>
+      <button (click)="toggleAccountForm()" cButton color="secondary">
+        Close
+      </button>
+      <button cButton color="primary" type="submit" name="submit">
+        {{ accountForm.value.firstName ? SAVE_CHANGES : CREATE_USER }}
+      </button>
+    </c-modal-footer>
+  </form>
+</c-modal>

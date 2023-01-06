@@ -8,7 +8,6 @@ import { RegisterComponent } from './register/register.component';
 import { RegionComponent } from './region/region.component';
 import { AnnouncementHandlerComponent } from './handle-announcement/handle.announcement.component';
 import { UsersComponent } from './users/users.component';
-import { UserSettingsComponent } from './user-settings/user-settings.component';
 
 const routes: Routes = [
   {
@@ -58,20 +57,6 @@ const routes: Routes = [
     component: RegionComponent,
     data: {
       title: 'Region Page',
-    },
-  },
-  {
-    path: 'users',
-    component: UsersComponent,
-    data: {
-      title: 'Users',
-    },
-  },
-  {
-    path: 'user-settings/:id',
-    component: UserSettingsComponent,
-    data: {
-      title: 'User Settings',
     },
   },
 ];
