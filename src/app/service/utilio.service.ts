@@ -87,7 +87,7 @@ export class UtilioService {
       streets: streets,
       id: announcementId,
     };
-    console.log(body);
+
     return this.http.put(
       'https://localhost:7069/api/announcement?id=' + announcementId,
       body
@@ -116,8 +116,7 @@ export class UtilioService {
     regions: number[],
     streets: number[]
   ) {
-    console.log(regions);
-    console.log(streets);
+
     let referenceStartDate = startDate + 'T' + startTime;
 
     let referenceEndDate = endDate + 'T' + endTime;
@@ -142,7 +141,7 @@ export class UtilioService {
       streets: streets,
     };
     let body2 = JSON.stringify(body);
-    console.log(JSON.stringify(body));
+
     return this.http.post<any>('https://localhost:7069/api/announcement', body);
   }
   getLogs(
