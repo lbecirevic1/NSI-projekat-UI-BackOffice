@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
 import { Announcement } from '../models/announcement';
 import { IAnnouncementHandler } from '../models/announcement-handler';
 
@@ -13,7 +13,7 @@ import { ProviderAccount } from '../models/providerAccount';
   providedIn: 'root',
 })
 export class UtilioService {
-  readonly apiUrl = 'https://localhost:7069/api/';
+  readonly apiUrl = 'https://localhost:7069/api';
 
   private headerDict = {
     'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ export class UtilioService {
 
   deleteAnnouncement(notificationId: number) {
     return this.http.delete<number>(
-      this.apiUrl + 'announcement?id=' + notificationId
+      this.apiUrl + '/announcement?id=' + notificationId
     );
   }
 
@@ -180,21 +180,41 @@ export class UtilioService {
   }
 
   getProviders(): Observable<any[]> {
-    return this.http.get<any[]>('https://localhost:7069/api/providers');
+    return this.http.get<any[]>(`${this.apiUrl}/providers`);
   }
 
   getProviderAccounts(): Observable<ProviderAccount[]> {
-    return this.http.get<any[]>('https://localhost:7069/api/provideraccount', {
-      headers: new HttpHeaders(this.headerDict),
-    });
+    return this.http
+      .get<any[]>(`${this.apiUrl}/provideraccount`, {
+        headers: new HttpHeaders(this.headerDict),
+      })
+      .pipe(catchError(() => of()));
   }
 
   getProviderAccount(id: number): Observable<ProviderAccount> {
-    return this.http.get<ProviderAccount>(
-      `https://localhost:7069/api/provideraccount/${id}`,
-      {
+    return this.http
+      .get<ProviderAccount>(`${this.apiUrl}/provideraccount/${id}`, {
         headers: new HttpHeaders(this.headerDict),
-      }
-    );
+      })
+      .pipe(catchError(() => of()));
+  }
+
+  postProviderAccount(providerAccount: ProviderAccount): Observable<any> {
+    return this.http
+      .post(`${this.apiUrl}/provideraccount`, providerAccount, {
+        headers: new HttpHeaders(this.headerDict),
+      })
+      .pipe(catchError(() => of()));
+  }
+
+  updateProviderAccount(
+    id: number,
+    providerAccount: ProviderAccount
+  ): Observable<any> {
+    return this.http
+      .patch(`${this.apiUrl}/provideraccount/${id}`, providerAccount, {
+        headers: new HttpHeaders(this.headerDict),
+      })
+      .pipe(catchError(() => of()));
   }
 }

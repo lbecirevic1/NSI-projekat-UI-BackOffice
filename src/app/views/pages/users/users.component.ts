@@ -14,8 +14,9 @@ export class UsersComponent implements OnInit {
   users: ProviderAccount[] = [];
   clickedProviders: number[] = [];
   providers: UtilioProvider[] = [];
-  formVisible = false;
   accountForm: any;
+  formVisible = false;
+  isEdit = false;
 
   readonly SAVE_CHANGES = 'Save changes';
   readonly CREATE_USER = 'Create new user';
@@ -30,6 +31,7 @@ export class UsersComponent implements OnInit {
     itemsShowLimit: 5,
     allowSearchFilter: true,
   };
+  selectedAccount?: ProviderAccount;
 
   constructor(
     private service: UtilioService,
@@ -38,7 +40,6 @@ export class UsersComponent implements OnInit {
 
   ngOnInit() {
     this.setAccounts();
-    this.setProviders();
     this.fetchProviders();
 
     this.dropdownSettingsProviders = {
@@ -54,6 +55,7 @@ export class UsersComponent implements OnInit {
   onEdit(id: number): void {
     this.setSelectedAccount(id);
 
+    this.isEdit = true;
     this.toggleAccountForm();
   }
 
@@ -80,8 +82,10 @@ export class UsersComponent implements OnInit {
   }
 
   toggleAccountForm(): void {
-    if (this.formVisible) this.emptyAccountForm();
-
+    if (this.formVisible) {
+      this.isEdit = false;
+      this.emptyAccountForm();
+    }
     this.formVisible = !this.formVisible;
   }
 
@@ -92,7 +96,18 @@ export class UsersComponent implements OnInit {
   onSubmit(): void {
     if (this.accountForm.valid) {
       console.log(this.accountForm.value);
+      if (this.isEdit) {
+        this.updateAccount();
+      } else {
+        this.createAccount();
+      }
     }
+  }
+
+  changeProvider(e: any) {
+    this.accountForm.get('providerId')?.setValue(e.target.value, {
+      onlySelf: true,
+    });
   }
 
   private buildAccountForm() {
@@ -100,6 +115,8 @@ export class UsersComponent implements OnInit {
       firstName: ['', [Validators.required, Validators.pattern('^[a-zA-Z]+$')]],
       lastName: ['', [Validators.required, Validators.pattern('^[a-zA-Z]+$')]],
       email: ['', [Validators.required, Validators.email]],
+      providerId: [null, [Validators.required]],
+      providerAccountRoles: this.formBuilder.array([]),
     });
   }
 
@@ -108,15 +125,21 @@ export class UsersComponent implements OnInit {
       firstName: '',
       lastName: '',
       email: '',
+      providerId: null,
     });
+
+    this.accountForm.get('providerId')?.enable();
   }
 
-  private fillAccountForm(account: ProviderAccount) {
+  private fillAccountForm() {
     this.accountForm.patchValue({
-      firstName: account.firstName,
-      lastName: account.lastName,
-      email: account.email,
+      firstName: this.selectedAccount?.firstName,
+      lastName: this.selectedAccount?.lastName,
+      email: this.selectedAccount?.email,
+      providerId: this.selectedAccount?.providerId,
     });
+
+    this.accountForm.get('providerId')?.disable();
   }
 
   private providerClicked(provider: any): void {
@@ -129,7 +152,27 @@ export class UsersComponent implements OnInit {
     } else this.clickedProviders.push(providerId);
   }
 
+  private updateAccount(): void {
+    if (this.selectedAccount?.id === 9) return;
+    if (this.selectedAccount)
+      this.service
+        .updateProviderAccount(this.selectedAccount.id, this.accountForm.value)
+        .subscribe((data: any) => {
+          this.setAccounts();
+        });
+  }
+
+  private createAccount(): void {
+    this.service
+      .postProviderAccount(this.accountForm.value)
+      .subscribe((data: any) => {
+        this.toggleAccountForm();
+        this.setAccounts();
+      });
+  }
+
   private setAccounts(): void {
+    this.users = [];
     this.service.getProviderAccounts().subscribe((data: any) => {
       for (let i = 0; i < data.length; i++) {
         let account = new ProviderAccount(
@@ -161,7 +204,7 @@ export class UsersComponent implements OnInit {
 
   private setSelectedAccount(id: number): void {
     this.service.getProviderAccount(id).subscribe((data: any) => {
-      const selectedAccount = new ProviderAccount(
+      this.selectedAccount = new ProviderAccount(
         data.id,
         data.firstName,
         data.lastName,
@@ -169,80 +212,7 @@ export class UsersComponent implements OnInit {
         data.providerId
       );
 
-      this.fillAccountForm(selectedAccount);
+      this.fillAccountForm();
     });
-  }
-
-  private setData(): void {
-    this.users = [
-      {
-        id: 2439,
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'johndoe@email.com',
-        providerId: 1,
-      },
-      {
-        id: 2440,
-        firstName: 'Jane',
-        lastName: 'Doe',
-        email: 'janedoe@email.com',
-        providerId: 1,
-      },
-      {
-        id: 2441,
-        firstName: 'Ime',
-        lastName: 'Prezime',
-        email: 'imeprezime@email.com',
-        providerId: 1,
-      },
-    ];
-  }
-
-  private setProviders(): void {
-    this.providers = [
-      {
-        Id: 1,
-        Name: 'JP Elektorprivreda BiH',
-        Code: 'EPBiH',
-        webSite: 'https://www.epbih.ba/',
-        createDate: '2022-12-23T07:23:36.3166667',
-      },
-      {
-        Id: 2,
-        Name: 'KJKP Vodovod i kanalizacija Sarajevo',
-        Code: 'ViKSa',
-        webSite: 'https://www.viksa.ba/',
-        createDate: '2022-12-03T02:06:12.1266667',
-      },
-      {
-        Id: 3,
-        Name: 'KJKP Rad Sarajevo',
-        Code: 'KJKPRadSarajevo',
-        webSite: 'http://www.rad.com.ba/',
-        createDate: '2022-12-03T02:06:12.1266667',
-      },
-      {
-        Id: 4,
-        Name: 'KJKP Sarajevogas Sarajevo',
-        Code: 'KJKPSarajevoGas',
-        webSite: 'https://www.sarajevogas.ba/',
-        createDate: '2022-12-03T02:06:12.1266667',
-      },
-      {
-        Id: 5,
-        Name: 'KJKP Toplane Sarajevo',
-        Code: 'KJKPToplaneSarajevo',
-        webSite: 'https://www.toplanesarajevo.ba/',
-        createDate: '2022-12-03T02:06:12.1266667',
-      },
-      {
-        Id: 6,
-        Name: 'BH Telecom',
-        Code: 'BHTelecom',
-        webSite: 'https://www.bhtelecom.ba/',
-        createDate: '2022-12-03T02:06:12.1266667',
-      },
-    ];
   }
 }

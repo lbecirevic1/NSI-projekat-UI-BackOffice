@@ -106,35 +106,64 @@
 >
   <c-modal-header>
     <h5 cModalTitle>
-      {{ accountForm.value.firstName ? EDIT_USER : CREATE_USER }}
+      {{ isEdit ? EDIT_USER : CREATE_USER }}
     </h5>
     <button (click)="toggleAccountForm()" cButtonClose></button>
   </c-modal-header>
 
-  <form cForm [formGroup]="accountForm" (ngSubmit)="onSubmit()">
+  <form
+    cForm
+    [formGroup]="accountForm"
+    (ngSubmit)="onSubmit()"
+    ngNativeValidate
+  >
     <c-modal-body>
       <p>Please fill in the data for the user</p>
       <c-input-group class="mb-3">
         <span cInputGroupText id="addon-wrapping">First name</span>
-        <input formControlName="firstName" cFormControl />
+        <input
+          formControlName="firstName"
+          type="text"
+          required
+          cFormControl
+          placeholder="First name"
+        />
       </c-input-group>
 
       <c-input-group class="mb-3">
         <span cInputGroupText id="addon-wrapping">Last name</span>
-        <input formControlName="lastName" cFormControl />
+        <input
+          formControlName="lastName"
+          type="text"
+          required
+          cFormControl
+          placeholder="Last name"
+        />
       </c-input-group>
 
       <c-input-group class="mb-3">
-        <span cInputGroupText id="basic-addon1">Email</span>
-        <input cFormControl formControlName="email" placeholder="Email" />
+        <span cInputGroupText id="basic-addon1">@</span>
+        <input
+          cFormControl
+          required
+          formControlName="email"
+          type="email"
+          placeholder="Email"
+        />
       </c-input-group>
 
       <label cLabel>Select a provider this account belongs to</label>
-      <select cSelect class="mb-3">
-        <option>Select a provider</option>
-        <option value="1">EPBIH</option>
-        <option value="2">BHTelecom</option>
-        <option value="3">Example</option>
+      <select
+        cSelect
+        required
+        class="mb-3"
+        formControlName="providerId"
+        (change)="changeProvider($event)"
+      >
+        <option value="null">Choose provider</option>
+        <option *ngFor="let provider of providers" [ngValue]="provider.Id">
+          {{ provider.Name }}
+        </option>
       </select>
 
       <h6 class="mb-2">Account roles</h6>
@@ -162,7 +191,7 @@
         Close
       </button>
       <button cButton color="primary" type="submit" name="submit">
-        {{ accountForm.value.firstName ? SAVE_CHANGES : CREATE_USER }}
+        {{ isEdit ? SAVE_CHANGES : CREATE_USER }}
       </button>
     </c-modal-footer>
   </form>

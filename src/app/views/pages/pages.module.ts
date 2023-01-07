@@ -10,6 +10,14 @@ import {
   GridModule,
   CollapseModule,
   PaginationModule,
+  AlertModule,
+  AvatarModule,
+  ButtonGroupModule,
+  ModalModule,
+  NavModule,
+  ProgressModule,
+  TableModule,
+  TabsModule,
 } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
 import { AnnouncementComponent } from './announcement/announcement.component';
@@ -22,16 +30,6 @@ import { RegionComponent } from './region/region.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-import {
-  AvatarModule,
-  ButtonGroupModule,
-  ModalModule,
-  NavModule,
-  ProgressModule,
-  TableModule,
-  TabsModule,
-} from '@coreui/angular';
 
 import { WidgetsModule } from '../widgets/widgets.module';
 
@@ -70,6 +68,7 @@ import { MatIconModule } from '@angular/material/icon';
     CardModule,
     NavModule,
     IconModule,
+    AlertModule,
     TabsModule,
     GridModule,
     ProgressModule,
