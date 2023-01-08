@@ -26,56 +26,21 @@ export class SubscriptionModalComponent implements OnInit {
   // addNewSubscriptionForm!:FormGroup;
   @Output() newItemEvent = new EventEmitter<FormGroup>();
   @Input() editSubscriptionInfo!:IEditSubscription;
+  @Input() user!:any;
   isSubmitted = false;
   editMode = false;
   //Get from backend
   Topics: any = [];
   Categories: any = [];
-
-  
-  topics  = [
-    {
-      Id: 1,
-      Name: "TopicNeki"
-    },
-    {
-      Id: 2,
-      Name: "Centar"
-    },
-    {
-      Id: 3,
-      Name: "BHT"
-    }
-  ]
-  categories: ICategory[] = [
-    {
-      Id:1,
-      Name:"Kategorija1"
-    },
-    {
-      Id:2,
-      Name:"Kategorija2"
-    }
-  ]
   SelectedCategories: any =[]
 
   constructor(public fb: FormBuilder, private service: UtilioService ) { }
   addNewSubscriptionForm = this.fb.group({
     topicControl: [''],
-    categoryControl: []
+    // categoryControl: []
   });
 
   changeTopic(e: any) {
-    console.log(e.target.value)
-    // this.topicControl?.setValue(e.target.value.split(': ')[1], {
-    //   onlySelf: true,
-    // });
-    console.log("Topic changed", this.topicControl, e.target.value);
-    console.log(this.editSubscriptionInfo, "Edit info")
-    //Get from backend categories that are selected
-    //this.SelectedCategories = 
-    //Get from backend categories that are not selected
-    //this.Categories
     
     this.newItemEvent.emit(this.addNewSubscriptionForm);
   }
@@ -101,34 +66,10 @@ export class SubscriptionModalComponent implements OnInit {
   }
 
   onSubmit(): void {
+    console.log("SDPOAKOISAFAOISFAOIFKAsoFOIA")
     console.log(this.addNewSubscriptionForm);
     this.isSubmitted = true;
     
-    console.log(JSON.stringify(this.addNewSubscriptionForm.value));
-    //Dodati subscription is addNewSubscriptionForm
-    // var addSubscription = {
-    //   // {
-    //   //   "id": 0,
-    //   //   "name": "string",
-    //   //   "identifier": "string",
-    //   //   "notificationInterval": 0,
-    //   //   "subscriptionEntryID": 0,
-    //   //   "subscriberID": 0,
-    //   //   "subscriptionEntry": {
-    //   //     "id": 0,
-    //   //     "identifier": "string",
-    //   //     "isHighPriority": true,
-    //   //     "deliveryType": "string",
-    //   //     "providerID": 0,
-    //   //     "regionID": 0,
-    //   //     "streetID": 0
-    //   //   }
-    //   // }
-    // }
-    // this.service.addSubscriptionForUser(addSubscription)
-    // .subscribe(data => {
-    //   console.log(data)
-    // });
   }
   ngOnChanges() {
     console.log(this.topicControl, "Topic control")
@@ -142,7 +83,7 @@ export class SubscriptionModalComponent implements OnInit {
         this.topicControl?.setValue(this.editSubscriptionInfo.TopicId.toString(), {
           onlySelf: true,
         });
-        console.log("setted value", this.topicControl, this.editSubscriptionInfo.TopicId, this.topics[0].Id==this.editSubscriptionInfo.TopicId)
+        // console.log("setted value", this.topicControl, this.editSubscriptionInfo.TopicId, this.topics[0].Id==this.editSubscriptionInfo.TopicId)
     }
   }
 }

@@ -13,6 +13,7 @@
               <tr>
                 <th class="text-center">Name</th>
                 <th class="text-center">Email</th>
+                <th class="text-center">Last time modified</th>
               </tr>
               </thead>
               <tbody>
@@ -22,6 +23,9 @@
                   </td>
                   <td class="text-center">
                     {{ user.Email }}
+                  </td>
+                  <td class="text-center">
+                    {{ user.DateModified | date:'EEEE d MMMM y' }}
                   </td>
                 </tr>
               </tbody>

@@ -47,10 +47,9 @@ export class UtilioService{
   }
 
   createSubscriber(subscriber: any): Observable<any>{
-    return this.http.post<any>(this.apiUrl + 'Subscriber/Post', subscriber);
-  }
-  updateSubscriber(subscriber:any): Observable<any>{
-    return this.http.put<any>(this.apiUrl + 'Subscriber/Update', subscriber);
+    return this.http.post<any>(this.realAPIUrl + 'Subscriber', subscriber,{
+      headers: new HttpHeaders(this.headerDict),
+    });
   }
   getSubscribers(): Observable<any[]>{
     return this.http.get<any[]>(this.realAPIUrl + 'Subscriber',{
@@ -73,7 +72,7 @@ export class UtilioService{
     });
   }
   addSubscriptionForUser(subscription:any ): Observable<any>{
-    return this.http.post<any>(this.apiUrl + 'Subscription/Post', subscription);
+    return this.http.post<any>(this.realAPIUrl + 'Subscription', subscription);
   }
   getRegionById(id:number): Observable<any> {
     return this.http.get<any>(this.realAPIUrl + 'regions' + id,{
@@ -82,6 +81,21 @@ export class UtilioService{
   }
   getStreetById(id:number): Observable<any> {
     return this.http.get<any>(this.realAPIUrl + 'streets' + id,{
+      headers: new HttpHeaders(this.headerDict),
+    });
+  }
+  addSubscriptionEntry(subscriptionEntry:any){
+    return this.http.post<any>(this.realAPIUrl + 'SubscriptionEntry', subscriptionEntry,{
+      headers: new HttpHeaders(this.headerDict),
+    });
+  }
+  deleteSubscription(id:number){
+    return this.http.delete<any>(this.realAPIUrl + 'Subscription/' + id,{
+      headers: new HttpHeaders(this.headerDict),
+    });
+  }
+  updateSubscriber(user:any){
+    return this.http.patch<any>(this.realAPIUrl + 'Subscriber/' + user.id, user,{
       headers: new HttpHeaders(this.headerDict),
     });
   }

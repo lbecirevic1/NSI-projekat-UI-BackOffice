@@ -32,7 +32,7 @@
               <div class="mb-3 col-md-6">
                 <label cLabel for="region">Region</label>
                 <select cSelect  class="mb-3 text-center" (change)="changeRegion($event)" formControlName="Region">
-                  <option *ngFor="let region of Regions" [ngValue]="region.id">
+                  <option *ngFor="let region of Regions" [ngValue]="region.id" [selected]="region.id==regionId">
                     {{ region.name }}
                   </option>
                 </select>
@@ -40,7 +40,7 @@
               <div class="mb-3 col-md-6">
                 <label cLabel for="street">Street</label>
                 <select cSelect  class="mb-3 text-center" (change)="changeStreet($event)" formControlName="Street">
-                  <option *ngFor="let street of Streets" [ngValue]="street.id">
+                  <option *ngFor="let street of Streets" [ngValue]="street.id" [selected]="streetId==street.id">
                     {{ street.name }}
                   </option>
                 </select>
@@ -61,28 +61,28 @@
             <thead>
             <tr>
               <th scope="col" class="text-center">Topic</th>
-              <th scope="col" class="text-center">Categories Number</th>
-              <th scope="col" class="text-center">Last Modified</th>
+              <th scope="col" class="text-center">Categories</th>
+              <th scope="col" class="text-center">Delivery Type</th>
               <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let subscription of subscriptions; index as i" >
+              <tr *ngFor="let subscription of Subscriptions; index as i" >
                 <td class="text-center">
-                  {{ subscription.Topic.Name }}
+                  {{ subscription.name }}
                 </td>
                 <td class="text-center">
-                  {{ subscription.CategoryNumber }}
+                  *
                 </td>
                 <td class="text-center">
-                  {{ subscription.LastModified }}
+                  {{ subscription.subscriptionEntry.deliveryType }}
                 </td>
                 <td class="text-center">
                   <c-button-group aria-label="Basic example" role="group">
-                      <button cButton class="me-1" color="primary" (click)="editSubscription(subscription.Topic.Id)">
+                      <!-- <button cButton class="me-1" color="primary" (click)="editSubscription(subscription.Topic.Id)">
                           Edit
-                        </button>
-                        <button cButton class="me-1" color="danger"(click)="deleteSubscription(subscription.Topic.Id)">
+                        </button> -->
+                        <button cButton class="me-1" color="danger"(click)="deleteSubscription(subscription.id)">
                           Delete
                         </button>
                     </c-button-group>
@@ -116,12 +116,12 @@
 </ng-template>
 
 <ng-template #modalAddNewSubscription>
-  <c-modal id="modalAddNewSubscriptionModal" alignment="center" size="lg" [visible]="modalAddNewSubscriptionVisible" (visibleChange)="handleModalAddNewSubscriptionChange($event)" class="w-80">
+  <c-modal id="modalAddNewSubscriptionModal" alignment="center" [visible]="modalAddNewSubscriptionVisible" (visibleChange)="handleModalAddNewSubscriptionChange($event)" class="w-80">
     <c-modal-header class="text-center">
       <h5 cModalTitle>Add new</h5>
       <button (click)="toggleModalAddNewSubscription()" cButtonClose></button>
     </c-modal-header>
-    <app-subscription-modal (newItemEvent)="addItem($event)" [editSubscriptionInfo]="informationForEditingSubscription"></app-subscription-modal>
+    <app-subscription-modal (newItemEvent)="addItem($event)" [editSubscriptionInfo]="informationForEditingSubscription" [user]="user"></app-subscription-modal>
     <c-modal-footer >
       <button (click)="toggleModalAddNewSubscription()" cButton color="secondary">
         Cancel

@@ -1,7 +1,7 @@
 <c-modal-body>
   <form cForm [formGroup]="addNewSubscriptionForm" (ngSubmit)="onSubmit()">
     <div class="row">
-      <div class="mb-3 col-md-6">
+      <div class="mb-3 col-md-12">
         <div class="row">
           <label class="mb-3 text-center"> Select Topic</label>
         </div>
@@ -19,7 +19,7 @@
           *ngIf="!editSubscriptionInfo || (editSubscriptionInfo | json) == '{}'" >
           <option value="" disabled>Choose Topic</option>
           <option *ngFor="let topic of Topics" [ngValue]="topic.id">
-            {{ topic.name }} Add
+            {{ topic.name }}
           </option>
         </select>
 
@@ -33,7 +33,7 @@
 
         </div>
       </div>
-      <div class="mb-3 col-md-6">
+      <!-- <div class="mb-3 col-md-6">
         <div class="row">
           <label class="mb-3 text-center"> Select Category</label>
         </div>
@@ -50,7 +50,7 @@
             </option>
           </select>
         </div>
-      </div>
+      </div> -->
     </div>
   </form>
 
