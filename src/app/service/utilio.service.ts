@@ -97,6 +97,9 @@ export class UtilioService {
   getRegions(): Observable<any[]> {
     return this.http.get<any[]>('https://localhost:7069/api/regions');
   }
+  getRegionsAll(): Observable<any[]> {
+    return this.http.get<any[]>('https://localhost:7069/api/regions/all');
+  }
   getRegionTypes(): Observable<any[]> {
     return this.http.get<any[]>('https://localhost:7069/api/regions/regionTypes');
   }
@@ -128,8 +131,7 @@ export class UtilioService {
       name: name,
       code: code,
       parentRegionId: parentRegionId,
-      regionTypeId: regionTypeId,
-      createDate : createDate
+      regionTypeId: regionTypeId
     }
     console.log(body,"BODY")
     return this.http.put('https://localhost:7069/api/regions?id='+regionId,body)

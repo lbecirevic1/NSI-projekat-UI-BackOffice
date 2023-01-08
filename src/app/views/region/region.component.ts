@@ -3,7 +3,7 @@ import {Component, getNgModuleById, OnInit, Provider, ViewChild} from '@angular/
 import { UtilioService} from "../../service/utilio.service";
 import { Announcement} from "../../models/announcement";
 import {FormBuilder, FormsModule, NgForm} from '@angular/forms';
-import {Region,Region2} from "../../models/region";
+import {Region,RegionAll} from "../../models/region";
 import {RegionType} from "../../models/regionType";
 import {Street} from "../../models/street";
 import {UtilioProvider} from "../../models/utilioProvider";
@@ -124,7 +124,7 @@ import {LogsResponse, Paging} from "../../models/log";
   public descriptionDemoVisible=false;
 
   public regions: Region[]=[];
-  public regionsAll: Region2[]=[];
+  public regionsAll: RegionAll[]=[];
   public regionsTypes: RegionType[]=[];
  
 
@@ -174,9 +174,9 @@ import {LogsResponse, Paging} from "../../models/log";
         this.AllRegions.push(region.Id);
       }
     })
-    this.service.getRegions().subscribe(data=>{
+    this.service.getRegionsAll().subscribe(data=>{
       for(let i=0;i<data.length;i++){
-        let region=new Region2(data[i].id,data[i].name,data[i].code,data[i].regionTypeId,data[i].regionType,data[i].parentRegionId,data[i].parentRegion,data[i].createDate);
+        let region=new RegionAll(data[i].id,data[i].name,data[i].code,data[i].regionTypeId,data[i].regionType,data[i].parentRegionId,data[i].parentRegion,data[i].createDate);
         this.regionsAll.push(region);
       }
     })
@@ -323,6 +323,7 @@ import {LogsResponse, Paging} from "../../models/log";
     this.service.deleteRegion(this.deleteItemId).subscribe(data=>{
       this.deleteItemId = 0;
       this.liveDemoVisible = !this.liveDemoVisible;
+      this.refreshRegions();
     });
     this.refreshRegions()
   }

@@ -10,7 +10,7 @@ export class Region{
 
 }
 
-export class Region2{
+export class RegionAll{
   constructor(
     public Id: number,
     public Name: string,
