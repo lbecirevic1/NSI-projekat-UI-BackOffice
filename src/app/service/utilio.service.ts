@@ -109,23 +109,15 @@ export class UtilioService {
   }
 
   postRegion(name: string, code: string, parentRegionId: number, regionTypeId: number,createDate: string) {
-
-    console.log(name)
-    console.log(code)
-    
     let body = {
       name: name,
       code: code,
       parentRegionId: parentRegionId,
       regionTypeId: regionTypeId
     }
-    let body2 = JSON.stringify(body);
-    console.log(JSON.stringify(body));
     return this.http.post<any>('https://localhost:7069/api/regions', body)
   }
   editRegion(regionId:number, name: string, code: string, parentRegionId: number, regionTypeId: number,createDate: string) {
-
-
     let body = {
       id:regionId,
       name: name,
@@ -133,15 +125,12 @@ export class UtilioService {
       parentRegionId: parentRegionId,
       regionTypeId: regionTypeId
     }
-    console.log(body,"BODY")
     return this.http.put('https://localhost:7069/api/regions?id='+regionId,body)
   }
   deleteRegion(regionId: number) {
     return this.http.delete<number>('https://localhost:7069/api/regions?id=' + regionId);
   }
-  // postAnnouncement(providerId: number, title: string, url: any, description: string,
-  //   content: string, adInfo: string, startDate: string, endDate: string, startTime: string,
-  //   endTime: string, regions: number[],streets:number[]) {
+
   postAnnouncement(
     providerId: number,
     title: string,
@@ -273,4 +262,53 @@ export class UtilioService {
       })
       .pipe(catchError(() => of()));
   }
+
+  postProvider(name: string, code: string, webSite: string,createDate: string) {
+    let body = {
+      name: name,
+      code: code,
+      webSite: webSite,
+    }
+
+    return this.http.post<any>('https://localhost:7069/api/providers', body)
+  }
+
+  editProvider(providerId:number,name: string, code: string, webSite: string,createDate: string) {
+    let body = {
+      id: providerId,
+      name: name,
+      code: code,
+      webSite: webSite,
+    }
+    
+    return this.http.put('https://localhost:7069/api/providers?id='+providerId,body)
+  }
+  deleteProvider(providerId: number) {
+    return this.http.delete<number>('https://localhost:7069/api/providers?id=' + providerId);
+  }
+
+  getStreetAll(): Observable<any[]> {
+    return this.http.get<any[]>('https://localhost:7069/api/streets/all');
+  }
+
+  postStreet(name: string, regionId: number,createDate: string) {
+    let body = {
+      name: name,
+      regionId: regionId,
+    }
+    return this.http.post<any>('https://localhost:7069/api/streets', body)
+  }
+  editStreet(streetId:number, name: string, regionId: number,createDate: string) {
+    let body = {
+      id:streetId,
+      name: name,
+      regionId: regionId,
+    }
+    return this.http.put('https://localhost:7069/api/streets?id='+streetId,body)
+  }
+  deleteStreet(streetId: number) {
+    return this.http.delete<number>('https://localhost:7069/api/streets?id=' + streetId);
+  }
+
+
 }
