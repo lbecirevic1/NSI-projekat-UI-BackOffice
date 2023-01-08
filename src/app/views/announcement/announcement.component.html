@@ -101,13 +101,13 @@
                           <c-col class="col-sm-6">
                             <p><strong>Source url:</strong>&nbsp;{{ value.SourceUrl }}</p>
                             <p><strong>Start date:</strong>&nbsp;{{parseDate(value.ReferenceStartDate, 1)}}</p>
-                            <p><strong>End date:</strong>&nbsp;&nbsp;&nbsp;{{parseDate(value.ReferenceEndDate, 1)}}</p>                         
+                            <p><strong>End date:</strong>&nbsp;&nbsp;&nbsp;{{parseDate(value.ReferenceEndDate, 1)}}</p>
                             <strong>Content:</strong>
-                            <p>{{ value.Content }}</p> 
+                            <p>{{ value.Content }}</p>
                             <strong>Description:</strong>
                             <p>{{ value.Description }}</p>
-                          </c-col>     
-                          <c-col class="col-sm-1"></c-col> 
+                          </c-col>
+                          <c-col class="col-sm-1"></c-col>
                           <c-col class="col-sm-4" style="padding-left: 40px;">
                             <strong>Streets:</strong>
                               <ul>
@@ -115,7 +115,7 @@
                                   <li>{{street.name}}</li>
                                 </ng-container>
                               </ul>
-                          </c-col>         
+                          </c-col>
                       </c-row>
                     </ng-template>
                     </c-accordion-item>
@@ -218,6 +218,7 @@
                   <div class="input-group">
                     <input
                       class="form-control"
+                      [readonly]="true"
                       placeholder="Start date"
                       name="dp3"
                       [(ngModel)]="modelEditStartDate"
@@ -250,6 +251,7 @@
                   <div class="input-group">
                     <input
                       class="form-control"
+                      [readonly]="true"
                       placeholder="End date"
                       name="dp4"
                       [(ngModel)]="modelEditEndDate"
@@ -347,8 +349,10 @@
                     <div class="input-group">
                       <input
                         class="form-control"
+                        [readonly]="true"
                         placeholder="Start date"
                         name="dp"
+                        #c2="ngModel"
                         [(ngModel)]="modelStartDate"
                         ngbDatepicker
                         #d="ngbDatepicker"
@@ -379,6 +383,7 @@
                     <div class="input-group">
                       <input
                         class="form-control"
+                        [readonly]="true"
                         placeholder="End date"
                         name="dp2"
                         [(ngModel)]="modelEndDate"
