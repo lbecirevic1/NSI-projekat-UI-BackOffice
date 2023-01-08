@@ -1,0 +1,60 @@
+<div>
+  <h3 style="text-align:center">Announcement Overview</h3>
+  <c-form-check>
+  <input cFormCheckInput id="checkOne" type="checkbox" [checked]="enableFiltering"  (change)="showFiltering()"/>
+  <label cFormCheckLabel for="checkOne">Enable filtering</label>
+</c-form-check>
+<div *ngIf="enableFiltering">
+  <div>
+   By date : 
+   <c-form-check>
+  <input cFormCheckInput type="radio" value="1" name="flexRadioDefault" (click)="changeFilterDateType(1)" checked/>
+  <label cFormCheckLabel>Created at</label>
+    </c-form-check>
+  <c-form-check>
+  <input cFormCheckInput type="radio" value="2" name="flexRadioDefault" (click)="changeFilterDateType(2)"/>
+  <label cFormCheckLabel>Modified at</label>
+  </c-form-check>
+  <c-form-check>
+  <input cFormCheckInput type="radio" value="3" name="flexRadioDefault" (click)="changeFilterDateType(3)"/>
+  <label cFormCheckLabel>Last notified</label>
+  </c-form-check>
+  <input matInput [matDatepicker]="picker" placeholder="Start date" (dateChange)="startDateChange($event)">
+  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
+
+  <input matInput [matDatepicker]="picker2" placeholder="End date" (dateChange)="endDateChange($event)">
+  <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+  <mat-datepicker #picker2></mat-datepicker>
+
+  <button cButton color="primary" (click)="handleFiltering()">Filter</button>
+
+
+</div>
+</div>
+<table [striped]="true" cTable>
+  <thead cTableColor="dark">
+            <tr style="font-size: normal; text-align: center; vertical-align: middle;" fon>
+              <th scope="col" >ID</th>
+              <th scope="col">Identifier</th>
+              <th scope="col">Subscription ID</th>
+              <th scope="col">Subscriber ID</th>
+              <th scope="col">Last notified on</th>
+              <th scope="col">No. sent announcements</th>
+              <th scope="col">Created on</th>
+              <th scope="col">Modified on</th>
+            </tr>
+              </thead>
+              <tr style="font-size: small; text-align: center;" *ngFor="let announcement of displayedAnnouncements">
+                <th scope="row">{{announcement.id}}</th>
+                <th scope="row">{{announcement.identifier}}</th>
+                <th scope="row">{{announcement.subscriptionIdentifier}}</th>
+                <th scope="row">{{announcement.subscriberIdentifier}}</th>
+                <th scope="row">{{announcement.lastTimeNotified}}</th>
+                <th scope="row">{{announcement.numberOfSentAnnouncements}}</th>
+                <th scope="row">{{announcement.createDate}}</th>
+                <th scope="row">{{announcement.modifiedDate}}</th>
+              </tr>
+ 
+</table>
+</div>

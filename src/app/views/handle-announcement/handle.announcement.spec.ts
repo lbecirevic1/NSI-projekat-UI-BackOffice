@@ -3,9 +3,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { CardModule, GridModule, TableModule, UtilitiesModule } from '@coreui/angular';
 import { IconSetService } from '@coreui/icons-angular';
-import { iconSubset } from '../../../icons/icon-subset';
+import { iconSubset } from '../../icons/icon-subset';
 import { AnnouncementHandlerComponent } from './handle.announcement.component';
-import { DocsComponentsModule } from '../../../../components';
+import { DocsComponentsModule } from '../../../components';
 
 describe('TablesComponent', () => {
   let component: AnnouncementHandlerComponent;

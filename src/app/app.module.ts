@@ -54,6 +54,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { AnnouncementHandlerModule } from './views/handle-announcement/handle.announcement.module';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -98,7 +99,8 @@ const APP_CONTAINERS = [
     NgMultiSelectDropDownModule,
     NgbModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    AnnouncementHandlerModule
   ],
   providers: [
     {
@@ -114,4 +116,4 @@ const APP_CONTAINERS = [
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
