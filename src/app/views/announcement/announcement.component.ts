@@ -1,4 +1,4 @@
-import {Component, getNgModuleById, OnInit, Provider, ViewChild} from '@angular/core';
+import {Component, getNgModuleById, Injectable, OnInit, Provider, ViewChild} from '@angular/core';
 
 import { UtilioService} from "../../service/utilio.service";
 import {Announcement} from "../../models/announcement";
@@ -13,12 +13,54 @@ import {
   NgbDateStruct,
   NgbTimepicker,
   NgbTimeStruct,
-  NgbTimepickerModule
+  NgbTimepickerModule, NgbDateAdapter, NgbDateParserFormatter
 } from "@ng-bootstrap/ng-bootstrap";
 import {formatDate, JsonPipe} from "@angular/common";
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import {Paging} from "../../models/announcement";
 import {parseDate} from "ngx-bootstrap/chronos";
+
+@Injectable()
+export class CustomAdapter extends NgbDateAdapter<string> {
+  readonly DELIMITER = '-';
+
+  fromModel(value: string | null): NgbDateStruct | null {
+    if (value) {
+      const date = value.split(this.DELIMITER);
+      return {
+        day: parseInt(date[0], 10),
+        month: parseInt(date[1], 10),
+        year: parseInt(date[2], 10),
+      };
+    }
+    return null;
+  }
+
+  toModel(date: NgbDateStruct | null): string | null {
+    return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : null;
+  }
+}
+
+@Injectable()
+export class CustomDateParserFormatter extends NgbDateParserFormatter {
+  readonly DELIMITER = '/';
+
+  parse(value: string): NgbDateStruct | null {
+    if (value) {
+      const date = value.split(this.DELIMITER);
+      return {
+        day: parseInt(date[0], 10),
+        month: parseInt(date[1], 10),
+        year: parseInt(date[2], 10),
+      };
+    }
+    return null;
+  }
+
+  format(date: NgbDateStruct | null): string {
+    return date ? date.day + '.' + date.month + '.' + date.year : '';
+  }
+}
 
 @Component({
   selector:    'app-announcement',
@@ -167,7 +209,7 @@ export class AnnouncementComponent implements OnInit {
   }
 
 
-  constructor(private service: UtilioService ) {
+  constructor(private service: UtilioService,private dateAdapter: NgbDateAdapter<string> ) {
     this.formBuilder = FormBuilder;
 
   }
@@ -175,7 +217,6 @@ export class AnnouncementComponent implements OnInit {
     this.service
       .getPagesAnnouncement(page, this.recordsPerPage)
       .subscribe(data => {
-        console.log(data.data)
         this.notifications=[];
         for (let i = 0; i < data.data.length; i++) {
           let notification = new Announcement(data.data[i].id, data.data[i].providerId, data.data[i].title,
@@ -183,7 +224,6 @@ export class AnnouncementComponent implements OnInit {
             data.data[i].uniqueIdentifier, data.data[i].additionalInformation, data.data[i].publishDate,
             data.data[i].referenceStartDate, data.data[i].referenceEndDate,data.data[i].streets,data.data[i].regions)
           this.notifications.push(notification);
-          console.log(notification)
         }
         this.paging = data.paging;
         this.pages = Array.from(
@@ -321,7 +361,6 @@ export class AnnouncementComponent implements OnInit {
 
 
   onRegionSelect(item: any) {
-    console.log(item)
     if(this.clickedRegions.includes(item.Id)){
       const index:number=this.clickedRegions.indexOf(item.Id);
       this.clickedRegions.forEach((element,index)=>{
@@ -333,7 +372,6 @@ export class AnnouncementComponent implements OnInit {
 
 
   onStreetsSelect(item: any) {
-    console.log(item)
     if(this.clickedStreets.includes(item.Id)){
       const index:number=this.clickedStreets.indexOf(item.Id);
       this.clickedStreets.forEach((element,index)=>{
@@ -368,7 +406,6 @@ export class AnnouncementComponent implements OnInit {
 
   toggleEditButtonDemo(item: any) {
     this.editAnnouncement = item;
-    console.log(item)
     let tmp=[]
     tmp.push(this.getProvider(item.ProviderId))
     this.editProviders=tmp
@@ -410,16 +447,16 @@ export class AnnouncementComponent implements OnInit {
       let day=dateStart.substring(0,dateStart.indexOf("."))
       let month=dateStart.substring(dateStart.indexOf(".")+1,dateStart.lastIndexOf("."))
       let year=dateStart.substring(dateStart.lastIndexOf(".")+1,dateStart.length)
-      this.modelEditStartDate={year:parseInt(year),month:parseInt(month),day:parseInt(day)}
+      this.modelEditStartDate=day+"-"+month+"-"+year
     }
 
     if(dateEnd!=undefined && dateEnd!="/") {
       let day = dateEnd.substring(0, dateEnd.indexOf("."))
       let month = dateEnd.substring(dateEnd.indexOf(".") + 1, dateEnd.lastIndexOf("."))
       let year = dateEnd.substring(dateEnd.lastIndexOf(".") + 1, dateEnd.length)
-      this.modelEditEndDate = { day: parseInt(day),month: parseInt(month),year: parseInt(year)}
-      console.log(this.modelEditEndDate)
+      this.modelEditEndDate = day+"-"+month+"-"+year
     }
+
     this.toggleEditDemo();
   }
 
@@ -459,7 +496,6 @@ export class AnnouncementComponent implements OnInit {
   showValue(event: any){
 
     var Title = event.target.value;
-    console.log(Title);
 
   }
 
@@ -497,21 +533,21 @@ export class AnnouncementComponent implements OnInit {
     let endDate='';
     let startTime='';
     let endTime='';
-    if(this.modelStartDate.day==undefined){
-      startDate=formatDate(new Date(), 'yyyy-MM-dd', 'en').toString();
+
+    if(this.modelStartDate==undefined || this.modelStartDate.length==0){
+      startDate=formatDate(new Date(), 'dd-MM-yyyy', 'en').toString();
     }else {
-      startDate=this.dateFormat(this.modelStartDate)
+      startDate=this.modelStartDate
     }
 
-    if(this.modelEndDate.day==undefined){
-      endDate=formatDate(new Date(), 'yyyy-MM-dd', 'en').toString();
+    if(this.modelEndDate==undefined || this.modelEndDate.length==0){
+      endDate=formatDate(new Date(), 'dd-MM-yyyy', 'en').toString();
     }else {
-      endDate=this.dateFormat(this.modelEndDate)
+      endDate=this.modelEndDate
     }
 
     startTime=this.timeFormat(this.timeStart)
     endTime=this.timeFormat(this.timeEnd)
-    console.log(startDate)
     if(providerId!=null)
       this.service.postAnnouncement(providerId,values.newAnnouncTitle,
         values.newAnnouncUrl,values.newAnnouncDescription,values.newAnnouncContent,
@@ -522,10 +558,12 @@ export class AnnouncementComponent implements OnInit {
           this.refreshAnnouncements()
         },
         error=>{
-          this.createFormVisible=false
-          this.handleCreateAnnouncement(false);
-          this.doubleAnnouncementVisible=!this.doubleAnnouncementVisible
-          this.handleDoubleAnnouncement(true);
+          if(error.status==400) {
+            this.createFormVisible = false
+            this.handleCreateAnnouncement(false);
+            this.doubleAnnouncementVisible = !this.doubleAnnouncementVisible
+            this.handleDoubleAnnouncement(true);
+          }
         })
 
   }
@@ -682,7 +720,6 @@ export class AnnouncementComponent implements OnInit {
     this.editRegionsAnnouncement.forEach((element,index)=>{
       if(element==item.Id)this.editRegionsAnnouncement.splice(index,1);
     })
-    console.log(this.editRegionsAnnouncement)
   }
 
   onEditRegionSelect(item: any) {
@@ -733,7 +770,6 @@ export class AnnouncementComponent implements OnInit {
 
 
   saveEdited(announcement:any,values:any){
-    console.log(announcement)
     // @ts-ignore
     let title=document.getElementById('announcementTitleInput1').value;
     // @ts-ignore
@@ -749,7 +785,6 @@ export class AnnouncementComponent implements OnInit {
     let announcementUnique=announcement.UniqueIdentifier
 
     let regionsEdit:number[]=[]
-    console.log(this.editStreetsAnnouncement)
     for(let i=0;i<this.editRegionsAnnouncement.length;i++){
       // @ts-ignore
       regionsEdit.push(this.editRegionsAnnouncement.at(i).Id)
@@ -764,24 +799,24 @@ export class AnnouncementComponent implements OnInit {
     let endDateEdit='';
     let startTimeEdit='';
     let endTimeEdit='';
-    if(this.modelEditStartDate==undefined){
-      if(announcement.ReferenceStartDate!=undefined && announcement.ReferenceStartDate!="/"){
+    if(this.modelEditStartDate==undefined || this.modelEditStartDate.length==0){
+      if(announcement.ReferenceStartDate!=undefined && announcement.ReferenceStartDate!="/" && announcement.ReferenceStartDate.length==0){
         startDateEdit=this.parseDate(announcement.ReferenceStartDate,1)
       }
       else
         startDateEdit=formatDate(new Date(), 'yyyy-MM-dd', 'en').toString();
     }else {
-      startDateEdit=this.dateFormat(this.modelEditStartDate)
+      startDateEdit=this.modelEditStartDate
     }
 
-    if(this.modelEditEndDate==undefined){
+    if(this.modelEditEndDate==undefined || this.modelEditEndDate.length==0){
       if(announcement.ReferenceEndDate!=undefined && announcement.ReferenceEndDate!="/"){
         endDateEdit=this.parseDate(announcement.ReferenceEndDate,1)
       }
       else
         endDateEdit=formatDate(new Date(), 'yyyy-MM-dd', 'en').toString();
     }else {
-      endDateEdit=this.dateFormat(this.modelEditEndDate)
+      endDateEdit=this.modelEditEndDate
     }
 
     if(this.timeStartEdit==undefined){

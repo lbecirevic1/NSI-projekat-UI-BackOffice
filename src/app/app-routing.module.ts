@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
 import { DefaultLayoutComponent } from './containers';
 import { AnnouncementComponent } from './views/announcement/announcement.component';
 import { LoginComponent } from './views/pages/login/login.component';
@@ -11,7 +10,7 @@ import { RegisterComponent } from './views/pages/register/register.component';
 import { RegionComponent } from './views/region/region.component';
 import { StreetComponent } from './views/street/street.component';
 import {ProviderComponent } from './views/provider/provider.component';
-import { AnnouncementHandlerComponent } from './views/pages/handle-announcement/handle.announcement.component';
+import { AnnouncementHandlerComponent } from './views/handle-announcement/handle.announcement.component';
 import { UsersComponent } from './views/pages/users/users.component';
 
 const routes: Routes = [
@@ -97,6 +96,11 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'handle-ann',
+        loadChildren: () =>
+          import('./views/handle-announcement/handle.announcement.module').then((m) => m.AnnouncementHandlerModule),
+      },
+      {
         path: 'widgets',
         loadChildren: () =>
           import('./views/widgets/widgets.module').then((m) => m.WidgetsModule),
@@ -145,13 +149,6 @@ const routes: Routes = [
     },
   },
   {
-    path: 'handle-announcements',
-    component: AnnouncementHandlerComponent,
-    data: {
-      title: 'Announcement handling & review',
-    },
-  },
-  {
     path: 'region',
     component: RegionComponent,
     data: {
@@ -193,4 +190,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

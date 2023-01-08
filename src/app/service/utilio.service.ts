@@ -67,9 +67,33 @@ export class UtilioService {
     regions: number[],
     streets: number[]
   ) {
-    let referenceStartDate = startDate + 'T' + startTime;
+    let referenceStartDate = '';
+    let day='';
+    let month='';
+    let year='';
 
-    let referenceEndDate = endDate + 'T' + endTime;
+    let referenceEndDate = '';
+    let date=startDate.split("-")
+    let dateEnd=endDate.split("-")
+    if(date[0].length==1) day='0'+date[0]
+    else day=date[0]
+
+    if(date[1].length==1)month='0'+date[1]
+    else month=date[1]
+
+    year=date[2]
+
+    console.log(dateEnd)
+    referenceStartDate=year+"-"+month+"-"+day+"T"+startTime
+
+    if(dateEnd[0].length==1) day='0'+dateEnd[0]
+    else day=dateEnd[0]
+
+    if(dateEnd[1].length==1)month='0'+dateEnd[1]
+    else month=dateEnd[1]
+
+    year=dateEnd[2]
+    referenceEndDate=year+"-"+month+"-"+day+"T"+endTime
 
     let body = {
       providerId: providerId,
@@ -87,6 +111,7 @@ export class UtilioService {
       streets: streets,
       id: announcementId,
     };
+
 
     return this.http.put(
       'https://localhost:7069/api/announcement?id=' + announcementId,
@@ -146,9 +171,34 @@ export class UtilioService {
     streets: number[]
   ) {
 
-    let referenceStartDate = startDate + 'T' + startTime;
+    let referenceStartDate = '';
+    let day='';
+    let month='';
+    let year='';
 
-    let referenceEndDate = endDate + 'T' + endTime;
+    let referenceEndDate = '';
+    let date=startDate.split("-")
+    let dateEnd=endDate.split("-")
+    if(date[0].length==1) day='0'+date[0]
+    else day=date[0]
+
+    if(date[1].length==1)month='0'+date[1]
+    else month=date[1]
+
+    year=date[2]
+
+    console.log(dateEnd)
+    referenceStartDate=year+"-"+month+"-"+day+"T"+startTime
+
+    if(dateEnd[0].length==1) day='0'+dateEnd[0]
+    else day=dateEnd[0]
+
+    if(dateEnd[1].length==1)month='0'+dateEnd[1]
+    else month=dateEnd[1]
+
+    year=dateEnd[2]
+    referenceEndDate=year+"-"+month+"-"+day+"T"+endTime
+
     let body = {
       providerId: providerId,
       title: title,
@@ -196,10 +246,6 @@ export class UtilioService {
       { headers }
     );
   }
-  postAnnouncement2(values: any) {
-    console.log(values);
-  }
-
   //Handling announcements
   async handleAnnouncements() {
     return this.http.get<IAnnouncementHandler[]>(
