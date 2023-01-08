@@ -2,8 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AnnouncementHandlerComponent } from './handle.announcement.component';
 import { AnnouncementHandlerRouterModule } from './handle-announcement-router.module'
-import { TableModule } from '@coreui/angular';
+import { FormModule, TableModule } from '@coreui/angular';
 import { Routes } from '@angular/router';
+
 
 
 const routes: Routes = [
@@ -20,7 +21,8 @@ const routes: Routes = [
     imports: [
         CommonModule,
         TableModule,
-        AnnouncementHandlerRouterModule
+        AnnouncementHandlerRouterModule,
+        FormModule
     ],
     declarations: [
         AnnouncementHandlerComponent
