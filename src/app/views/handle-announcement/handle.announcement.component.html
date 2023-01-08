@@ -5,7 +5,6 @@
   <label cFormCheckLabel for="checkOne">Enable filtering</label>
 </c-form-check>
 <div *ngIf="enableFiltering">
-  <h1> Hello</h1>
   <div>
   <input matInput [matDatepicker]="picker" placeholder="Start date">
   <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -14,6 +13,10 @@
   <input matInput [matDatepicker]="picker2" placeholder="Start date">
   <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
   <mat-datepicker #picker2></mat-datepicker>
+
+  <button cButton color="primary">Filter</button>
+
+
 </div>
 </div>
 <table [striped]="true" cTable>

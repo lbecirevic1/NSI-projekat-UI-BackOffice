@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AnnouncementHandlerComponent } from './handle.announcement.component';
 import { AnnouncementHandlerRouterModule } from './handle-announcement-router.module'
-import { FormModule, TableModule } from '@coreui/angular';
+import { ButtonModule, FormModule, TableModule } from '@coreui/angular';
 import { Routes } from '@angular/router';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 
@@ -24,7 +24,8 @@ const routes: Routes = [
         TableModule,
         AnnouncementHandlerRouterModule,
         FormModule,
-        MatDatepickerModule
+        MatDatepickerModule,
+        ButtonModule
     ],
     declarations: [
         AnnouncementHandlerComponent
