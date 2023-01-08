@@ -1,17 +1,14 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, CUSTOM_ELEMENTS_SCHEMA, NgModule, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TableModule } from '@coreui/angular';
 import { Observable } from 'rxjs';
 import { IAnnouncementHandler } from 'src/app/models/announcement-handler';
 import { UtilioService } from 'src/app/service/utilio.service';
 
 @Component({
-  standalone: true,
-  imports: [TableModule, CommonModule],
   selector: 'app-handle-announcement',
   templateUrl: './handle.announcement.component.html',
   styleUrls: ['./handle.announcement.component.scss'],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AnnouncementHandlerComponent implements OnInit {
 
