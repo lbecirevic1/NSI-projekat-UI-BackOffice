@@ -8,6 +8,8 @@ import { Page404Component } from './views/pages/page404/page404.component';
 import { Page500Component } from './views/pages/page500/page500.component';
 import { RegisterComponent } from './views/pages/register/register.component';
 import { RegionComponent } from './views/region/region.component';
+import { StreetComponent } from './views/street/street.component';
+import {ProviderComponent } from './views/provider/provider.component';
 import { AnnouncementHandlerComponent } from './views/handle-announcement/handle.announcement.component';
 import { UsersComponent } from './views/pages/users/users.component';
 
@@ -65,6 +67,16 @@ const routes: Routes = [
         path: 'region',
         loadChildren: () =>
           import('./views/region/region.module').then((m) => m.RegionModule),
+      },
+      {
+        path: 'street',
+        loadChildren: () =>
+          import('./views/street/street.module').then((m) => m.StreetModule),
+      },
+      {
+        path: 'provider',
+        loadChildren: () =>
+          import('./views/provider/provider.module').then((m) => m.ProviderModule),
       },
       {
         path: 'announcement',
@@ -141,6 +153,20 @@ const routes: Routes = [
     component: RegionComponent,
     data: {
       title: 'Region Page',
+    },
+  },
+  {
+    path: 'street',
+    component: StreetComponent,
+    data: {
+      title: 'Street Page',
+    },
+  },
+  {
+    path: 'provider',
+    component: ProviderComponent,
+    data: {
+      title: 'Provider Page',
     },
   },
   {

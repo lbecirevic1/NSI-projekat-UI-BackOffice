@@ -4,6 +4,7 @@ import { UtilioService} from "../../service/utilio.service";
 import { Announcement} from "../../models/announcement";
 import {FormBuilder, FormsModule, NgForm} from '@angular/forms';
 import {Region,RegionAll} from "../../models/region";
+// import {Provider} from "../../models/provider";
 import {RegionType} from "../../models/regionType";
 import {Street} from "../../models/street";
 import {UtilioProvider} from "../../models/utilioProvider";
@@ -22,14 +23,14 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import {LogsResponse, Paging} from "../../models/log";
 
 @Component({
-  selector:    'app-region',
-  templateUrl: './region.component.html',
-  styleUrls: ['./region.component.scss']
+  selector:    'app-provider',
+  templateUrl: './provider.component.html',
+  styleUrls: ['./provider.component.scss']
 })
-  export class RegionComponent implements OnInit {
+  export class ProviderComponent implements OnInit {
 
     @ViewChild('createForm', { static: false }) createForm!: NgForm;
-  @ViewChild('editRegionForm', { static: false }) editRegionForm!: NgForm;
+  @ViewChild('editProviderForm', { static: false }) editProviderForm!: NgForm;
 
   public paging: Paging = {};
   public pages: number[] = [];
@@ -83,29 +84,11 @@ import {LogsResponse, Paging} from "../../models/log";
     allowSearchFilter: true
   };
 
-  dropdownSettingsEditRegions:IDropdownSettings={
-    singleSelection: false,
-    idField: 'editRegions',
-    textField: 'Name',
-    selectAllText: 'Select All',
-    unSelectAllText: 'UnSelect All',
-    itemsShowLimit: 5,
-    allowSearchFilter: true
-  };
 
-  dropdownSettingsEditStreets:IDropdownSettings={
-    singleSelection: false,
-    idField: 'editStreets',
-    textField: 'Name',
-    selectAllText: 'Select All',
-    unSelectAllText: 'UnSelect All',
-    itemsShowLimit: 5,
-    allowSearchFilter: true
-  };
-
-
+  public providers:UtilioProvider[]=[];
+  public AllProviders:number[]=[];
   public modelStartDate: any;
-  public createAnnouncementVisible = false;
+  public createProviderVisible = false;
 
   public modelEndDate:any;
 
@@ -132,7 +115,6 @@ import {LogsResponse, Paging} from "../../models/log";
   public selectedType: any ;
 
 
-  public editRegionsAnnouncement:any[]=[]
 
   public formBuilder: any;
 
@@ -140,7 +122,7 @@ import {LogsResponse, Paging} from "../../models/log";
 
 
   public deleteItemId = 0;
-  public editRegion: any;
+  public editProvider: any;
 
   public AllRegions:number[]=[];
 
@@ -167,84 +149,34 @@ import {LogsResponse, Paging} from "../../models/log";
   }
   ngOnInit() {
 
-    this.service.getRegions().subscribe(data=>{
-      for(let i=0;i<data.length;i++){
-        let region=new Region(data[i].id,data[i].name,data[i].code,data[i].regionTypeId,data[i].parentRegionId,data[i].createDate);
-        this.regions.push(region);
-        this.AllRegions.push(region.Id);
-      }
-    })
-    this.service.getRegionsAll().subscribe(data=>{
-      for(let i=0;i<data.length;i++){
-        let region=new RegionAll(data[i].id,data[i].name,data[i].code,data[i].regionTypeId,data[i].regionType,data[i].parentRegionId,data[i].parentRegion,data[i].createDate);
-        this.regionsAll.push(region);
-      }
-    })
-    this.service.getRegionTypes().subscribe(data=>{
-      for(let i=0;i<data.length;i++){
-        let region=new RegionType(data[i].id,data[i].name,data[i].code);
-        this.regionsTypes.push(region);
+    this.service.getProviders().subscribe(data=>{
+        for(let i=0;i<data.length;i++){
+          let provider=new UtilioProvider(data[i].id,data[i].name,data[i].code,data[i].webSite,data[i].createDate)
+          this.providers.push(provider);
+          this.AllProviders.push(provider.Id)
+        }
+      })
+
+    // this.service.getRegions().subscribe(data=>{
+    //   for(let i=0;i<data.length;i++){
+    //     let region=new Region(data[i].id,data[i].name,data[i].code,data[i].regionTypeId,data[i].parentRegionId,data[i].createDate);
+    //     this.regions.push(region);
+    //     this.AllRegions.push(region.Id);
+    //   }
+    // })
+    // this.service.getRegionsAll().subscribe(data=>{
+    //   for(let i=0;i<data.length;i++){
+    //     let region=new RegionAll(data[i].id,data[i].name,data[i].code,data[i].regionTypeId,data[i].regionType,data[i].parentRegionId,data[i].parentRegion,data[i].createDate);
+    //     this.regionsAll.push(region);
+    //   }
+    // })
+    // this.service.getRegionTypes().subscribe(data=>{
+    //   for(let i=0;i<data.length;i++){
+    //     let region=new RegionType(data[i].id,data[i].name,data[i].code);
+    //     this.regionsTypes.push(region);
         
-      }
-    })
-
-   
-
-  
-    //  let nova=new Announcement(1,"test","test","test",'test',new Date(2022,12,17),"test",new Date(2022,12,17),new Date(2022,12,17));
-    ///this.notifications.push(nova);
-
-    this.dropdownSettingsRegions= {
-      singleSelection: false,
-      idField: 'Id',
-      textField: 'Name',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 5,
-      allowSearchFilter: true
-    };
-
-    this.dropdownSettingsStreets= {
-      singleSelection: false,
-      idField: 'Id',
-      textField: 'Name',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 5,
-      allowSearchFilter: true
-    };
-
-    this.dropdownSettingsProviders= {
-      singleSelection: true,
-      idField: 'Id',
-      textField: 'Name',
-      allowSearchFilter: true
-    };
-
-    this.dropdownSettingsEditProviders= {
-      singleSelection: true,
-      idField: 'Id',
-      textField: 'Name',
-      itemsShowLimit: 5,
-      allowSearchFilter: true
-    };
-
-    this.dropdownSettingsEditRegions= {
-      singleSelection: false,
-      idField: 'Id',
-      textField: 'Name',
-      itemsShowLimit: 5,
-      allowSearchFilter: true
-    };
-
-    this.dropdownSettingsEditStreets= {
-      singleSelection: false,
-      idField: 'Id',
-      textField: 'Name',
-      itemsShowLimit: 5,
-      allowSearchFilter: true
-    };
-
+    //   }
+    // })
 
 
   }
@@ -281,9 +213,10 @@ import {LogsResponse, Paging} from "../../models/log";
   }
 
   toggleEditButtonDemo(item: any) {
-    this.editRegion = item;
+    this.editProvider = item;
     this.selectedRegion = item.ParentregionId;
     this.selectedType = item.RegionTypeId;
+    console.log(item,"ITEM",this.selectedRegion,this.selectedType)
     this.toggleEditDemo();
   }
 
@@ -295,9 +228,8 @@ import {LogsResponse, Paging} from "../../models/log";
     this.editFormVisible = !this.editFormVisible;
     this.editStreets=[]
     this.editRegions=[]
-    this.editRegionsAnnouncement=[]
   }
-  toggleCreateRegionButton() {
+  toggleCreateProviderButton() {
     this.modelEndDate='';
     this.modelStartDate='';
     this.createFormVisible = !this.createFormVisible;
@@ -311,31 +243,31 @@ import {LogsResponse, Paging} from "../../models/log";
   }
 
 
-  handleCreateRegion(event:boolean) {
-    this.createAnnouncementVisible=event;
+  handleCreateProvider(event:boolean) {
+    this.createProviderVisible=event;
   }
   handleEditModalChange(event: boolean) {
     this.editFormVisible = event;
   }
 
   deleteItem() {
-    this.service.deleteRegion(this.deleteItemId).subscribe(data=>{
+    this.service.deleteProvider(this.deleteItemId).subscribe(data=>{
       this.deleteItemId = 0;
       this.liveDemoVisible = !this.liveDemoVisible;
-      this.refreshRegions();
+      this.refreshProvider();
     });
-    this.refreshRegions()
+    this.refreshProvider()
   }
 
 
-  refreshRegions() {
+  refreshProvider() {
     window.location.reload();
   }
   submitForm(values:any){
-    this.service.postRegion(values.newName, values.newCode, values.parentRegionId, values.regionTypeId,"null")
+    this.service.postProvider(values.newName, values.newCode, values.newWebSite,"null")
     .subscribe(data=>{
       this.createFormVisible=!this.createFormVisible
-      this.refreshRegions()
+      this.refreshProvider()
     },
     error=>{
       this.createFormVisible=false
@@ -422,19 +354,21 @@ import {LogsResponse, Paging} from "../../models/log";
   }
 
 
-  saveEdited(region:any,values:any){
-    console.log(region,this.selectedRegion)
+  saveEdited(provider:any,values:any){
+    console.log(provider,this.selectedRegion)
     // @ts-ignore
-    let name=document.getElementById('regionTitleInput1').value;
+    let name=document.getElementById('providerTitleInput1').value;
     // @ts-ignore
-    let code=document.getElementById('regionTitleInput2').value;
+    let code=document.getElementById('providerTitleInput2').value;
+    // @ts-ignore
+    let webSite=document.getElementById('providerTitleInput3').value;
    
-    let regionId=region.Id;
+    let providerId=provider.Id;
 
-    this.service.editRegion(regionId,name, code, this.selectedRegion, this.selectedType,"").subscribe(data=>{
+    this.service.editProvider(providerId,name, code, webSite,"").subscribe(data=>{
       this.handleEditModalChange(false);
       this.editFormVisible=!this.editFormVisible
-      this.refreshRegions()
+      this.refreshProvider()
     })
   }
 

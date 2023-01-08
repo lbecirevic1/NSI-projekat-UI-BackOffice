@@ -165,8 +165,18 @@ export const navItems: INavData[] = [
     iconComponent: { name: 'cil-columns' },
   },
   {
-    name: 'Region',
+    name: 'Regions',
     url: '/region',
+    iconComponent: { name: 'cil-columns' },
+  },
+  {
+    name: 'Streets',
+    url: '/street',
+    iconComponent: { name: 'cil-columns' },
+  },
+  {
+    name: 'Providers',
+    url: '/provider',
     iconComponent: { name: 'cil-columns' },
   },
   {
@@ -260,9 +270,9 @@ export const navItems: INavData[] = [
         url: '/500'
       },
       {
-        name: 'Regions',
-        url: '/region'
-      }
+        name: 'Announcement Handler',
+        url: 'handle-announcements'
+      },
     ]
   },
 ];
