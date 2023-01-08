@@ -5,7 +5,7 @@
   <c-col md="12">
     <c-card>
       <c-card-body class="pl-5 shadow">
-        <h3>Announcements</h3>
+        <h4>Announcements</h4>
       </c-card-body>
     </c-card>
   </c-col>
@@ -21,7 +21,7 @@
       <c-card-body class="pl-5 ml-5 mt-1 shadow">
         <c-row class="mb-3 ml-5">
           <c-col>
-            <h4 cCardTitle>Announcement list</h4>
+            <h5 cCardTitle>Announcement list</h5>
           </c-col>
           <c-col style="text-align:right">
             <button cButton color="success" (click)="toggleCreateAnnouncementButton()">Add new notification</button>
@@ -60,7 +60,7 @@
             <tr class="pt-3 pb-3">
               <th scope="col" class="col-sm-2 p-2 add-padding">Provider</th>
               <th scope="col" class="col-sm-2 p-2 add-padding">Title</th>
-              <th scope="col" class="col-sm-2">Publish date</th>
+              <th scope="col" class="col-sm-2 add-padding">Publish date</th>
               <th scope="col" class="col-sm-1">Publish time</th>
               <th scope="col" class="col-sm-3 p-3 add-padding">Region</th>
               <th scope="col" class="col-sm-2 p-2">Action</th>
@@ -79,7 +79,7 @@
                       >
                         <td style="vertical-align: middle"  class="col-sm-2">{{providerName(value.ProviderId)}}</td>
                         <td style="vertical-align: middle" class="col-sm-2">{{value.Title}}</td>
-                        <td style="vertical-align: middle" class="col-sm-2">{{parseDate(value.PublishDate,1)}}</td>
+                        <td style="vertical-align: middle" class="col-sm-2 add-padding">{{parseDate(value.PublishDate,1)}}</td>
                         <td style="vertical-align: middle" class="col-sm-1">{{parseDate(value.PublishDate,2)}}</td>
                         <td style="vertical-align: middle" class="col-sm-3 pr-5">
                             <ul style="list-style: none;">
@@ -103,9 +103,11 @@
                             <p><strong>Start date:</strong>&nbsp;{{parseDate(value.ReferenceStartDate, 1)}}</p>
                             <p><strong>End date:</strong>&nbsp;&nbsp;&nbsp;{{parseDate(value.ReferenceEndDate, 1)}}</p>
                             <strong>Content:</strong>
-                            <p>{{ value.Content }}</p>
+                            <p>{{value.Content}}</p>
                             <strong>Description:</strong>
-                            <p>{{ value.Description }}</p>
+                            <p>{{value.Description}}</p>
+                            <strong>Additional information:</strong>
+                            <p>{{value.AdditionalInformation}}</p>
                           </c-col>
                           <c-col class="col-sm-1"></c-col>
                           <c-col class="col-sm-4" style="padding-left: 40px;">
