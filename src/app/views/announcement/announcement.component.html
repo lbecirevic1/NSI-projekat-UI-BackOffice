@@ -467,10 +467,10 @@
 <ng-template #doubleDemo>
   <c-modal id="liveDemoModalAlert" [visible]="doubleAnnouncementVisible">
     <c-modal-header>
-      <h5 cModalTitle>Double notification alert</h5>
+      <h5 cModalTitle>Error notification alert</h5>
       <button (click)="doubleAnnouncement()" cButtonClose></button>
     </c-modal-header>
-    <c-modal-body>There is the same notification in database.</c-modal-body>
+    <c-modal-body>There is problem with notification. Check input parameters or there might be already the same notification.</c-modal-body>
     <c-modal-footer>
       <button (click)="doubleAnnouncement()" cButton color="secondary">
         Close
