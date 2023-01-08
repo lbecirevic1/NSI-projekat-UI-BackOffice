@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { UtilioProvider } from 'src/app/models/utilioProvider';
 import { UtilioService } from 'src/app/service/utilio.service';
 import { ProviderAccount } from '../../../models/providerAccount';
 import { ProviderAccountRole } from '../../../models/providerAccountRole';
 import { FormBuilder, Validators } from '@angular/forms';
+import { cilCheckCircle } from '@coreui/icons';
 
 @Component({
   selector: 'app-users',
@@ -12,19 +12,19 @@ import { FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent implements OnInit {
-  users: ProviderAccount[] = [];
+  accounts: ProviderAccount[] = [];
   providers: UtilioProvider[] = [];
-  accountForm: any;
-  providerId: any;
+  roles: ProviderAccountRole[] = [];
+  selectedAccount?: ProviderAccount;
   formVisible = false;
   isEdit = false;
-  roles: ProviderAccountRole[] = [];
+  alertVisible = false;
+  accountForm: any;
+  icons = { cilCheckCircle };
 
   readonly SAVE_CHANGES = 'Save changes';
   readonly CREATE_USER = 'Create new user';
   readonly EDIT_USER = 'Edit user';
-
-  selectedAccount?: ProviderAccount;
 
   constructor(
     private service: UtilioService,
@@ -32,39 +32,19 @@ export class UsersComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.setAccounts();
+    this.fetchAccounts();
     this.fetchProviders();
     this.buildAccountForm();
   }
 
   onEdit(id: number): void {
-    this.setSelectedAccount(id);
-
-    this.isEdit = true;
-    this.toggleAccountForm();
+    this.toggleEditAccountForm(id);
   }
 
   onDelete(id: number): void {
     console.log(id)
     this.service.deleteProviderAccount(id);
-   // this.refreshAccounts()
-  }
-
-  
-  refreshAccounts() {
-    window.location.reload();
-  }
-
-  toggleAccountForm(): void {
-    if (this.formVisible) {
-      this.isEdit = false;
-      this.emptyAccountForm();
-    }
-    this.formVisible = !this.formVisible;
-  }
-
-  handleAccountFormChange(event: any): void {
-    this.formVisible = event;
+    this.fetchAccounts();
   }
 
   onSubmit(): void {
@@ -78,53 +58,97 @@ export class UsersComponent implements OnInit {
     }
   }
 
-  changeProvider(e: any) {
+  toggleAccountForm(): void {
+    if (this.formVisible) {
+      this.isEdit = false;
+      this.emptyAccountForm();
+      this.alertVisible = false;
+    }
+
+    this.formVisible = !this.formVisible;
+  }
+
+  handleAccountFormChange(event: any): void {
+    this.formVisible = event;
+  }
+
+  changeProvider(e: any): void {
     this.accountForm.get('providerId')?.setValue(e.target.value, {
       onlySelf: true,
     });
   }
 
-  changeList(e:any ) {
-    this.users = [];
-    if(e.target.value!='null'){
-    this.service.getAccountsForProvider(e.target.value).subscribe((data: any) => {
-      for (let i = 0; i < data.length; i++) {
-        let account = new ProviderAccount(
-          data[i].id,
-          data[i].firstName,
-          data[i].lastName,
-          data[i].email,
-          data[i].providerId,
-          data[i].providerAccountRoles
-        );
-        this.users.push(account);
-      }
+  changeList(e: any): void {
+    if(e.target.value != 'null'){
+      this.service.getAccountsForProvider(e.target.value).subscribe((accounts: any) => {
+        this.accounts = [...accounts];
+      });
+    }
+    else {
+      this.fetchAccounts();
+    }
+  }
+
+  private fetchAccounts(): void {
+    this.service.getProviderAccounts().subscribe((accounts: any) => {
+      this.accounts = [...accounts];
     });
   }
-  else {
-    this.setAccounts();
+
+  private fetchProviders(): void {
+    this.service.getProviders().subscribe((providers) => {
+      providers.forEach(provider => this.providers.push(
+        new UtilioProvider(
+          provider.id, 
+          provider.name, 
+          provider.code, 
+          provider.webSite
+        )
+      ))
+    });
   }
+
+  private createAccount(): void {
+    this.service
+      .postProviderAccount(this.accountForm.value)
+      .subscribe(() => {
+        this.fetchAccounts();
+
+        this.alertVisible = true;
+        setTimeout(() => {
+          this.toggleAccountForm();
+        }, 2000);
+      });
+  }
+
+  private updateAccount(): void {
+    if (this.selectedAccount)
+      this.service
+        .updateProviderAccount(this.selectedAccount.id, this.accountForm.value)
+        .subscribe(() => {
+          this.alertVisible = true;
+          this.fetchAccounts();
+        });
   }
 
   private buildAccountForm() {
     this.accountForm = this.formBuilder.group({
-      firstName: ['', [Validators.required, Validators.pattern('^[a-zA-Z]+$')]],
-      lastName: ['', [Validators.required, Validators.pattern('^[a-zA-Z]+$')]],
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       providerId: [null, [Validators.required]],
       providerAccountRoles: this.formBuilder.array([]),
     });
   }
+  
+  private toggleEditAccountForm(id: number): void {
+    this.service.getProviderAccount(id).subscribe((account: any) => {
+      this.selectedAccount = account;
 
-  private emptyAccountForm() {
-    this.accountForm.patchValue({
-      firstName: '',
-      lastName: '',
-      email: '',
-      providerId: null,
+      this.isEdit = true;
+      this.fillAccountForm();
+      this.toggleAccountForm();
     });
-
-    this.accountForm.get('providerId')?.enable();
   }
 
   private fillAccountForm() {
@@ -137,70 +161,15 @@ export class UsersComponent implements OnInit {
 
     this.accountForm.get('providerId')?.disable();
   }
-
-  private updateAccount(): void {
-    if (this.selectedAccount?.id === 9) return;
-    if (this.selectedAccount)
-      this.service
-        .updateProviderAccount(this.selectedAccount.id, this.accountForm.value)
-        .subscribe((data: any) => {
-          this.setAccounts();
-        });
-  }
-
-  private createAccount(): void {
-    this.service
-      .postProviderAccount(this.accountForm.value)
-      .subscribe((data: any) => {
-        this.toggleAccountForm();
-        this.setAccounts();
-      });
-  }
-
-  private setAccounts(): void {
-    this.users = [];
-    this.service.getProviderAccounts().subscribe((data: any) => {
-      for (let i = 0; i < data.length; i++) {
-        let account = new ProviderAccount(
-          data[i].id,
-          data[i].firstName,
-          data[i].lastName,
-          data[i].email,
-          data[i].providerId,
-          data[i].providerAccountRoles
-        );
-        this.users.push(account);
-      }
+  
+  private emptyAccountForm() {
+    this.accountForm.patchValue({
+      firstName: '',
+      lastName: '',
+      email: '',
+      providerId: null,
     });
-  }
 
-  private fetchProviders(): void {
-    this.service.getProviders().subscribe((data) => {
-      for (let i = 0; i < data.length; i++) {
-        let provider = new UtilioProvider(
-          data[i].id,
-          data[i].name,
-          data[i].code,
-          data[i].webSite,
-          data[i].createDate
-        );
-        this.providers.push(provider);
-      }
-    });
-  }
-
-  private setSelectedAccount(id: number): void {
-    this.service.getProviderAccount(id).subscribe((data: any) => {
-      this.selectedAccount = new ProviderAccount(
-        data.id,
-        data.firstName,
-        data.lastName,
-        data.email,
-        data.providerId,
-        data.providerAccountRoles
-      );
-
-      this.fillAccountForm();
-    });
+    this.accountForm.get('providerId')?.enable();
   }
 }

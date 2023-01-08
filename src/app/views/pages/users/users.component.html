@@ -33,20 +33,22 @@
           <c-col>
             <label cLabel for="title">Select provider</label>
             <select
-        cSelect
-        class="mb-3"
-        id="noviId"
-        (change)="changeList($event)"
-      >
-      <option value="null">All</option>
-        <option *ngFor="let provider of providers" value="{{provider.Id}}">
-          {{ provider.Name }}
-        </option>
-      </select>
+              cSelect
+              class="mb-3"
+              id="noviId"
+              (change)="changeList($event)"
+            >
+              <option value="null">All</option>
+              <option
+                *ngFor="let provider of providers"
+                value="{{ provider.Id }}"
+              >
+                {{ provider.Name }}
+              </option>
+            </select>
           </c-col>
 
           <c-col>
-
             <div class="input-fields">
               <label cLabel for="title">Search</label>
               <input
@@ -77,22 +79,27 @@
             </thead>
             <tbody>
               <tr
-                *ngFor="let user of users; let i = index"
+                *ngFor="let account of accounts; let i = index"
                 class="users-table-row"
               >
-                <td scope="row">{{ user.firstName }}</td>
-                <td>{{ user.lastName }}</td>
-                <td>{{ user.email }}</td>
-                <td> <ng-container *ngFor="let role of user.providerAccountRoles">
-                  <p>{{role.regionName}}:{{role.providerName}}:{{role.roleName}};</p>
-
-               </ng-container></td>
+                <td scope="row">{{ account.firstName }}</td>
+                <td>{{ account.lastName }}</td>
+                <td>{{ account.email }}</td>
+                <td>
+                  <ng-container *ngFor="let role of account.providerAccountRoles">
+                    <p>
+                      {{ role.regionName }}:{{ role.providerName }}:{{
+                        role.roleName
+                      }};
+                    </p>
+                  </ng-container>
+                </td>
                 <td>
                   <div class="d-grid gap-2 d-md-flex justify-content-md">
-                    <button cButton color="success" (click)="onEdit(user.id)">
+                    <button cButton color="success" (click)="onEdit(account.id)">
                       Edit
                     </button>
-                    <button cButton color="danger" (click)="onDelete(user.id)">
+                    <button cButton color="danger" (click)="onDelete(account.id)">
                       Delete
                     </button>
                   </div>
@@ -105,7 +112,6 @@
     </c-card>
   </c-col>
 </c-row>
-
 <c-modal
   [visible]="formVisible"
   (formVisibleChange)="handleAccountFormChange($event)"
@@ -190,6 +196,10 @@
         <p>Select a region this role applies to below</p>
         <app-regions-select class="mb-2"></app-regions-select>
       </c-card>
+      <c-alert color="success" class="d-flex align-items-center" [visible]="alertVisible">
+        <svg [cIcon]="icons.cilCheckCircle" width="25" title="Shield Icon"></svg>
+        <div class="px-2">{{ isEdit ? 'Account updated successfully.' : 'Account created successfully.' }}</div>
+      </c-alert>
     </c-modal-body>
 
     <c-modal-footer>
