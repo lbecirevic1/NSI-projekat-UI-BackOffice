@@ -14,6 +14,8 @@ export class AnnouncementHandlerComponent implements OnInit {
 
   public announcements: IAnnouncementHandler[] = [];
 
+  public enableFiltering: boolean = false;
+
   constructor(private service: UtilioService) { }
 
   ngOnInit() {

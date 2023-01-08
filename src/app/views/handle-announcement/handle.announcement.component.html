@@ -1,7 +1,7 @@
 <div>
   <h3 style="text-align:center">Announcement Overview</h3>
   <c-form-check>
-  <input cFormCheckInput id="checkOne" type="checkbox" />
+  <input cFormCheckInput id="checkOne" type="checkbox" [checked]="enableFiltering"  (change)="enableFiltering=!enableFiltering"/>
   <label cFormCheckLabel for="checkOne">Enable filtering</label>
 </c-form-check>
 <table [striped]="true" cTable>
