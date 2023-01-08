@@ -22,8 +22,8 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DocsComponentsModule } from '../../../components';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import {AnnouncementComponent} from "./announcement.component";
+import {NgbDateAdapter, NgbDateParserFormatter, NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {AnnouncementComponent, CustomAdapter, CustomDateParserFormatter} from "./announcement.component";
 
 
 import {
@@ -57,6 +57,10 @@ import {AnnouncementRoutingModule} from "./announcement-routing.module";
     NgbModule,
     ButtonGroupModule,
     CollapseModule,
+  ],
+  providers: [
+    { provide: NgbDateAdapter, useClass: CustomAdapter },
+    { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
   ],
 })
 export class AnnouncementModule {}
