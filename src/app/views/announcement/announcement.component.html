@@ -1,24 +1,22 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"
       xmlns="http://www.w3.org/1999/html">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
-<c-row class="mt-5">
-  <c-col md="1"></c-col>
-  <c-col md="10">
+<!-- <c-row>
+  <c-col md="12">
     <c-card>
       <c-card-body class="pl-5 shadow">
-        <h1>Announcements</h1>
+        <h3>Announcements</h3>
       </c-card-body>
     </c-card>
   </c-col>
-</c-row>
+</c-row> -->
 
 <c-row class="mt-3">
   <ng-container *ngTemplateOutlet="deleteDemo"></ng-container>
   <ng-container *ngTemplateOutlet="doubleDemo"></ng-container>
   <ng-container *ngTemplateOutlet="createDemo"></ng-container>
   <ng-container *ngTemplateOutlet="editForm"></ng-container>
-  <c-col md="1"></c-col>
-  <c-col md="10">
+  <c-col md="12">
     <c-card>
       <c-card-body class="pl-5 ml-5 mt-1 shadow">
         <c-row class="mb-3 ml-5">
@@ -56,59 +54,100 @@
           <c-col>
           </c-col>
         </c-row>
-        <c-row class="ml-5 pl-5">
+        <div class="table-responsive-xxl">
           <table cTable hover>
-            <thead>
+            <thead class="ml-5 thead-height bg-success bg-opacity-25">
             <tr class="pt-3 pb-3">
-              <!-- <th></th> -->
-              <th class="announcement-table-col-13">Provider</th>
-              <th class="announcement-table-col-20">Title</th>
-              <th class="announcement-table-col-13">Publish date and time</th>
-              <th class="announcement-table-col-20">Region</th>
-              <th class="announcement-table-col-20">Streets</th>
-              <!-- <th class="announcement-table-col-10">Streets</th> -->
-              <th class="announcement-table-col-10">Action</th>
+              <th scope="col" class="col-sm-2 p-2 add-padding">Provider</th>
+              <th scope="col" class="col-sm-2 p-2 add-padding">Title</th>
+              <th scope="col" class="col-sm-2">Publish date</th>
+              <th scope="col" class="col-sm-1">Publish time</th>
+              <th scope="col" class="col-sm-3 p-3 add-padding">Region</th>
+              <th scope="col" class="col-sm-2 p-2">Action</th>
             </tr>
             </thead>
             <tbody>
             <ng-container *ngFor="let value of notifications; let i = index">
-              <tr class="pt-3 pb-3" class="clickable-row" (click)="toggleCollapse(i)">
-                <td class="announcement-table-col-13">{{providerName(value.ProviderId)}}</td>
-                <td class="announcement-table-col-20">{{value.Title}}</td>
-                <td class="announcement-table-col-13">{{parseDate(value.PublishDate,3)}}</td>
-                <td class="announcement-table-col-20">
-                  <ng-container *ngFor="let region of value.regions">
-                    <h6>{{region.name}}</h6>
-                  </ng-container>
-                </td>
-                <td class="announcement-table-col-20">
-                  <ng-container *ngFor="let street of value.streets">
-                    <h6>{{street.name}}</h6>
-                  </ng-container>
-                </td>
-                <!-- <td class="announcement-table-col-10">/</td> -->
-                <td class="announcement-table-col-10">
-                  <c-button-group aria-label="Basic example" role="group">
-                    <button cButton color="light" (click)="toggleEditButtonDemo(value)">Edit</button>
-                    <button cButton color="danger" (click)="toggleDeleteButton(value.Id)">Delete</button>
-                  </c-button-group>
+                <tr class="pt-3 pb-3 clickable-row" (click)="toggleCollapse(i)">
+                  <td colspan="12">
+                  <c-accordion>
+                    <c-accordion-item #item0="cAccordionItem" [visible]="false" 
+                                        style="
+                      --cui-accordion-active-bg: white;
+                      --cui-accordion-active-color: black;
+                    ">
 
-                </td>
-              </tr>
-              <ng-container *ngIf="additionalInfoVisible && indexSelectedCoverage === i" class="card-hidden mb-5">
-                <div [visible]="additionalInfoVisible" cCollapse class="card-hidden mb-2 p-2">
-                  <h6 class="pb-0 mb-0">Source url</h6>
-                  <p class="pb-0 mb-0">{{value.SourceUrl}}</p>
-                  <h6 class="pb-0 mb-0">Description</h6>
-                  <p class="pb-0 mb-0">{{value.Description}}</p>
-                  <h6 class="pb-0 mb-0">Additional Information</h6>
-                  <p class="pb-0">{{value.AdditionalInformation}}</p>
-                </div>
-              </ng-container>
+                    <ng-template cTemplateId="accordionHeaderTemplate">
+                      <button (click)="item0.toggleItem()"
+                        [collapsed]="!item0.visible"
+                        cAccordionButton
+                      >
+                        <td style="vertical-align: middle"  class="col-sm-2">{{providerName(value.ProviderId)}}</td>
+                        <td style="vertical-align: middle" class="col-sm-2">{{value.Title}}</td>
+                        <td style="vertical-align: middle" class="col-sm-2">{{parseDate(value.PublishDate,1)}}</td>
+                        <td style="vertical-align: middle" class="col-sm-1">{{parseDate(value.PublishDate,2)}}</td>
+                        <td style="vertical-align: middle" class="col-sm-3 pr-5">
+                            <ul style="list-style: none;">
+                              <ng-container *ngFor="let region of value.regions">
+                                <li>{{region.name}}</li>
+                              </ng-container>
+                            </ul>
+                        </td>
+                        <td>
+                          <c-button-group aria-label="Basic example" role="group">
+                            <button cButton color="light" (click)="toggleEditButtonDemo(value)">Edit</button>
+                            <button cButton color="danger" (click)="toggleDeleteButton(value.Id)">Delete</button>
+                          </c-button-group>
+                        </td>
+                      </button>
+                    </ng-template>
+                    <ng-template cTemplateId="accordionBodyTemplate">
+                        <c-row class="accordion-body">
+                          <c-col class="col-sm-6" style="padding-right: 32px;">
+                            <strong>Source url:</strong>
+                            <p>{{ value.SourceUrl }}</p>
+                            <strong>Content:</strong>
+                            <p>{{ value.Content }}</p> 
+                            <strong>Description:</strong>
+                            <p>{{ value.Description }}</p>
+                          </c-col>      
+                          <c-col class="col-sm-3">
+                            <strong>Reference start date:</strong>
+                            <p>{{parseDate(value.ReferenceStartDate, 1)}}</p>
+                            <strong>Reference end date:</strong>
+                            <p>{{parseDate(value.ReferenceEndDate, 1)}}</p>
+                          </c-col>
+                          <c-col class="col-sm-3">
+                            <strong>Streets:</strong>
+                              <ul>
+                                <ng-container *ngFor="let street of value.streets">
+                                  <li>{{street.name}}</li>
+                                </ng-container>
+                              </ul>
+                          </c-col>         
+                      </c-row>
+                    </ng-template>
+                    </c-accordion-item>
+                  </c-accordion>
+                  </td>
+                </tr>
+                <!-- </c-accordion-item> -->
+              <!-- </c-accordion> -->
+              <!-- <ng-container *ngIf="additionalInfoVisible && indexSelectedCoverage === i" class="card-hidden mb-5">
+
+                    <td colspan="12" [visible]="additionalInfoVisible" cCollapse class="card-hidden mb-2 p-2 accordian-body">
+                      <h6 class="pb-0 mb-0">Source url</h6>
+                      <p class="pb-0 mb-0">{{value.SourceUrl}}</p>
+                      <h6 class="pb-0 mb-0">Description</h6>
+                      <p class="pb-0 mb-0">{{value.Description}}</p>
+                      <h6 class="pb-0 mb-0">Additional Information</h6>
+                      <p class="pb-0">{{value.AdditionalInformation}}</p>
+                    </td>
+              </ng-container> -->
             </ng-container>
             </tbody>
           </table>
-        </c-row>
+        </div>
         <c-row class="mt-2 mb-3">
           <c-pagination align="start" aria-label="Page navigation example" style="--cui-pagination-color: red">
             <c-page-item [disabled]="paging.page === 1">
