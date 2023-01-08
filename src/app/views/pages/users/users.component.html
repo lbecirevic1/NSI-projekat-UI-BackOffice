@@ -32,18 +32,21 @@
         <c-row class="mb-5 ml-5">
           <c-col>
             <label cLabel for="title">Select provider</label>
-            <ng-multiselect-dropdown
-              [placeholder]="'Providers'"
-              [settings]="dropdownSettingsProviders"
-              [data]="providers"
-              [(ngModel)]="clickedProviders"
-              (onSelect)="onProviderSelect($event)"
-              (onDeSelect)="onDeselectProviders($event)"
-            >
-            </ng-multiselect-dropdown>
+            <select
+        cSelect
+        class="mb-3"
+        id="noviId"
+        (change)="changeList($event)"
+      >
+      <option value="null">All</option>
+        <option *ngFor="let provider of providers" value="{{provider.Id}}">
+          {{ provider.Name }}
+        </option>
+      </select>
           </c-col>
 
           <c-col>
+
             <div class="input-fields">
               <label cLabel for="title">Search</label>
               <input
@@ -54,6 +57,7 @@
                 name="newAnnouncTitle"
                 type="text"
                 ngModel
+                placeholder="Search by first or last name"
               />
             </div>
           </c-col>
@@ -64,12 +68,11 @@
             <thead>
               <tr class="pt-3 pb-3">
                 <!-- <th></th> -->
-                <th class="announcement-table-col-13">First name</th>
-                <th class="announcement-table-col-20">Last name</th>
-                <th class="announcement-table-col-13">Email</th>
-                <th class="announcement-table-col-30">Role</th>
-                <!-- <th class="announcement-table-col-10">Streets</th> -->
-                <th class="announcement-table-col-20">Action</th>
+                <th class="users-table-col-13">First name</th>
+                <th class="users-table-col-20">Last name</th>
+                <th class="users-table-col-13">Email</th>
+                <th class="users-table-col-20">Role</th>
+                <th class="users-table-col-20">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -80,7 +83,10 @@
                 <td scope="row">{{ user.firstName }}</td>
                 <td>{{ user.lastName }}</td>
                 <td>{{ user.email }}</td>
-                <td></td>
+                <td> <ng-container *ngFor="let role of user.providerAccountRoles">
+                  <p>{{role.regionName}}:{{role.providerName}}:{{role.roleName}};</p>
+
+               </ng-container></td>
                 <td>
                   <div class="d-grid gap-2 d-md-flex justify-content-md">
                     <button cButton color="success" (click)="onEdit(user.id)">

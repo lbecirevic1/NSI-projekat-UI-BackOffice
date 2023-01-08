@@ -191,6 +191,15 @@ export class UtilioService {
       .pipe(catchError(() => of()));
   }
 
+  getAccountsForProvider(id: number): Observable<ProviderAccount> {
+    return this.http
+      .get<ProviderAccount>(`${this.apiUrl}/provideraccount/provider/${id}`, {
+        headers: new HttpHeaders(this.headerDict),
+      })
+      .pipe(catchError(() => of()));
+  }
+
+
   getProviderAccount(id: number): Observable<ProviderAccount> {
     return this.http
       .get<ProviderAccount>(`${this.apiUrl}/provideraccount/${id}`, {
@@ -202,6 +211,14 @@ export class UtilioService {
   postProviderAccount(providerAccount: ProviderAccount): Observable<any> {
     return this.http
       .post(`${this.apiUrl}/provideraccount`, providerAccount, {
+        headers: new HttpHeaders(this.headerDict),
+      })
+      .pipe(catchError(() => of()));
+  }
+
+  deleteProviderAccount(userId: number) {
+    return this.http
+      .delete(`${this.apiUrl}/provideraccount/${userId}`, {
         headers: new HttpHeaders(this.headerDict),
       })
       .pipe(catchError(() => of()));

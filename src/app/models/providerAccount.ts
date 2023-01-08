@@ -4,6 +4,7 @@ export class ProviderAccount {
     public firstName: string,
     public lastName: string,
     public email: string,
-    public providerId: number
+    public providerId: number,
+    public providerAccountRoles: any=[]
   ) {}
 }
