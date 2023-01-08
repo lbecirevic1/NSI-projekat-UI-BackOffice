@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { DefaultLayoutComponent } from './containers';
-import { AnnouncementComponent } from './views/pages/announcement/announcement.component';
+import { AnnouncementComponent } from './views/announcement/announcement.component';
 import { LoginComponent } from './views/pages/login/login.component';
 import { LogsComponent } from './views/logs/logs.component';
 import { Page404Component } from './views/pages/page404/page404.component';
@@ -61,6 +61,11 @@ const routes: Routes = [
         path: 'logs',
         loadChildren: () =>
           import('./views/logs/logs.module').then((m) => m.LogsModule),
+      },
+      {
+        path: 'announcement',
+        loadChildren: () =>
+          import('./views/announcement/announcement.module').then((m) => m.AnnouncementModule),
       },
       {
         path: 'icons',

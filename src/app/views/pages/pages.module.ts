@@ -20,7 +20,6 @@ import {
   TabsModule,
 } from '@coreui/angular';
 import { IconModule } from '@coreui/icons-angular';
-import { AnnouncementComponent } from './announcement/announcement.component';
 import { LoginComponent } from './login/login.component';
 import { Page404Component } from './page404/page404.component';
 import { Page500Component } from './page500/page500.component';
@@ -52,7 +51,6 @@ import { MatIconModule } from '@angular/material/icon';
     RegisterComponent,
     Page404Component,
     Page500Component,
-    AnnouncementComponent,
     RegionComponent,
     UsersComponent,
     RegionsSelectComponent,
