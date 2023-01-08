@@ -7,7 +7,7 @@ const routes: Routes = [
         path: '',
         component: AnnouncementHandlerComponent,
         data: {
-            title: 'Overview',
+            title: 'Announcement Handling',
         },
     },
 ];
