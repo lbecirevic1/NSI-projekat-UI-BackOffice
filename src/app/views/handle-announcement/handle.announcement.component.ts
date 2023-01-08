@@ -17,6 +17,7 @@ export class AnnouncementHandlerComponent implements OnInit {
 
   @Input() public startDate: any;
   @Input() public endDate: any;
+  @Input() public dateType: number = 1;
 
   constructor(private service: UtilioService) { }
 
@@ -38,7 +39,9 @@ export class AnnouncementHandlerComponent implements OnInit {
   }
 
   public handleFiltering() {
-    this.displayedAnnouncements = this.announcements.filter(element => this.endDate > new Date(element.createDate.split('/').reverse().join('/')) && this.startDate <= new Date(element.createDate.split('/').reverse().join('/')));
+    if (this.dateType == 1) this.displayedAnnouncements = this.announcements.filter(element => this.endDate > new Date(element.createDate.split('/').reverse().join('/')) && this.startDate <= new Date(element.createDate.split('/').reverse().join('/')));
+    else if (this.dateType == 2) this.displayedAnnouncements = this.announcements.filter(element => this.endDate > new Date(element.modifiedDate.split('/').reverse().join('/')) && this.startDate <= new Date(element.modifiedDate.split('/').reverse().join('/')));
+    else if (this.dateType == 3) this.displayedAnnouncements = this.announcements.filter(element => this.endDate > new Date(element.lastTimeNotified.split('/').reverse().join('/')) && this.startDate <= new Date(element.lastTimeNotified.split('/').reverse().join('/')));
   }
 
   public startDateChange(event: any) {
@@ -49,10 +52,15 @@ export class AnnouncementHandlerComponent implements OnInit {
     this.endDate = new Date(event.target.value);
   }
 
-  public beautifyDates(data: any) {
-    data.forEach((element: any) => {
-
-    })
+  public showFiltering() {
+    if (this.enableFiltering) {
+      this.displayedAnnouncements = this.announcements;
+      this.dateType = 1
+    }
+    this.enableFiltering = !this.enableFiltering;
   }
 
+  public changeFilterDateType(option: number) {
+    this.dateType = option;
+  }
 }
