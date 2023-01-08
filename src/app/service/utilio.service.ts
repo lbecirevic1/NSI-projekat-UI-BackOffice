@@ -8,6 +8,16 @@ import { Observable } from 'rxjs';
 
 export class UtilioService{
   readonly apiUrl='https://localhost:7069/api/';
+  readonly realAPIUrl='https://utilio-core-service.azurewebsites.net/api/'
+
+  
+  private headerDict = {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'X-Requested-With': 'XMLHttpRequest'
+    
+  };
 
   constructor(private http: HttpClient) {
   }
@@ -17,11 +27,15 @@ export class UtilioService{
   }
 
   getRegions(): Observable<any[]> {
-    return this.http.get<any[]>('https://localhost:7069/api/regions');
+    return this.http.get<any[]>(this.realAPIUrl + 'regions',{
+      headers: new HttpHeaders(this.headerDict),
+    });
   }
 
   getStreets(): Observable<any[]> {
-    return this.http.get<any[]>('https://localhost:7069/api/streets')
+    return this.http.get<any[]>(this.realAPIUrl + 'streets',{
+      headers: new HttpHeaders(this.headerDict),
+    })
   }
 
   deleteAnnouncement(notificationId:number){
@@ -39,18 +53,36 @@ export class UtilioService{
     return this.http.put<any>(this.apiUrl + 'Subscriber/Update', subscriber);
   }
   getSubscribers(): Observable<any[]>{
-    return this.http.get<any[]>(this.apiUrl + 'Subscriber/GetSubscribers');
+    return this.http.get<any[]>(this.realAPIUrl + 'Subscriber',{
+      headers: new HttpHeaders(this.headerDict),
+    });
   }
-  getSubscriberById(id:number): Observable<any[]>{
-    return this.http.get<any[]>(this.apiUrl + 'Subscriber/GetSubscriber/' + id );
+  getSubscriberById(id:number): Observable<any>{
+    return this.http.get<any>(this.realAPIUrl + 'Subscriber/' + id ,{
+      headers: new HttpHeaders(this.headerDict),
+    });
   }
   getSubscribtionsBySubscriberId(id:number): Observable<any>{
-    return this.http.get<any>(this.apiUrl + 'Subscriber/GetSubscribtionsBySubscriberId/' + id );
+    return this.http.get<any>(this.realAPIUrl + 'Subscription/user-id/' + id,{
+      headers: new HttpHeaders(this.headerDict),
+    });
   }
   getProviders():Observable<any[]>{
-    return this.http.get<any[]>(this.apiUrl + 'providers');
+    return this.http.get<any[]>(this.realAPIUrl + 'providers',{
+      headers: new HttpHeaders(this.headerDict),
+    });
   }
   addSubscriptionForUser(subscription:any ): Observable<any>{
     return this.http.post<any>(this.apiUrl + 'Subscription/Post', subscription);
+  }
+  getRegionById(id:number): Observable<any> {
+    return this.http.get<any>(this.realAPIUrl + 'regions' + id,{
+      headers: new HttpHeaders(this.headerDict),
+    });
+  }
+  getStreetById(id:number): Observable<any> {
+    return this.http.get<any>(this.realAPIUrl + 'streets' + id,{
+      headers: new HttpHeaders(this.headerDict),
+    });
   }
 }

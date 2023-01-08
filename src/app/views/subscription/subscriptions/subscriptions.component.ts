@@ -78,12 +78,12 @@ export class SubscriptionsComponent implements OnInit {
     this.service
     .getSubscribers()
     .subscribe(data => {
-
+      console.log("Data from get subscribers",data)
       data.forEach(item =>
         this.Users.push(
         {
           Id: item.id,
-          Name: item.name,
+          Name: item.firstName,
           Email: item.email,
           RegionId: item.regionID,
           StreetId: item.streetID

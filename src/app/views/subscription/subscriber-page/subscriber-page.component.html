@@ -32,16 +32,16 @@
               <div class="mb-3 col-md-6">
                 <label cLabel for="region">Region</label>
                 <select cSelect  class="mb-3 text-center" (change)="changeRegion($event)" formControlName="Region">
-                  <option *ngFor="let region of regions" [ngValue]="region.Id">
-                    {{ region.Name }}
+                  <option *ngFor="let region of Regions" [ngValue]="region.id">
+                    {{ region.name }}
                   </option>
                 </select>
               </div>
               <div class="mb-3 col-md-6">
                 <label cLabel for="street">Street</label>
                 <select cSelect  class="mb-3 text-center" (change)="changeStreet($event)" formControlName="Street">
-                  <option *ngFor="let street of streets" [ngValue]="street.Id">
-                    {{ street.Name }}
+                  <option *ngFor="let street of Streets" [ngValue]="street.id">
+                    {{ street.name }}
                   </option>
                 </select>
               </div>

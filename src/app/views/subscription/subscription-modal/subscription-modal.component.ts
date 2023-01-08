@@ -90,13 +90,13 @@ export class SubscriptionModalComponent implements OnInit {
     return this.addNewSubscriptionForm.get('categoryControl');
   }
   ngOnInit(): void {
-    //Odkomentarisati---------------------------------------
-    // this.service.getProviders()
-    // .subscribe(data => {
-    //   console.log(data)
-    //   //TODO ovako treba biti
-    //   this.Topics = data;
-    // });
+    
+    this.service.getProviders()
+    .subscribe(data => {
+      console.log(data)
+      //TODO ovako treba biti
+      this.Topics = data;
+    });
     console.log("modal init")
   }
 

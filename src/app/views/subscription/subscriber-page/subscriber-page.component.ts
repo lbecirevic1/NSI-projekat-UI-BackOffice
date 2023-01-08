@@ -78,82 +78,90 @@ export class SubscriberPageComponent implements OnInit {
     }
   ]
 
-  regions = [{
-      Id: 1,
-      Name: "Bjelave"
-    },
-    {
-      Id: 2,
-      Name: "Otoka"
-    },
-    {
-      Id: 3,
-      Name: "Grbavica"
-    }
-  ]
+  // regions = [{
+  //     Id: 1,
+  //     Name: "Bjelave"
+  //   },
+  //   {
+  //     Id: 2,
+  //     Name: "Otoka"
+  //   },
+  //   {
+  //     Id: 3,
+  //     Name: "Grbavica"
+  //   }
+  // ]
 
-  streets = [{
-      Id: 1,
-      Name: "Dr. Fetaha Becirbegovica"
-    },
-    {
-      Id: 2,
-      Name: "Travnicka"
-    }
-  ]
+  // streets = [{
+  //     Id: 1,
+  //     Name: "Dr. Fetaha Becirbegovica"
+  //   },
+  //   {
+  //     Id: 2,
+  //     Name: "Travnicka"
+  //   }
+  // ]
   public Topics:any[] = [];
   //Prave vrijednosti 
-
+  public Regions:any[] = [];
+  public Streets:any[] = [];
   //CHANGE promijeniti u subscriptions
   public SubscriptionsForUser: any[] = [];
   ngOnInit(): void {
     this.id = this.activatedRoute.snapshot.params['id'];
     //ODKOMENTARISATI--------------------------------------------------
+    this.service
+    .getRegions()
+    .subscribe(dataRegion => {
+      this.Regions = dataRegion;
+      console.log(dataRegion, "data region")
+      this.service
+      .getStreets()
+      .subscribe(dataStreet => {
+        this.Streets = dataStreet;
+        this.service.getSubscriberById(this.id)
+        .subscribe(data => {
+          console.log(data, dataStreet, dataRegion)
+          //TODO ovako treba biti
+          // var regionName = "";
+          // var streetName = "";
+          // this.service.getRegionById(data.regionId).subscribe(dataRegion =>{
+          //   regionName = dataRegion.name;
+          //   this.service.getStreetById(data.streetId).subscribe(dataStreet =>{
+          //     streetName = dataStreet.name;
+          //     this.userForm = new FormGroup({
+          //       Email: new FormControl(data.email),
+          //       Name: new FormControl(data.firstName),
+          //       Region: new FormControl(regionName),
+          //       Street: new FormControl(streetName)
+          //     });
+          //   });
+          // });
+          
+          this.userForm = new FormGroup({
+            Email: new FormControl(data.email),
+            Name: new FormControl(data.firstName),
+            Region: new FormControl(data.regionId),
+            Street: new FormControl(data.streetId)
+          });
+        });
 
-    // this.service.getSubscriberById(this.id)
-    // .subscribe(data => {
-    //   console.log(data)
-    //   //TODO ovako treba biti
-
-    //   this.userForm = new FormGroup({
-    //     Email: new FormControl(data.email),
-    //     Name: new FormControl(data.name),
-    //     Region: new FormControl(data.regionId),
-    //     Street: new FormControl(data.streetId)
-    //   });
-    // });
-
-    // this.service.getSubscribtionsBySubscriberId(this.id)
-    // .subscribe(data=>{
-    //   this.SubscriptionsForUser = data.subscriptionEntry;
-
-    // });
-    // this.service.getProviders()
-    //   .subscribe(data=>{
-    //     this.Topics = data;
-    //   });
-    
-    this.Topics  = [
-      {
-        Id: 1,
-        Name: "TopicNeki"
-      },
-      {
-        Id: 2,
-        Name: "Centar"
-      },
-      {
-        Id: 3,
-        Name: "BHT"
-      }
-    ]
-
-    this.userForm = new FormGroup({
-      Email: new FormControl("mujomujic@gmail.com"),
-      Name: new FormControl("Mujo"),
-      Region: new FormControl(1),
-      Street: new FormControl(1)
+      });
     });
+
+  
+   
+
+    this.service.getSubscribtionsBySubscriberId(this.id)
+    .subscribe(dataSubscriber=>{
+      this.SubscriptionsForUser = dataSubscriber.subscriptionEntry;
+      this.service.getProviders()
+      .subscribe(data=>{
+        this.Topics = data;
+      });
+    });
+   
+    
     console.log(this.id);
   }
   editSubscription(topicId: any) {
