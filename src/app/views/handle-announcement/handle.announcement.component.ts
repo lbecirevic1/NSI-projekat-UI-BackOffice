@@ -1,7 +1,4 @@
-import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { TableModule } from '@coreui/angular';
-import { Observable } from 'rxjs';
 import { IAnnouncementHandler } from 'src/app/models/announcement-handler';
 import { UtilioService } from 'src/app/service/utilio.service';
 
@@ -32,5 +29,9 @@ export class AnnouncementHandlerComponent implements OnInit {
         });
       })
     });
+  }
+
+  public handleFiltering() {
+    this.enableFiltering = !this.enableFiltering;
   }
 }
