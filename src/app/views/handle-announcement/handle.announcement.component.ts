@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { IAnnouncementHandler } from 'src/app/models/announcement-handler';
 import { UtilioService } from 'src/app/service/utilio.service';
 
@@ -11,7 +11,12 @@ export class AnnouncementHandlerComponent implements OnInit {
 
   public announcements: IAnnouncementHandler[] = [];
 
+  public displayedAnnouncements: IAnnouncementHandler[] = [];
+
   public enableFiltering: boolean = false;
+
+  @Input() public startDate: any;
+  @Input() public endDate: any;
 
   constructor(private service: UtilioService) { }
 
@@ -29,9 +34,25 @@ export class AnnouncementHandlerComponent implements OnInit {
         });
       })
     });
+    this.displayedAnnouncements = this.announcements;
   }
 
   public handleFiltering() {
-    this.enableFiltering = !this.enableFiltering;
+    this.displayedAnnouncements = this.announcements.filter(element => this.endDate > new Date(element.createDate.split('/').reverse().join('/')) && this.startDate <= new Date(element.createDate.split('/').reverse().join('/')));
   }
+
+  public startDateChange(event: any) {
+    this.startDate = new Date(event.target.value);
+  }
+
+  public endDateChange(event: any) {
+    this.endDate = new Date(event.target.value);
+  }
+
+  public beautifyDates(data: any) {
+    data.forEach((element: any) => {
+
+    })
+  }
+
 }

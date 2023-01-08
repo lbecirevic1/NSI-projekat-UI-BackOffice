@@ -1,20 +1,21 @@
 <div>
   <h3 style="text-align:center">Announcement Overview</h3>
   <c-form-check>
-  <input cFormCheckInput id="checkOne" type="checkbox" [checked]="enableFiltering"  (change)="handleFiltering()"/>
+  <input cFormCheckInput id="checkOne" type="checkbox" [checked]="enableFiltering"  (change)="enableFiltering=!enableFiltering"/>
   <label cFormCheckLabel for="checkOne">Enable filtering</label>
 </c-form-check>
 <div *ngIf="enableFiltering">
   <div>
-  <input matInput [matDatepicker]="picker" placeholder="Start date">
+   By date : 
+  <input matInput [matDatepicker]="picker" placeholder="Start date" (dateChange)="startDateChange($event)">
   <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
   <mat-datepicker #picker></mat-datepicker>
 
-  <input matInput [matDatepicker]="picker2" placeholder="Start date">
+  <input matInput [matDatepicker]="picker2" placeholder="End date" (dateChange)="endDateChange($event)">
   <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
   <mat-datepicker #picker2></mat-datepicker>
 
-  <button cButton color="primary">Filter</button>
+  <button cButton color="primary" (click)="handleFiltering()">Filter</button>
 
 
 </div>
@@ -32,7 +33,7 @@
               <th scope="col">Modified on</th>
             </tr>
               </thead>
-              <tr style="font-size: small; text-align: center;" *ngFor="let announcement of announcements">
+              <tr style="font-size: small; text-align: center;" *ngFor="let announcement of displayedAnnouncements">
                 <th scope="row">{{announcement.id}}</th>
                 <th scope="row">{{announcement.identifier}}</th>
                 <th scope="row">{{announcement.subscriptionIdentifier}}</th>
