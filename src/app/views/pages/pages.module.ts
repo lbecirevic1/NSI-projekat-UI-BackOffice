@@ -25,7 +25,7 @@ import { Page404Component } from './page404/page404.component';
 import { Page500Component } from './page500/page500.component';
 import { PagesRoutingModule } from './pages-routing.module';
 import { RegisterComponent } from './register/register.component';
-import { RegionComponent } from './region/region.component';
+// import { RegionComponent } from './region/region.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -51,7 +51,7 @@ import { MatIconModule } from '@angular/material/icon';
     RegisterComponent,
     Page404Component,
     Page500Component,
-    RegionComponent,
+    // RegionComponent,
     UsersComponent,
     RegionsSelectComponent,
   ],

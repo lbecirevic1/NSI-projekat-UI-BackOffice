@@ -4,7 +4,7 @@ import { LoginComponent } from './login/login.component';
 import { Page404Component } from './page404/page404.component';
 import { Page500Component } from './page500/page500.component';
 import { RegisterComponent } from './register/register.component';
-import { RegionComponent } from './region/region.component';
+// import { RegionComponent } from './region/region.component';
 import { AnnouncementHandlerComponent } from './handle-announcement/handle.announcement.component';
 import { UsersComponent } from './users/users.component';
 
@@ -44,13 +44,13 @@ const routes: Routes = [
       title: 'Announcement handle & review',
     },
   },
-  {
-    path: 'region',
-    component: RegionComponent,
-    data: {
-      title: 'Region Page',
-    },
-  },
+  // {
+  //   path: 'region',
+  //   component: RegionComponent,
+  //   data: {
+  //     title: 'Region Page',
+  //   },
+  // },
 ];
 
 @NgModule({

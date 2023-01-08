@@ -8,7 +8,7 @@ import { LogsComponent } from './views/logs/logs.component';
 import { Page404Component } from './views/pages/page404/page404.component';
 import { Page500Component } from './views/pages/page500/page500.component';
 import { RegisterComponent } from './views/pages/register/register.component';
-import { RegionComponent } from './views/pages/region/region.component';
+import { RegionComponent } from './views/region/region.component';
 import { AnnouncementHandlerComponent } from './views/pages/handle-announcement/handle.announcement.component';
 import { UsersComponent } from './views/pages/users/users.component';
 
@@ -61,6 +61,11 @@ const routes: Routes = [
         path: 'logs',
         loadChildren: () =>
           import('./views/logs/logs.module').then((m) => m.LogsModule),
+      },
+      {
+        path: 'region',
+        loadChildren: () =>
+          import('./views/region/region.module').then((m) => m.RegionModule),
       },
       {
         path: 'announcement',

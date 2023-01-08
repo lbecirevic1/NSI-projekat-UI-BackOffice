@@ -97,11 +97,51 @@ export class UtilioService {
   getRegions(): Observable<any[]> {
     return this.http.get<any[]>('https://localhost:7069/api/regions');
   }
+  getRegionsAll(): Observable<any[]> {
+    return this.http.get<any[]>('https://localhost:7069/api/regions/all');
+  }
+  getRegionTypes(): Observable<any[]> {
+    return this.http.get<any[]>('https://localhost:7069/api/regions/regionTypes');
+  }
 
   getStreets(): Observable<any[]> {
     return this.http.get<any[]>('https://localhost:7069/api/streets');
   }
 
+  postRegion(name: string, code: string, parentRegionId: number, regionTypeId: number,createDate: string) {
+
+    console.log(name)
+    console.log(code)
+    
+    let body = {
+      name: name,
+      code: code,
+      parentRegionId: parentRegionId,
+      regionTypeId: regionTypeId
+    }
+    let body2 = JSON.stringify(body);
+    console.log(JSON.stringify(body));
+    return this.http.post<any>('https://localhost:7069/api/regions', body)
+  }
+  editRegion(regionId:number, name: string, code: string, parentRegionId: number, regionTypeId: number,createDate: string) {
+
+
+    let body = {
+      id:regionId,
+      name: name,
+      code: code,
+      parentRegionId: parentRegionId,
+      regionTypeId: regionTypeId
+    }
+    console.log(body,"BODY")
+    return this.http.put('https://localhost:7069/api/regions?id='+regionId,body)
+  }
+  deleteRegion(regionId: number) {
+    return this.http.delete<number>('https://localhost:7069/api/regions?id=' + regionId);
+  }
+  // postAnnouncement(providerId: number, title: string, url: any, description: string,
+  //   content: string, adInfo: string, startDate: string, endDate: string, startTime: string,
+  //   endTime: string, regions: number[],streets:number[]) {
   postAnnouncement(
     providerId: number,
     title: string,
