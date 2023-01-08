@@ -172,7 +172,7 @@ export const navItems: INavData[] = [
   {
     name: 'Announcement Handle',
     url: '/handle-ann',
-    iconComponent: { name: 'cil-bell' }
+    iconComponent: { name: 'cil-spreadsheet' }
   },
   {
     name: 'Icons',
