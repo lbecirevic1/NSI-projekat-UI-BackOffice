@@ -2,14 +2,14 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { DefaultLayoutComponent } from './containers';
-import { AnnouncementComponent } from './views/pages/announcement/announcement.component';
+import { AnnouncementComponent } from './views/announcement/announcement.component';
 import { LoginComponent } from './views/pages/login/login.component';
 import { LogsComponent } from './views/logs/logs.component';
 import { Page404Component } from './views/pages/page404/page404.component';
 import { Page500Component } from './views/pages/page500/page500.component';
 import { RegisterComponent } from './views/pages/register/register.component';
-import { RegionComponent } from "./views/region/region.component";
-import { AnnouncementHandlerComponent } from "./views/pages/handle-announcement/handle.announcement.component";
+import { RegionComponent } from './views/region/region.component';
+import { AnnouncementHandlerComponent } from './views/pages/handle-announcement/handle.announcement.component';
 import { UsersComponent } from './views/pages/users/users.component';
 
 const routes: Routes = [
@@ -66,6 +66,11 @@ const routes: Routes = [
         path: 'region',
         loadChildren: () =>
           import('./views/region/region.module').then((m) => m.RegionModule),
+      },
+      {
+        path: 'announcement',
+        loadChildren: () =>
+          import('./views/announcement/announcement.module').then((m) => m.AnnouncementModule),
       },
       {
         path: 'icons',
@@ -131,23 +136,23 @@ const routes: Routes = [
     path: 'handle-announcements',
     component: AnnouncementHandlerComponent,
     data: {
-      title: 'Announcement handling & review'
-    }
+      title: 'Announcement handling & review',
+    },
   },
   {
     path: 'region',
     component: RegionComponent,
     data: {
-      title: 'Region Page'
-    }
+      title: 'Region Page',
+    },
   },
   {
-  path: 'users',
-  component: UsersComponent,
-  data: {
-    title: 'Users Page'
-  }
-},
+    path: 'users',
+    component: UsersComponent,
+    data: {
+      title: 'Users Page',
+    },
+  },
   { path: '**', redirectTo: 'dashboard' },
 ];
 

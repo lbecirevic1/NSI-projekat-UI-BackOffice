@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UserSettingsComponent } from './user-settings.component';
+import { RegionsSelectComponent } from './regions-select.component';
 
-describe('UserSettingsComponent', () => {
-  let component: UserSettingsComponent;
-  let fixture: ComponentFixture<UserSettingsComponent>;
+describe('RegionsSelectComponent', () => {
+  let component: RegionsSelectComponent;
+  let fixture: ComponentFixture<RegionsSelectComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UserSettingsComponent ]
+      declarations: [ RegionsSelectComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(UserSettingsComponent);
+    fixture = TestBed.createComponent(RegionsSelectComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
