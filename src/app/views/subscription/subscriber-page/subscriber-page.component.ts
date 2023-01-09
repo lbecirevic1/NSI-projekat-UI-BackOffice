@@ -147,16 +147,13 @@ export class SubscriberPageComponent implements OnInit {
       TopicId: topicId
     });
     this.toggleModalAddNewSubscription()
-
-    console.log(this.informationForEditingSubscription, "Edit")
-    // this.informationForEditingSubscription  = {} as IEditSubscription;
   }
   deleteSubscription(topic: any) {
     console.log(topic, "Delete")
     this.service.deleteSubscription(topic).subscribe(data => {
-      this.addToast("danger", "Subscription deleted")
+      this.addToast("Subscription deleted", "danger")
+      this.getSubscriptions()
     });
-    // this.subscriptions = this.subscriptions.filter(item => item.Topic != topic);
   }
   addNewSubscription() {
     console.log("Add new component", this.informationForEditingSubscription);
@@ -172,7 +169,9 @@ export class SubscriberPageComponent implements OnInit {
       firstName: this.userForm.value.Name,
       regionID: userForm.value.Region == null ? this.user.regionID : userForm.value.Region,
       streetID: userForm.value.Street == null ? this.user.streetID : userForm.value.Street,
-      id: this.user.id
+      id: this.user.id,
+      lastName: "",
+      mobilePhone: ""
     };
     console.log("User form submited", val);
     this.service.updateSubscriber(val).subscribe(x => {

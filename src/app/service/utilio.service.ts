@@ -90,12 +90,12 @@ export class UtilioService{
     });
   }
   deleteSubscription(id:number){
-    return this.http.delete<any>(this.realAPIUrl + 'Subscription/' + id,{
+    return this.http.delete<any>(this.realAPIUrl + 'Subscription?id=' + id,{
       headers: new HttpHeaders(this.headerDict),
     });
   }
   updateSubscriber(user:any){
-    return this.http.patch<any>(this.realAPIUrl + 'Subscriber/' + user.id, user,{
+    return this.http.patch<any>(this.realAPIUrl + 'Subscriber?id=' + user.id, user,{
       headers: new HttpHeaders(this.headerDict),
     });
   }
