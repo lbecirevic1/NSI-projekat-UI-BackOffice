@@ -187,7 +187,6 @@ export class UtilioService {
 
     year=date[2]
 
-    console.log(dateEnd)
     referenceStartDate=year+"-"+month+"-"+day+"T"+startTime
 
     if(dateEnd[0].length==1) day='0'+dateEnd[0]
@@ -326,7 +325,7 @@ export class UtilioService {
       code: code,
       webSite: webSite,
     }
-    
+
     return this.http.put('https://localhost:7069/api/providers?id='+providerId,body)
   }
   deleteProvider(providerId: number) {
