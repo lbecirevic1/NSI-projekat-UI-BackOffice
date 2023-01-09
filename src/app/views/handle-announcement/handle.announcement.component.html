@@ -74,4 +74,18 @@
               </tr>
  
 </table>
+<nav *ngIf="displayedAnnouncements.length>0" style="margin-top: 5%;" aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <!-- <li class="page-item disabled">
+      <a class="page-link">Previous</a>
+    </li> -->
+    <li class="page-item"><a class="page-link" style="background-color:#4d5c74; color: white;" >1</a></li>
+    <!-- <li class="page-item"><a class="page-link" >2</a></li>
+    <li class="page-item"><a class="page-link" >3</a></li> -->
+    <!-- <li class="page-item">
+      <a class="page-link" href="#">Next</a>
+    </li> -->
+  </ul>
+</nav>
+<p style="text-align: center;" *ngIf="displayedAnnouncements.length==0">No data</p>
 </div>

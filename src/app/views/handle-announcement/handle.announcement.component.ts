@@ -43,9 +43,9 @@ export class AnnouncementHandlerComponent implements OnInit {
 
   public handleFiltering() {
     if (this.filterType) {
-      if (this.dateType == 1) this.displayedAnnouncements = this.announcements.filter(element => this.endDate > new Date(element.createDate.split('/').reverse().join('/')) && this.startDate <= new Date(element.createDate.split('/').reverse().join('/')));
-      else if (this.dateType == 2) this.displayedAnnouncements = this.announcements.filter(element => this.endDate > new Date(element.modifiedDate.split('/').reverse().join('/')) && this.startDate <= new Date(element.modifiedDate.split('/').reverse().join('/')));
-      else if (this.dateType == 3) this.displayedAnnouncements = this.announcements.filter(element => this.endDate > new Date(element.lastTimeNotified.split('/').reverse().join('/')) && this.startDate <= new Date(element.lastTimeNotified.split('/').reverse().join('/')));
+      if (this.dateType == 1) this.displayedAnnouncements = this.announcements.filter(element => this.endDate >= new Date(element.createDate.split('/').reverse().join('/')) && this.startDate <= new Date(element.createDate.split('/').reverse().join('/')));
+      else if (this.dateType == 2) this.displayedAnnouncements = this.announcements.filter(element => this.endDate >= new Date(element.modifiedDate.split('/').reverse().join('/')) && this.startDate <= new Date(element.modifiedDate.split('/').reverse().join('/')));
+      else if (this.dateType == 3) this.displayedAnnouncements = this.announcements.filter(element => this.endDate >= new Date(element.lastTimeNotified.split('/').reverse().join('/')) && this.startDate <= new Date(element.lastTimeNotified.split('/').reverse().join('/')));
     }
     else this.filterByIdentifier();
   }
