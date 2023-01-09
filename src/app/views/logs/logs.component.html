@@ -75,7 +75,7 @@
               <th scope="col" class="sent_header">
                 <p>Sent</p>
               </th>
-              <th scope="col" class="sorting_header">
+              <th scope="col" class="sorting_header request_end">
                 <p>Request End Date</p>
                 <div (click)="onSort('RequestEndTime')" style="cursor: pointer">
                   <img
@@ -88,7 +88,7 @@
                   />
                 </div>
               </th>
-              <th scope="col" style="width: '12%'; padding-left: 2rem">
+              <th scope="col" style="width: '12%'; padding-left: '1.5rem'">
                 <p>Status</p>
               </th>
               <th scope="col" class="sorting_header">
@@ -114,7 +114,7 @@
           </thead>
           <tbody>
             <tr
-              *ngFor="let log of logs"
+              *ngFor="let log of logs | paginate : config"
               cOffcanvasToggle="OffcanvasBottom"
               style="cursor: pointer"
             >
@@ -211,42 +211,63 @@
             </tr>
           </tbody>
         </table>
-        <c-pagination
-          align="end"
-          aria-label="Page navigation example"
-          style="--cui-pagination-color: red"
+        <pagination-template
+          #p="paginationApi"
+          [id]="config.id!"
+          (pageChange)="onPageChange($event)"
         >
-          <c-page-item [disabled]="paging.page === 1">
-            <button
-              cPageLink
-              (click)="onPageChangeNext(false)"
-              style="--cui-pagination-color: #354053"
-            >
-              Previous
-            </button>
-          </c-page-item>
-          <c-page-item
-            *ngFor="let page of pages"
-            [active]="paging.page === page"
-            style="
-              --cui-pagination-color: #354053;
-              --cui-pagination-active-bg: #d6d2f8;
-              --cui-pagination-active-border-color: #d6d2f8;
-              --cui-pagination-active-color: #354053;
-            "
-          >
-            <button cPageLink (click)="onPageChange(page)">{{ page }}</button>
-          </c-page-item>
-          <c-page-item [disabled]="paging.page === paging.pages">
-            <button
-              cPageLink
-              (click)="onPageChangeNext(true)"
-              style="--cui-pagination-color: #354053"
-            >
-              Next
-            </button>
-          </c-page-item>
-        </c-pagination>
+          <div class="custom-pagination-wrapper">
+            <div class="custom-pagination">
+              <div
+                class="pagination-previous"
+                [class.disabled]="p.isFirstPage()"
+              >
+                <button
+                  cButton
+                  color="dark"
+                  [disabled]="paging.page === 1"
+                  (click)="p.previous()"
+                  style="
+                    --cui-btn-border-radius: 0.375rem 0 0 0.375rem;
+                    --cui-btn-line-height: 0.75rem;
+                  "
+                >
+                  Previous
+                </button>
+              </div>
+
+              <div
+                *ngFor="let page of p.pages"
+                [class.current]="p.getCurrent() === page.value"
+                class="pages"
+              >
+                <a
+                  (click)="p.setCurrent(page.value)"
+                  *ngIf="p.getCurrent() !== page.value"
+                >
+                  <span>{{ page.label }}</span>
+                </a>
+                <div *ngIf="p.getCurrent() === page.value" class="active">
+                  <span>{{ page.label }}</span>
+                </div>
+              </div>
+
+              <div class="pagination-next" [class.disabled]="p.isLastPage()">
+                <button
+                  cButton
+                  color="dark"
+                  (click)="p.next()"
+                  style="
+                    --cui-btn-border-radius: 0 0.375rem 0.375rem 0;
+                    --cui-btn-line-height: 0.75rem;
+                  "
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </div>
+        </pagination-template>
       </c-card-body>
     </c-card>
   </c-col>

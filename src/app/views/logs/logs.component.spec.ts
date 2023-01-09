@@ -17,6 +17,7 @@ import { iconSubset } from '../../icons/icon-subset';
 import { LogsComponent } from './logs.component';
 import { DocsComponentsModule } from '../../../components';
 import { IconModule } from '@coreui/icons-angular';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 describe('LogsComponent', () => {
   let component: LogsComponent;
@@ -43,6 +44,7 @@ describe('LogsComponent', () => {
         IconModule,
         AccordionModule,
         SharedModule,
+        NgxPaginationModule
       ],
       providers: [IconSetService],
     }).compileComponents();
