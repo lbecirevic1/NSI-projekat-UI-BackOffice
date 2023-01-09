@@ -28,49 +28,57 @@
             </c-col>
           </c-row>
           <c-row class="mb-2 ml-5">
-            <c-col  style="
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                width: 50%;
-                justify-content: flex-start;">
-              <!-- <p style="font-weight: 500; margin-right: 1rem">Number of rows</p> -->
-              <!-- <select
-                aria-label="Default select example3"
+            <c-col style="
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            width: 50%;
+            justify-content: flex-start;">
+              <select
+                aria-label="Default select example"
                 cSelect
-                style="
-                    margin-bottom: 1rem;
-                    width: 15%;
-                    margin-right: 1rem;
-                    align-self: flex-end;"
-                    (change)="onChangeNumberOfRows($event)"
-              >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="15">15</option>
-              <option value="20">20</option>
-            </select> -->
+                class="provider_selection" (change)="onChange($event, true)"
+                >
+                <option value="-1" [selected]="cleared">Select region</option>
+
+                <option
+                  *ngFor="let region of regions"
+                  value="{{ region.Id }}"
+                >
+                  {{ region.Name }}
+                </option>
+              </select>
             </c-col>
-            <c-col>
-            </c-col>
+            <c-col style="
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            width: 50%;
+            justify-content: flex-start;">
+            <div class="d-grid gap-2 d-md-block">
+              <button cButton color="dark" (click)="onClearFilter()">
+                Clear
+              </button>
+            </div>
+          </c-col>
           </c-row>
-          <c-row class="ml-5 pl-5">
+          <c-row  class="table-responsive-xxl">
             <table cTable hover>
-              <thead>
+              <thead class="ml-5 thead-height bg-primary bg-opacity-25">
               <tr class="pt-3 pb-3">
                 <!-- <th></th> -->
-                <th class="announcement-table-col-13">Name</th>
-                <th class="announcement-table-col-20">Region</th>
+                <th scope="col" class="col-sm-6 p-2 add-padding">Name</th>
+                <th scope="col" class="col-sm-6 p-2 add-padding">Region</th>
+                <th scope="col" class="col-sm-2 p-2">Action</th>
               </tr>
               </thead>
               <tbody>
               <ng-container *ngFor="let value of streets; let i = index">
-                <tr class="pt-3 pb-3" class="clickable-row">
-                  <td class="announcement-table-col-13">{{value.Name}}</td>
-                  <td class="announcement-table-col-13">{{value.RegionId}}</td>
-                  <td class="announcement-table-col-20">
+                <tr class="pt-3 pb-3" >
+                  <td class="col-sm-6 p-2 add-padding">{{value.Name}}</td>
+                  <td class="col-sm-6 p-2 add-padding">{{value.Region}}</td>
 
-                  <td class="announcement-table-col-10">
+                  <td class="col-sm-2 p-2">
                     <c-button-group aria-label="Basic example" role="group">
                       <button cButton color="light" (click)="toggleEditButtonDemo(value)">Edit</button>
                       <button cButton color="danger" (click)="toggleDeleteButton(value.Id)">Delete</button>

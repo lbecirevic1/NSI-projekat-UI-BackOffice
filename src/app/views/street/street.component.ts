@@ -5,7 +5,7 @@ import { Announcement} from "../../models/announcement";
 import {FormBuilder, FormsModule, NgForm} from '@angular/forms';
 import {Region,RegionAll} from "../../models/region";
 import {RegionType} from "../../models/regionType";
-import {Street} from "../../models/street";
+import {Street,StreetAll} from "../../models/street";
 import {IDropdownSettings} from "ng-multiselect-dropdown";
 
 import {
@@ -30,16 +30,15 @@ import {LogsResponse, Paging} from "../../models/log";
     @ViewChild('createForm', { static: false }) createForm!: NgForm;
     @ViewChild('editStreetForm', { static: false }) editStreetForm!: NgForm;
 
-  // public paging: Paging = {};
-  // public pages: number[] = [];
-
-
+  public regionId: number = -1;
+  public status: boolean | number = -1;
+  public cleared: boolean = false;
   public createStreetVisible = false;
 
   public liveDemoVisible = false;
   public editFormVisible = false;
   public createFormVisible = false;
-  public streets: Street[]=[];
+  public streets: StreetAll[]=[];
 
   public regions: Region[]=[];
 
@@ -61,13 +60,7 @@ import {LogsResponse, Paging} from "../../models/log";
 
   }
   ngOnInit() {
-    this.service.getStreets().subscribe(data=>{
-      for(let i=0;i<data.length;i++){
-        let street=new Street(data[i].id,data[i].name,data[i].createDate,data[i].regionId);
-        this.streets.push(street);
-      }
-    });
-
+    this.setStreet(-1);
     this.service.getRegions().subscribe(data=>{
       for(let i=0;i<data.length;i++){
         let region=new Region(data[i].id,data[i].name,data[i].code,data[i].regionTypeId,data[i].parentRegionId,data[i].createDate);
@@ -76,23 +69,38 @@ import {LogsResponse, Paging} from "../../models/log";
     })
    
   }
-  // onPageChange(page: number) {
-  //   this.paging.page = page;
-  //   this.setAnnouncements(this.paging.page!);
-  // }
+  setStreet(regionId: number){
+    this.streets = [];
+    this.streets.length = 0;
+    this.service.getStreetAll(regionId).subscribe(data=>{
+      for(let i=0;i<data.length;i++){
+        let street=new StreetAll(data[i].id,data[i].name,data[i].createDate,data[i].regionId,data[i].region);
+        this.streets.push(street);
+      }
+    });
+  }
 
-  // onPageChangeNext(next: boolean) {
-  //   if(next && this.paging.page){
-  //     this.paging.page=this.paging.page+1
-  //   }
-  //   else this.paging.page!-=1
-  //   this.setAnnouncements(this.paging.page!);
-  // }
-  // onChangeNumberOfRows(event: any) {
-  //   this.recordsPerPage = Number(event.target.value);
-  //   this.setAnnouncements(this.paging.page!);
-  // }
-
+  onChange(event: any, isType: boolean) {
+    this.cleared = false;
+    isType
+      ? (this.regionId = Number(event.target.value))
+      : (this.status =
+          event.target.value === 'true'
+            ? true
+            : event.target.value === 'false'
+            ? false
+            : -1);
+    
+    if(this.regionId == -1)
+    this.setStreet(-1);
+    else {
+      this.setStreet(this.regionId);
+    }
+  }
+  onClearFilter() {
+    this.cleared = true;
+    this.setStreet(-1);
+  }
 
   toggleDeleteButton(itemId: number) {
     this.liveDemoVisible = !this.liveDemoVisible;
@@ -108,9 +116,8 @@ import {LogsResponse, Paging} from "../../models/log";
   }
 
   toggleEditButtonDemo(item: any) {
-    console.log(item,"ITEM");
     this.editStreet = item;
-    this.selectedRegion = item.regionId;
+    this.selectedRegion = item.RegionId;
     this.toggleEditDemo();
   }
 
@@ -124,14 +131,6 @@ import {LogsResponse, Paging} from "../../models/log";
   toggleCreateStreetButton() {
     this.createFormVisible = !this.createFormVisible;
   }
-
-  // showValue(event: any){
-
-  //   var Title = event.target.value;
-  //   console.log(Title);
-
-  // }
-
 
   handleCreateStreet(event:boolean) {
     this.createStreetVisible=event;
@@ -162,12 +161,9 @@ import {LogsResponse, Paging} from "../../models/log";
     error=>{
       this.createFormVisible=false
     })
-    
-
   }
 
   saveEdited(street:any,values:any){
-    console.log(street,this.selectedRegion)
     // @ts-ignore
     let name=document.getElementById('regionTitleInput1').value;
    
@@ -180,7 +176,6 @@ import {LogsResponse, Paging} from "../../models/log";
     })
   }
 
-  
   }
 
   

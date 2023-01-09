@@ -122,8 +122,11 @@ export class UtilioService {
   getRegions(): Observable<any[]> {
     return this.http.get<any[]>('https://localhost:7069/api/regions');
   }
-  getRegionsAll(): Observable<any[]> {
-    return this.http.get<any[]>('https://localhost:7069/api/regions/all');
+  getRegionsAll(typeId : number){
+    let body = {
+      regionTypeId : typeId
+    };
+    return this.http.post<any[]>('https://localhost:7069/api/regions/all', body);
   }
   getRegionTypes(): Observable<any[]> {
     return this.http.get<any[]>('https://localhost:7069/api/regions/regionTypes');
@@ -333,8 +336,11 @@ export class UtilioService {
     return this.http.delete<number>('https://localhost:7069/api/providers?id=' + providerId);
   }
 
-  getStreetAll(): Observable<any[]> {
-    return this.http.get<any[]>('https://localhost:7069/api/streets/all');
+  getStreetAll(typeId : number){
+    let body = {
+      regionId : typeId
+    };
+    return this.http.post<any[]>('https://localhost:7069/api/streets/all', body);
   }
 
   postStreet(name: string, regionId: number,createDate: string) {
