@@ -1,10 +1,14 @@
 import { NgModule } from '@angular/core';
-import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import {
+  HashLocationStrategy,
+  LocationStrategy,
+  PathLocationStrategy,
+} from '@angular/common';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule} from "@angular/common/http";
-
+import { HttpClientModule } from '@angular/common/http';
+import { ListFilterPipe } from 'ng-multiselect-dropdown/list-filter.pipe';
 import {
   PERFECT_SCROLLBAR_CONFIG,
   PerfectScrollbarConfigInterface,
@@ -46,6 +50,12 @@ import {
 } from '@coreui/angular';
 
 import { IconModule, IconSetService } from '@coreui/icons-angular';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { AnnouncementHandlerModule } from './views/handle-announcement/handle.announcement.module';
+import {BaseModule} from "./views/base/base.module";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -86,7 +96,12 @@ const APP_CONTAINERS = [
     BadgeModule,
     ListGroupModule,
     CardModule,
-    HttpClientModule
+    HttpClientModule,
+    NgMultiSelectDropDownModule,
+    NgbModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    AnnouncementHandlerModule
   ],
   providers: [
     {
@@ -98,9 +113,8 @@ const APP_CONTAINERS = [
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG,
     },
     IconSetService,
-    Title
+    Title,
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule { }

@@ -1,0 +1,224 @@
+<link
+  href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  rel="stylesheet"
+  xmlns="http://www.w3.org/1999/html"
+/>
+
+<c-row class="mt-5">
+  <c-col md="1"></c-col>
+  <c-col md="10">
+    <c-card>
+      <c-card-body class="pl-5 shadow">
+        <h1>Provider accounts</h1>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
+
+<c-row class="mt-3">
+  <c-col md="1"></c-col>
+  <c-col md="10">
+    <c-card>
+      <c-card-body class="pl-5 ml-5 mt-1 shadow">
+        <c-row class="mb-5 ml-5">
+          <c-col>
+            <h4 cCardTitle>Accounts list</h4>
+          </c-col>
+          <c-col style="text-align: right">
+            <button cButton color="secondary" (click)="toggleAccountForm()">
+              Add new user
+            </button>
+          </c-col>
+        </c-row>
+        <c-row class="mb-5 ml-5">
+          <c-col>
+            <label cLabel for="title">Select provider</label>
+            <select
+              cSelect
+              class="mb-3"
+              id="noviId"
+              (change)="changeList($event)"
+            >
+              <option value="null">All</option>
+              <option
+                *ngFor="let provider of providers"
+                value="{{ provider.Id }}"
+              >
+                {{ provider.Name }}
+              </option>
+            </select>
+          </c-col>
+
+          <c-col>
+            <div class="input-fields">
+            </div>
+            <app-search (searchTextChange)="onSearchTextEntered($event)"></app-search>
+
+          </c-col>
+        </c-row>
+
+        <c-row class="ml-5 pl-5">
+          <table cTable hover>
+            <thead>
+              <tr class="pt-3 pb-3">
+                <!-- <th></th> -->
+                <th class="users-table-col-13">First name</th>
+                <th class="users-table-col-20">Last name</th>
+                <th class="users-table-col-13">Email</th>
+                <th class="users-table-col-20">Role</th>
+                <th class="users-table-col-20">Action</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let account of accounts; let i = index">
+              <tr
+      
+                *ngIf="searchText==='' || account.firstName.toLowerCase().includes(searchText) || account.lastName.toLowerCase().includes(searchText)"
+                class="users-table-row"
+              >
+                <td scope="row">{{ account.firstName }}</td>
+                <td>{{ account.lastName }}</td>
+                <td>{{ account.email }}</td>
+                <td>
+                  <ng-container *ngFor="let role of account.providerAccountRoles">
+                    <p>
+                      {{ role.regionName }}:{{ role.providerName }}:{{
+                        role.roleName
+                      }};
+                    </p>
+                  </ng-container>
+                </td>
+                <td>
+                  <div class="d-grid gap-2 d-md-flex justify-content-md">
+                    <button cButton color="success" (click)="onEdit(account.id)">
+                      Edit
+                    </button>
+                    <button cButton color="danger" (click)="onDelete(account.id)">
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </c-row>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
+
+<c-modal
+  [visible]="formVisible"
+  (formVisibleChange)="handleAccountFormChange($event)"
+>
+  <c-modal-header>
+    <h5 cModalTitle>
+      {{ isEdit ? EDIT_USER : CREATE_USER }}
+    </h5>
+    <button (click)="toggleAccountForm()" cButtonClose></button>
+  </c-modal-header>
+
+  <form
+    cForm
+    [formGroup]="accountForm"
+    ngNativeValidate
+  >
+    <c-modal-body>
+      <p>Please fill in the data for the user</p>
+      <c-input-group class="mb-3">
+        <span cInputGroupText id="addon-wrapping">First name</span>
+        <input
+          formControlName="firstName"
+          type="text"
+          required
+          cFormControl
+          placeholder="First name"
+        />
+      </c-input-group>
+
+      <c-input-group class="mb-3">
+        <span cInputGroupText id="addon-wrapping">Last name</span>
+        <input
+          formControlName="lastName"
+          type="text"
+          required
+          cFormControl
+          placeholder="Last name"
+        />
+      </c-input-group>
+
+      <c-input-group class="mb-3">
+        <span cInputGroupText id="basic-addon1">@</span>
+        <input
+          cFormControl
+          required
+          formControlName="email"
+          type="email"
+          placeholder="Email"
+        />
+      </c-input-group>
+
+      <label cLabel>Select a provider this account belongs to</label>
+      <select
+        cSelect
+        required
+        class="mb-3"
+        formControlName="providerId"
+        (change)="changeProvider($event)"
+      >
+        <option value="null">Choose provider</option>
+        <option *ngFor="let provider of providers" [ngValue]="provider.Id">
+          {{ provider.Name }}
+        </option>
+      </select>
+
+      <div *ngIf="getProviderId()">
+        <h6 class="mb-2">Account roles</h6>
+        <c-card class="px-2 py-2 mb-2">
+          <h6>Reader Role</h6>
+          <p>Select a region this role applies to below</p>
+          <app-regions-select 
+            class="mb-2" 
+            [providerId]="getProviderId()" 
+            [accountRoles]="getAccountRoles(2)" 
+            (rolesChangeEvent)="setReaderRoles($event)"
+          ></app-regions-select>
+        </c-card>
+
+        <c-card class="px-2 py-2 mb-2">
+          <h6>Editor Role</h6>
+          <p>Select a region this role applies to below</p>
+          <app-regions-select 
+            class="mb-2" 
+            [providerId]="getProviderId()" 
+            [accountRoles]="getAccountRoles(3)" 
+            (rolesChangeEvent)="setEditorRoles($event)"
+          ></app-regions-select>
+        </c-card>
+
+        <c-card class="px-2 py-2 mb-2">
+          <h6>Admin Role</h6>
+          <p>Select a region this role applies to below</p>
+          <app-regions-select 
+            class="mb-2" 
+            [providerId]="getProviderId()" 
+            [accountRoles]="getAccountRoles(1)"
+            (rolesChangeEvent)="setAdminRoles($event)"
+          ></app-regions-select>
+        </c-card>
+      </div>
+      <c-alert color="success" class="d-flex align-items-center" [visible]="alertVisible">
+        <svg [cIcon]="icons.cilCheckCircle" width="25" title="Shield Icon"></svg>
+        <div class="px-2">{{ isEdit ? 'Account updated successfully.' : 'Account created successfully.' }}</div>
+      </c-alert>
+    </c-modal-body>
+
+    <c-modal-footer>
+      <button (click)="toggleAccountForm()" cButton color="secondary">
+        Close
+      </button>
+      <button cButton (click)="onSubmit()" color="primary" type="submit" name="submit">
+        {{ isEdit ? SAVE_CHANGES : CREATE_USER }}
+      </button>
+    </c-modal-footer>
+  </form>
+</c-modal>

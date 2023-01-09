@@ -1,0 +1,91 @@
+<div>
+  <h3 style="text-align:center">Announcement Overview</h3>
+  <c-form-check>
+  <input cFormCheckInput id="checkOne" type="checkbox" [checked]="enableFiltering"  (change)="showFiltering()"/>
+  <label cFormCheckLabel for="checkOne">Enable filtering</label>
+</c-form-check>
+<div *ngIf="enableFiltering">
+  <div>
+    <c-form-check>
+      <input cFormCheckInput type="radio" value="2" name="flexRadioDefault" (click)="setFilterType(false)" checked/>
+      <label cFormCheckLabel>By Identifier</label>
+  </c-form-check>
+  <div  *ngIf="!filterType">
+    <c-input-group class="mb-3">
+      <input aria-describedby="basic-addon1" (keyup)="changeIdentifierInput($event)"
+         aria-label="identifier"
+         cFormControl
+         placeholder="Identifier.."
+  />
+    </c-input-group>
+      </div>
+     <c-form-check>
+      <input cFormCheckInput type="radio" value="1" name="flexRadioDefault" (click)="setFilterType(true)"/>
+      <label cFormCheckLabel>By Date</label>
+  </c-form-check>
+  </div>
+  <div *ngIf="filterType">
+    <p style="margin-top: 5%;">Choose date type</p>
+   <c-form-check>
+  <input cFormCheckInput type="radio" value="1" name="flexRadioDefault2" (click)="changeFilterDateType(1)" checked/>
+  <label cFormCheckLabel>Created at</label>
+    </c-form-check>
+  <c-form-check>
+  <input cFormCheckInput type="radio" value="2" name="flexRadioDefault2" (click)="changeFilterDateType(2)"/>
+  <label cFormCheckLabel>Modified at</label>
+  </c-form-check>
+  <c-form-check>
+  <input cFormCheckInput type="radio" value="3" name="flexRadioDefault2" (click)="changeFilterDateType(3)"/>
+  <label cFormCheckLabel>Last notified</label>
+  </c-form-check>
+  <input matInput [matDatepicker]="picker" placeholder="Start date" (dateChange)="startDateChange($event)">
+  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
+
+  <input matInput [matDatepicker]="picker2" placeholder="End date" (dateChange)="endDateChange($event)">
+  <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+  <mat-datepicker #picker2></mat-datepicker>
+</div>
+  <button cButton style="width: 100%;" color="dark" (click)="handleFiltering()">Filter</button>
+
+</div>
+<table style="margin-top: 2%;" [striped]="true" cTable>
+  <thead cTableColor="dark">
+            <tr style="font-size: normal; text-align: center; vertical-align: middle;" fon>
+              <th scope="col" >ID</th>
+              <th scope="col">Identifier</th>
+              <th scope="col">Subscription ID</th>
+              <th scope="col">Subscriber ID</th>
+              <th scope="col">Last notified on</th>
+              <th scope="col">No. sent announcements</th>
+              <th scope="col">Created on</th>
+              <th scope="col">Modified on</th>
+            </tr>
+              </thead>
+              <tr style="font-size: small; text-align: center;" *ngFor="let announcement of displayedAnnouncements">
+                <th scope="row">{{announcement.id}}</th>
+                <th scope="row">{{announcement.identifier}}</th>
+                <th scope="row">{{announcement.subscriptionIdentifier}}</th>
+                <th scope="row">{{announcement.subscriberIdentifier}}</th>
+                <th scope="row">{{announcement.lastTimeNotified}}</th>
+                <th scope="row">{{announcement.numberOfSentAnnouncements}}</th>
+                <th scope="row">{{announcement.createDate}}</th>
+                <th scope="row">{{announcement.modifiedDate}}</th>
+              </tr>
+ 
+</table>
+<nav *ngIf="displayedAnnouncements.length>0" style="margin-top: 5%;" aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <!-- <li class="page-item disabled">
+      <a class="page-link">Previous</a>
+    </li> -->
+    <li class="page-item"><a class="page-link" style="background-color:#4d5c74; color: white;" >1</a></li>
+    <!-- <li class="page-item"><a class="page-link" >2</a></li>
+    <li class="page-item"><a class="page-link" >3</a></li> -->
+    <!-- <li class="page-item">
+      <a class="page-link" href="#">Next</a>
+    </li> -->
+  </ul>
+</nav>
+<p style="text-align: center;" *ngIf="displayedAnnouncements.length==0">No data</p>
+</div>

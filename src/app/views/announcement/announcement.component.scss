@@ -1,0 +1,38 @@
+#regionsDrop li:hover{color:blue}
+
+.add-padding {
+  padding-left: 36px !important;
+}
+
+.thead-height {
+  height: 50px;
+  vertical-align: middle;
+}
+.plusButton {
+  border-radius: 20px !important;
+  text-align: center;
+  vertical-align: auto;
+}
+
+.announcement-table-cell-vertical {
+  vertical-align: middle;
+  display: table-cell;
+}
+
+.clickable-row {
+  cursor: pointer;
+}
+
+.clickable-row-color1 {
+  background-color: white;
+}
+
+
+.clickable-row-color2 {
+  background-color: #ebedef;
+}
+
+.card-hidden {
+  width: 100% !important;
+  // background-color:#ebedef!important;
+}

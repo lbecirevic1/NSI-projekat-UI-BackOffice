@@ -1,0 +1,253 @@
+<c-row ngPreserveWhitespaces>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Logs Table</strong>
+      </c-card-header>
+      <c-card-body>
+        <div class="filter_wrapper">
+          <div class="selection_wrapper">
+            <select
+              aria-label="Default select example"
+              cSelect
+              class="provider_selection"
+              (change)="onChange($event, true)"
+            >
+              <option value="-1" [selected]="cleared">Select a provider</option>
+              <option
+                *ngFor="let provider of providers"
+                value="{{ provider.id }}"
+              >
+                {{ provider.name }}
+              </option>
+            </select>
+            <select
+              aria-label="Default select example2"
+              cSelect
+              class="status_selection"
+              (change)="onChange($event, false)"
+            >
+              <option value="-1" [selected]="cleared">Select a status</option>
+              <option value="true">Success</option>
+              <option value="false">Failure</option>
+            </select>
+            <div class="d-grid gap-2 d-md-block">
+              <button cButton color="dark" (click)="onClearFilter()">
+                Clear
+              </button>
+            </div>
+          </div>
+          <div class="number_selection_wrapper">
+            <p class="number_text">Number of rows</p>
+            <select
+              aria-label="Default select example3"
+              cSelect
+              class="number_selection"
+              (change)="onChangeNumberOfRows($event)"
+            >
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+            </select>
+          </div>
+        </div>
+
+        <table cTable [hover]="true" responsive="xxl">
+          <thead cTableColor="primary">
+            <tr>
+              <th scope="col" class="start_date">
+                <p>Request Start Date</p>
+                <div
+                  (click)="onSort('RequestStartTime')"
+                  style="cursor: pointer"
+                >
+                  <img
+                    *ngIf="reqStartDateAsc"
+                    src="../../../assets/images/sort-asc.svg"
+                  />
+                  <img
+                    *ngIf="!reqStartDateAsc"
+                    src="../../../assets/images/sort-desc.svg"
+                  />
+                </div>
+              </th>
+              <th scope="col" class="sent_header">
+                <p>Sent</p>
+              </th>
+              <th scope="col" class="sorting_header">
+                <p>Request End Date</p>
+                <div (click)="onSort('RequestEndTime')" style="cursor: pointer">
+                  <img
+                    *ngIf="reqEndDateAsc"
+                    src="../../../assets/images/sort-asc.svg"
+                  />
+                  <img
+                    *ngIf="!reqEndDateAsc"
+                    src="../../../assets/images/sort-desc.svg"
+                  />
+                </div>
+              </th>
+              <th scope="col" style="width: '12%'; padding-left: 2rem">
+                <p>Status</p>
+              </th>
+              <th scope="col" class="sorting_header">
+                <p>Provider Name</p>
+                <div (click)="onSort('Provider.Name')" style="cursor: pointer">
+                  <img
+                    *ngIf="providerNameAsc"
+                    src="../../../assets/images/sort-asc.svg"
+                  />
+                  <img
+                    *ngIf="!providerNameAsc"
+                    src="../../../assets/images/sort-desc.svg"
+                  />
+                </div>
+              </th>
+              <th
+                scope="col"
+                style="text-align: center; width: '16%'; padding-right: 5rem"
+              >
+                <p>Announcements</p>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let log of logs"
+              cOffcanvasToggle="OffcanvasBottom"
+              style="cursor: pointer"
+            >
+              <td colspan="6">
+                <c-accordion>
+                  <c-accordion-item
+                    #item0="cAccordionItem"
+                    [visible]="false"
+                    style="
+                      --cui-accordion-active-bg: white;
+                      --cui-accordion-active-color: ##354053;
+                    "
+                  >
+                    <ng-template cTemplateId="accordionHeaderTemplate">
+                      <button
+                        (click)="item0.toggleItem()"
+                        [collapsed]="!item0.visible"
+                        cAccordionButton
+                      >
+                        <td class="cell_wrapper">
+                          {{ log.requestStartDate }}
+                        </td>
+                        <td
+                          *ngIf="log.isRequestSent === true; else elseBlock2"
+                          style="
+                            display: flex;
+                            justify-content: center;
+                            flex: 1;
+                            align-items: center;
+                          "
+                        >
+                          <c-badge
+                            color="success"
+                            shape="rounded-pill"
+                            class="sent_icon"
+                          >
+                            <svg cIcon name="cil-check-alt" size="l"></svg>
+                          </c-badge>
+                        </td>
+                        <ng-template #elseBlock2>
+                          <td class="cell_wrapper">
+                            <c-badge
+                              color="danger"
+                              shape="rounded-pill"
+                              class="sent_icon"
+                            >
+                              <svg cIcon name="cil-x" size="l"></svg>
+                            </c-badge>
+                          </td>
+                        </ng-template>
+                        <td class="sorting_header">
+                          {{ log.requestEndDate }}
+                        </td>
+                        <td
+                          *ngIf="log.status === 'Success'; else elseBlock"
+                          class="cell_wrapper"
+                        >
+                          <c-badge
+                            color="success"
+                            shape="rounded-pill"
+                            class="status_wrapper"
+                            >{{ log.status }}</c-badge
+                          >
+                        </td>
+                        <ng-template #elseBlock>
+                          <td class="cell_wrapper">
+                            <c-badge
+                              color="danger"
+                              shape="rounded-pill"
+                              class="status_wrapper"
+                              >{{ log.status }}</c-badge
+                            >
+                          </td>
+                        </ng-template>
+                        <td class="provider_name">
+                          {{ log.providerName }}
+                        </td>
+                        <td class="cell_wrapper">
+                          {{ log.numberOfAnnouncements }}
+                        </td>
+                      </button>
+                    </ng-template>
+                    <ng-template cTemplateId="accordionBodyTemplate">
+                      <div class="accordion-body">
+                        <strong>Request content:</strong>
+                        <p>{{ log.requestContent }}</p>
+                        <strong>Response content:</strong>
+                        <p>{{ log.responseContent }}</p>
+                      </div>
+                    </ng-template>
+                  </c-accordion-item>
+                </c-accordion>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <c-pagination
+          align="end"
+          aria-label="Page navigation example"
+          style="--cui-pagination-color: red"
+        >
+          <c-page-item [disabled]="paging.page === 1">
+            <button
+              cPageLink
+              (click)="onPageChangeNext(false)"
+              style="--cui-pagination-color: #354053"
+            >
+              Previous
+            </button>
+          </c-page-item>
+          <c-page-item
+            *ngFor="let page of pages"
+            [active]="paging.page === page"
+            style="
+              --cui-pagination-color: #354053;
+              --cui-pagination-active-bg: #d6d2f8;
+              --cui-pagination-active-border-color: #d6d2f8;
+              --cui-pagination-active-color: #354053;
+            "
+          >
+            <button cPageLink (click)="onPageChange(page)">{{ page }}</button>
+          </c-page-item>
+          <c-page-item [disabled]="paging.page === paging.pages">
+            <button
+              cPageLink
+              (click)="onPageChangeNext(true)"
+              style="--cui-pagination-color: #354053"
+            >
+              Next
+            </button>
+          </c-page-item>
+        </c-pagination>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

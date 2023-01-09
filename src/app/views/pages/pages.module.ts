@@ -1,33 +1,50 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
-import { PagesRoutingModule } from './pages-routing.module';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
-import { Page404Component } from './page404/page404.component';
-import { Page500Component } from './page500/page500.component';
-import { AnnouncementComponent} from "./announcement/announcement.component";
-import { ButtonModule, CardModule, FormModule, GridModule } from '@coreui/angular';
-import { IconModule } from '@coreui/icons-angular';
-import { HttpClientModule} from "@angular/common/http";
-
-import { ReactiveFormsModule } from '@angular/forms';
-
+import { HttpClientModule } from '@angular/common/http';
 import {
+  ButtonModule,
+  CardModule,
+  DropdownModule,
+  FormModule,
+  GridModule,
+  CollapseModule,
+  PaginationModule,
+  AlertModule,
   AvatarModule,
   ButtonGroupModule,
   ModalModule,
   NavModule,
   ProgressModule,
   TableModule,
-  TabsModule
+  TabsModule,
 } from '@coreui/angular';
+import { IconModule } from '@coreui/icons-angular';
+import { LoginComponent } from './login/login.component';
+import { Page404Component } from './page404/page404.component';
+import { Page500Component } from './page500/page500.component';
+import { PagesRoutingModule } from './pages-routing.module';
+import { RegisterComponent } from './register/register.component';
+// import { RegionComponent } from './region/region.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { WidgetsModule } from '../widgets/widgets.module';
 
-import { NotificationsModule} from "../notifications/notifications.module";
-
+import { NotificationsModule } from '../notifications/notifications.module';
+import { DocsComponentsModule } from '../../../components';
+import { UsersComponent } from './users/users.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatInputModule } from '@angular/material/input';
+import { RegionsSelectComponent } from './users/regions-select/regions-select.component';
+import { MatTreeModule } from '@angular/material/tree';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatIconModule } from '@angular/material/icon';
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
   declarations: [
@@ -35,8 +52,10 @@ import { NotificationsModule} from "../notifications/notifications.module";
     RegisterComponent,
     Page404Component,
     Page500Component,
-    AnnouncementComponent
-
+    // RegionComponent,
+    UsersComponent,
+    RegionsSelectComponent,
+    SearchComponent,
   ],
   imports: [
     CommonModule,
@@ -49,8 +68,8 @@ import { NotificationsModule} from "../notifications/notifications.module";
     CardModule,
     NavModule,
     IconModule,
+    AlertModule,
     TabsModule,
-    CommonModule,
     GridModule,
     ProgressModule,
     ReactiveFormsModule,
@@ -63,8 +82,24 @@ import { NotificationsModule} from "../notifications/notifications.module";
     WidgetsModule,
     NotificationsModule,
     ModalModule,
-    HttpClientModule
-  ]
+    HttpClientModule,
+    FormsModule,
+    DocsComponentsModule,
+    DropdownModule,
+    NgMultiSelectDropDownModule,
+    CollapseModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatInputModule,
+    NgbModule,
+    FormsModule,
+    ReactiveFormsModule,
+    PaginationModule,
+    MatTreeModule,
+    MatCheckboxModule,
+    MatIconModule,
+  ],
 })
-export class PagesModule {
-}
+export class PagesModule {}

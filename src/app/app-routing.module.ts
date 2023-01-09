@@ -1,35 +1,42 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
 import { DefaultLayoutComponent } from './containers';
+import { AnnouncementComponent } from './views/announcement/announcement.component';
+import { LoginComponent } from './views/pages/login/login.component';
+import { LogsComponent } from './views/logs/logs.component';
 import { Page404Component } from './views/pages/page404/page404.component';
 import { Page500Component } from './views/pages/page500/page500.component';
-import { LoginComponent } from './views/pages/login/login.component';
 import { RegisterComponent } from './views/pages/register/register.component';
-import {AnnouncementComponent} from "./views/pages/announcement/announcement.component";
+import { RegionComponent } from './views/region/region.component';
+import { StreetComponent } from './views/street/street.component';
+import {ProviderComponent } from './views/provider/provider.component';
+import { AnnouncementHandlerComponent } from './views/handle-announcement/handle.announcement.component';
+import { UsersComponent } from './views/pages/users/users.component';
 
 const routes: Routes = [
   {
     path: '',
     redirectTo: 'dashboard',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: '',
     component: DefaultLayoutComponent,
     data: {
-      title: 'Home'
+      title: 'Home',
     },
     children: [
       {
         path: 'dashboard',
         loadChildren: () =>
-          import('./views/dashboard/dashboard.module').then((m) => m.DashboardModule)
+          import('./views/dashboard/dashboard.module').then(
+            (m) => m.DashboardModule
+          ),
       },
       {
         path: 'theme',
         loadChildren: () =>
-          import('./views/theme/theme.module').then((m) => m.ThemeModule)
+          import('./views/theme/theme.module').then((m) => m.ThemeModule),
       },
       {
         path: 'subscription',
@@ -39,82 +46,142 @@ const routes: Routes = [
       {
         path: 'base',
         loadChildren: () =>
-          import('./views/base/base.module').then((m) => m.BaseModule)
+          import('./views/base/base.module').then((m) => m.BaseModule),
       },
       {
         path: 'buttons',
         loadChildren: () =>
-          import('./views/buttons/buttons.module').then((m) => m.ButtonsModule)
+          import('./views/buttons/buttons.module').then((m) => m.ButtonsModule),
       },
       {
         path: 'forms',
         loadChildren: () =>
-          import('./views/forms/forms.module').then((m) => m.CoreUIFormsModule)
+          import('./views/forms/forms.module').then((m) => m.CoreUIFormsModule),
       },
       {
         path: 'charts',
         loadChildren: () =>
-          import('./views/charts/charts.module').then((m) => m.ChartsModule)
+          import('./views/charts/charts.module').then((m) => m.ChartsModule),
+      },
+      {
+        path: 'logs',
+        loadChildren: () =>
+          import('./views/logs/logs.module').then((m) => m.LogsModule),
+      },
+      {
+        path: 'region',
+        loadChildren: () =>
+          import('./views/region/region.module').then((m) => m.RegionModule),
+      },
+      {
+        path: 'street',
+        loadChildren: () =>
+          import('./views/street/street.module').then((m) => m.StreetModule),
+      },
+      {
+        path: 'provider',
+        loadChildren: () =>
+          import('./views/provider/provider.module').then((m) => m.ProviderModule),
+      },
+      {
+        path: 'announcement',
+        loadChildren: () =>
+          import('./views/announcement/announcement.module').then((m) => m.AnnouncementModule),
       },
       {
         path: 'icons',
         loadChildren: () =>
-          import('./views/icons/icons.module').then((m) => m.IconsModule)
+          import('./views/icons/icons.module').then((m) => m.IconsModule),
       },
       {
         path: 'notifications',
         loadChildren: () =>
-          import('./views/notifications/notifications.module').then((m) => m.NotificationsModule)
+          import('./views/notifications/notifications.module').then(
+            (m) => m.NotificationsModule
+          ),
+      },
+      {
+        path: 'handle-ann',
+        loadChildren: () =>
+          import('./views/handle-announcement/handle.announcement.module').then((m) => m.AnnouncementHandlerModule),
       },
       {
         path: 'widgets',
         loadChildren: () =>
-          import('./views/widgets/widgets.module').then((m) => m.WidgetsModule)
+          import('./views/widgets/widgets.module').then((m) => m.WidgetsModule),
       },
       {
         path: 'pages',
         loadChildren: () =>
-          import('./views/pages/pages.module').then((m) => m.PagesModule)
+          import('./views/pages/pages.module').then((m) => m.PagesModule),
       },
-    ]
+    ],
   },
   {
     path: '404',
     component: Page404Component,
     data: {
-      title: 'Page 404'
-    }
+      title: 'Page 404',
+    },
   },
   {
     path: '500',
     component: Page500Component,
     data: {
-      title: 'Page 500'
-    }
+      title: 'Page 500',
+    },
   },
   {
     path: 'login',
     component: LoginComponent,
     data: {
-      title: 'Login Page'
-    }
+      title: 'Login Page',
+    },
   },
   {
     path: 'register',
     component: RegisterComponent,
     data: {
-      title: 'Register Page'
-    }
+      title: 'Register Page',
+    },
   },
 
   {
     path: 'announcement',
     component: AnnouncementComponent,
     data: {
-      title: 'Announcements Page'
-    }
+      title: 'Announcements Page',
+    },
   },
-  {path: '**', redirectTo: 'dashboard'}
+  {
+    path: 'region',
+    component: RegionComponent,
+    data: {
+      title: 'Region Page',
+    },
+  },
+  {
+    path: 'street',
+    component: StreetComponent,
+    data: {
+      title: 'Street Page',
+    },
+  },
+  {
+    path: 'provider',
+    component: ProviderComponent,
+    data: {
+      title: 'Provider Page',
+    },
+  },
+  {
+    path: 'users',
+    component: UsersComponent,
+    data: {
+      title: 'Users Page',
+    },
+  },
+  { path: '**', redirectTo: 'dashboard' },
 ];
 
 @NgModule({
@@ -122,11 +189,10 @@ const routes: Routes = [
     RouterModule.forRoot(routes, {
       scrollPositionRestoration: 'top',
       anchorScrolling: 'enabled',
-      initialNavigation: 'enabledBlocking'
+      initialNavigation: 'enabledBlocking',
       // relativeLinkResolution: 'legacy'
-    })
+    }),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule { }

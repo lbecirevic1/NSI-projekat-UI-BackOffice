@@ -7,8 +7,8 @@ export const navItems: INavData[] = [
     iconComponent: { name: 'cil-speedometer' },
     badge: {
       color: 'info',
-      text: 'NEW'
-    }
+      text: 'NEW',
+    },
   },
   {
     title: true,
@@ -33,17 +33,17 @@ export const navItems: INavData[] = [
   {
     name: 'Colors',
     url: '/theme/colors',
-    iconComponent: { name: 'cil-drop' }
+    iconComponent: { name: 'cil-drop' },
   },
   {
     name: 'Typography',
     url: '/theme/typography',
     linkProps: { fragment: 'someAnchor' },
-    iconComponent: { name: 'cil-pencil' }
+    iconComponent: { name: 'cil-pencil' },
   },
   {
     name: 'Components',
-    title: true
+    title: true,
   },
   {
     name: 'Base',
@@ -52,65 +52,65 @@ export const navItems: INavData[] = [
     children: [
       {
         name: 'Accordion',
-        url: '/base/accordion'
+        url: '/base/accordion',
       },
       {
         name: 'Breadcrumbs',
-        url: '/base/breadcrumbs'
+        url: '/base/breadcrumbs',
       },
       {
         name: 'Cards',
-        url: '/base/cards'
+        url: '/base/cards',
       },
       {
         name: 'Carousel',
-        url: '/base/carousel'
+        url: '/base/carousel',
       },
       {
         name: 'Collapse',
-        url: '/base/collapse'
+        url: '/base/collapse',
       },
       {
         name: 'List Group',
-        url: '/base/list-group'
+        url: '/base/list-group',
       },
       {
         name: 'Navs & Tabs',
-        url: '/base/navs'
+        url: '/base/navs',
       },
       {
         name: 'Pagination',
-        url: '/base/pagination'
+        url: '/base/pagination',
       },
       {
         name: 'Placeholder',
-        url: '/base/placeholder'
+        url: '/base/placeholder',
       },
       {
         name: 'Popovers',
-        url: '/base/popovers'
+        url: '/base/popovers',
       },
       {
         name: 'Progress',
-        url: '/base/progress'
+        url: '/base/progress',
       },
       {
         name: 'Spinners',
-        url: '/base/spinners'
+        url: '/base/spinners',
       },
       {
         name: 'Tables',
-        url: '/base/tables'
+        url: '/base/tables',
       },
       {
         name: 'Tabs',
-        url: '/base/tabs'
+        url: '/base/tabs',
       },
       {
         name: 'Tooltips',
-        url: '/base/tooltips'
-      }
-    ]
+        url: '/base/tooltips',
+      },
+    ],
   },
   {
     name: 'Buttons',
@@ -119,17 +119,17 @@ export const navItems: INavData[] = [
     children: [
       {
         name: 'Buttons',
-        url: '/buttons/buttons'
+        url: '/buttons/buttons',
       },
       {
         name: 'Button groups',
-        url: '/buttons/button-groups'
+        url: '/buttons/button-groups',
       },
       {
         name: 'Dropdowns',
-        url: '/buttons/dropdowns'
+        url: '/buttons/dropdowns',
       },
-    ]
+    ],
   },
   {
     name: 'Forms',
@@ -138,42 +138,72 @@ export const navItems: INavData[] = [
     children: [
       {
         name: 'Form Control',
-        url: '/forms/form-control'
+        url: '/forms/form-control',
       },
       {
         name: 'Select',
-        url: '/forms/select'
+        url: '/forms/select',
       },
       {
         name: 'Checks & Radios',
-        url: '/forms/checks-radios'
+        url: '/forms/checks-radios',
       },
       {
         name: 'Range',
-        url: '/forms/range'
+        url: '/forms/range',
       },
       {
         name: 'Input Group',
-        url: '/forms/input-group'
+        url: '/forms/input-group',
       },
       {
         name: 'Floating Labels',
-        url: '/forms/floating-labels'
+        url: '/forms/floating-labels',
       },
       {
         name: 'Layout',
-        url: '/forms/layout'
+        url: '/forms/layout',
       },
       {
         name: 'Validation',
-        url: '/forms/validation'
-      }
-    ]
+        url: '/forms/validation',
+      },
+    ],
   },
   {
     name: 'Charts',
     url: '/charts',
-    iconComponent: { name: 'cil-chart-pie' }
+    iconComponent: { name: 'cil-chart-pie' },
+  },
+  {
+    name: 'Logs',
+    url: '/logs',
+    iconComponent: { name: 'cil-columns' },
+  },
+  {
+    name: 'Regions',
+    url: '/region',
+    iconComponent: { name: 'cil-columns' },
+  },
+  {
+    name: 'Streets',
+    url: '/street',
+    iconComponent: { name: 'cil-columns' },
+  },
+  {
+    name: 'Providers',
+    url: '/provider',
+    iconComponent: { name: 'cil-columns' },
+  },
+  {
+    name: 'Announcements',
+    url: '/announcement',
+    iconComponent: { name: 'cil-bell' },
+  },
+  {
+    name: 'Announcement Handle',
+    url: '/handle-ann',
+    iconComponent: { name: 'cil-spreadsheet' }
   },
   {
     name: 'Icons',
@@ -185,18 +215,18 @@ export const navItems: INavData[] = [
         url: '/icons/coreui-icons',
         badge: {
           color: 'success',
-          text: 'FREE'
-        }
+          text: 'FREE',
+        },
       },
       {
         name: 'CoreUI Flags',
-        url: '/icons/flags'
+        url: '/icons/flags',
       },
       {
         name: 'CoreUI Brands',
-        url: '/icons/brands'
-      }
-    ]
+        url: '/icons/brands',
+      },
+    ],
   },
   {
     name: 'Notifications',
@@ -205,21 +235,21 @@ export const navItems: INavData[] = [
     children: [
       {
         name: 'Alerts',
-        url: '/notifications/alerts'
+        url: '/notifications/alerts',
       },
       {
         name: 'Badges',
-        url: '/notifications/badges'
+        url: '/notifications/badges',
       },
       {
         name: 'Modal',
-        url: '/notifications/modal'
+        url: '/notifications/modal',
       },
       {
         name: 'Toast',
-        url: '/notifications/toasts'
-      }
-    ]
+        url: '/notifications/toasts',
+      },
+    ],
   },
   {
     name: 'Widgets',
@@ -227,12 +257,12 @@ export const navItems: INavData[] = [
     iconComponent: { name: 'cil-calculator' },
     badge: {
       color: 'info',
-      text: 'NEW'
-    }
+      text: 'NEW',
+    },
   },
   {
     title: true,
-    name: 'Extras'
+    name: 'Extras',
   },
   {
     name: 'Pages',
@@ -241,20 +271,20 @@ export const navItems: INavData[] = [
     children: [
       {
         name: 'Login',
-        url: '/login'
+        url: '/login',
       },
       {
         name: 'Register',
-        url: '/register'
+        url: '/register',
       },
       {
         name: 'Error 404',
-        url: '/404'
+        url: '/404',
       },
       {
         name: 'Error 500',
         url: '/500'
-      }
+      },
     ]
   },
 ];

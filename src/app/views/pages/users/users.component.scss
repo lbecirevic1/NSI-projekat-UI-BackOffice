@@ -1,0 +1,79 @@
+#regionsDrop li:hover{color:blue}
+
+.users-table-col-20 {
+  
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 20% !important;
+  width: 20% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+    vertical-align: middle;
+    display: table-cell;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.users-table-col-13 {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 13% !important;
+  width: 13% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+    vertical-align: middle;
+    display: table-cell;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.users-table-col-10 {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 10% !important;
+  width: 10% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+    vertical-align: middle;
+    display: table-cell;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+.plusButton {
+  border-radius: 20px !important;
+  text-align: center;
+  vertical-align: auto;
+}
+
+.users-table-cell-vertical {
+    vertical-align: middle;
+    display: table-cell;
+}
+
+.clickable-row {
+    cursor: pointer;
+}
+
+.clickable-row-color1 {
+  background-color: white;
+}
+
+
+.clickable-row-color2 {
+  background-color: #ebedef;
+}
+
+.card-hidden {
+  width: 100% !important;
+ // background-color:#ebedef!important;
+}

@@ -32,6 +32,7 @@ import {
   cilChart,
   cilChartPie,
   cilCheck,
+  cilCheckAlt,
   cilChevronLeft,
   cilChevronRight,
   cilCloudDownload,
@@ -88,6 +89,8 @@ import {
   cilUserFemale,
   cilUserFollow,
   cilUserUnfollow,
+  cilColumns,
+  cilX,
 } from '@coreui/icons';
 
 export const iconSubset = {
@@ -124,6 +127,7 @@ export const iconSubset = {
   cilChart,
   cilChartPie,
   cilCheck,
+  cilCheckAlt,
   cilChevronLeft,
   cilChevronRight,
   cilCloudDownload,
@@ -180,6 +184,8 @@ export const iconSubset = {
   cilUserFemale,
   cilUserFollow,
   cilUserUnfollow,
+  cilColumns,
+  cilX,
 };
 
 export enum IconSubset {
@@ -216,10 +222,12 @@ export enum IconSubset {
   cilChart = 'cilChart',
   cilChartPie = 'cilChartPie',
   cilCheck='cilCheck',
+  cilCheckAlt = 'cilCheckAlt',
   cilChevronLeft = 'cilChevronLeft',
   cilChevronRight = 'cilChevronRight',
   cilCloudDownload = 'cilCloudDownload',
   cilCode = 'cilCode',
+  cilColumns = 'cilColumns',
   cilCommentSquare = 'cilCommentSquare',
   cilCreditCard = 'cilCreditCard',
   cilCursor = 'cilCursor',
@@ -272,4 +280,5 @@ export enum IconSubset {
   cilUserFemale = 'cilUserFemale',
   cilUserFollow = 'cilUserFollow',
   cilUserUnfollow = 'cilUserUnfollow',
+  cilX = 'cilX',
 }
