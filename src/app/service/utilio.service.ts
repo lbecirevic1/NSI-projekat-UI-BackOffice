@@ -8,6 +8,7 @@ import { formatDate } from '@angular/common';
 import { randomInt } from 'crypto';
 import { end } from '@popperjs/core';
 import { ProviderAccount } from '../models/providerAccount';
+import { ProviderRegion } from '../models/providerRegion';
 
 @Injectable({
   providedIn: 'root',
@@ -276,6 +277,14 @@ export class UtilioService {
   getProviderAccount(id: number): Observable<ProviderAccount> {
     return this.http
       .get<ProviderAccount>(`${this.apiUrl}/provideraccount/${id}`, {
+        headers: new HttpHeaders(this.headerDict),
+      })
+      .pipe(catchError(() => of()));
+  }
+
+  getProviderRegions(id: number): Observable<ProviderRegion[]> {
+    return this.http
+      .get<any>(`${this.apiUrl}/providerregion/${id}`, {
         headers: new HttpHeaders(this.headerDict),
       })
       .pipe(catchError(() => of()));

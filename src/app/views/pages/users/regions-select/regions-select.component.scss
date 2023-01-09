@@ -7,3 +7,15 @@ button {
   background-color: #d8dbe0;
   color: black;
 }
+
+.role-tree-invisible {
+  display: none;
+}
+
+.role-node-tree .mat-nested-tree-node .nested-node {
+  padding-left: 40px;
+}
+
+.role-node-tree .nested-node > .mat-tree-node {
+  padding-left: 40px;
+}
