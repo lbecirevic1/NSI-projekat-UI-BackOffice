@@ -211,8 +211,6 @@ export class UtilioService {
       referenceEndDate: referenceEndDate,
       sourceUrl: url,
       description: description,
-      uniqueIdentifier:
-        'test' + formatDate(new Date(), 'yyyy-MM-ddThh:mm:ss', 'en').toString(),
       content: content,
       rawLog: 'test',
       additionalInformation: adInfo,
