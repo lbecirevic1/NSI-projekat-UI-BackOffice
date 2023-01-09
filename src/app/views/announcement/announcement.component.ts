@@ -490,7 +490,9 @@ export class AnnouncementComponent implements OnInit {
     this.clickedRegions=[];
     this.modelEndDate='';
     this.modelStartDate='';
-    this.createFormVisible = !this.createFormVisible;
+    this.createAnnouncementVisible=!this.createAnnouncementVisible
+   // this.createFormVisible = !this.createFormVisible;
+
   }
 
   showValue(event: any){
@@ -502,7 +504,9 @@ export class AnnouncementComponent implements OnInit {
 
   handleCreateAnnouncement(event:boolean) {
     this.createAnnouncementVisible=event;
+   // this.createFormVisible=event;
   }
+
   handleEditModalChange(event: boolean) {
     this.editFormVisible = event;
   }
@@ -554,17 +558,21 @@ export class AnnouncementComponent implements OnInit {
         values.newAnnouncAddInfo,startDate,endDate,
         startTime,endTime,this.clickedRegions,this.clickedStreets).subscribe(data=>{
           this.handleCreateAnnouncement(false);
-          this.createFormVisible=!this.createFormVisible
+         // this.createFormVisible=!this.createFormVisible
           this.refreshAnnouncements()
         },
         error=>{
           if(error.status==400) {
-            this.createFormVisible = false
             this.handleCreateAnnouncement(false);
             this.doubleAnnouncementVisible = !this.doubleAnnouncementVisible
             this.handleDoubleAnnouncement(true);
           }
         })
+    else {
+      this.handleCreateAnnouncement(false);
+      this.doubleAnnouncementVisible = !this.doubleAnnouncementVisible
+      this.handleDoubleAnnouncement(true);
+    }
 
   }
 

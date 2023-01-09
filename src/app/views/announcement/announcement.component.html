@@ -174,12 +174,12 @@
 </ng-template>
 
 <ng-template #editForm>
+  <form cForm #editAnnouncForm="ngForm" *ngIf=editFormVisible>
   <c-modal id="editAnnouncForm" [visible]="editFormVisible" (visibleChange)="handleEditModalChange($event)">
     <c-modal-header>
       Edit form
     </c-modal-header>
     <c-modal-body>
-      <form cForm #editAnnouncForm="ngForm" *ngIf=editFormVisible>
 
         <ng-multiselect-dropdown
           [placeholder]="'Providers'"
@@ -306,7 +306,6 @@
             (onDeSelectAll)="onEditDeselectAllStreets($event)"
           ></ng-multiselect-dropdown>
         </div>
-      </form>
     </c-modal-body>
     <c-modal-footer>
       <button (click)="toggleEditDemoClose()" cButton color="secondary">
@@ -315,17 +314,18 @@
       <button cButton color="primary" type='submit' (click)="saveEdited(editAnnouncement,editAnnouncForm.value)">Save changes</button>
     </c-modal-footer>
   </c-modal>
+  </form>
 </ng-template>
 
 
 <!-- Form for creating new announcement -->
 <ng-template #createDemo>
-  <c-modal id="createForm" [visible]="createFormVisible" (visibleChange)="handleCreateAnnouncement($event)">
+  <c-modal id="createFormModal" [visible]="createAnnouncementVisible" (visibleChange)="handleCreateAnnouncement($event)">
+  <form #createForm="ngForm" *ngIf="createAnnouncementVisible">
     <c-modal-header>
       Create new announcement
     </c-modal-header>
     <c-modal-body>
-      <form #createForm="ngForm" *ngIf=createFormVisible>
         <div class="mb-3">
           <ng-multiselect-dropdown
             [placeholder]="'Providers'"
@@ -454,7 +454,6 @@
           </div>
         </div>
 
-      </form>
     </c-modal-body>
     <c-modal-footer>
       <button (click)="toggleCreateAnnouncementButton()" cButton color="secondary">
@@ -462,6 +461,7 @@
       </button>
       <button cButton color="primary" type='submit' (click)="submitForm(createForm.value)">Save changes</button>
     </c-modal-footer>
+  </form>
   </c-modal>
 </ng-template>
 
@@ -469,10 +469,10 @@
 <ng-template #doubleDemo>
   <c-modal id="liveDemoModalAlert" [visible]="doubleAnnouncementVisible">
     <c-modal-header>
-      <h5 cModalTitle>Error notification alert</h5>
+      <h5 cModalTitle>Error announcement alert</h5>
       <button (click)="doubleAnnouncement()" cButtonClose></button>
     </c-modal-header>
-    <c-modal-body>There is problem with notification. Check input parameters or there might be already the same notification.</c-modal-body>
+    <c-modal-body>There is problem with announcement. Check input parameters or there might be already the same announcement.</c-modal-body>
     <c-modal-footer>
       <button (click)="doubleAnnouncement()" cButton color="secondary">
         Close

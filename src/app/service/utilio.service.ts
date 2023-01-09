@@ -8,6 +8,7 @@ import { formatDate } from '@angular/common';
 import { randomInt } from 'crypto';
 import { end } from '@popperjs/core';
 import { ProviderAccount } from '../models/providerAccount';
+import { ProviderRegion } from '../models/providerRegion';
 
 @Injectable({
   providedIn: 'root',
@@ -190,7 +191,6 @@ export class UtilioService {
 
     year=date[2]
 
-    console.log(dateEnd)
     referenceStartDate=year+"-"+month+"-"+day+"T"+startTime
 
     if(dateEnd[0].length==1) day='0'+dateEnd[0]
@@ -214,8 +214,6 @@ export class UtilioService {
       referenceEndDate: referenceEndDate,
       sourceUrl: url,
       description: description,
-      uniqueIdentifier:
-        'test' + formatDate(new Date(), 'yyyy-MM-ddThh:mm:ss', 'en').toString(),
       content: content,
       rawLog: 'test',
       additionalInformation: adInfo,
@@ -285,6 +283,14 @@ export class UtilioService {
       .pipe(catchError(() => of()));
   }
 
+  getProviderRegions(id: number): Observable<ProviderRegion[]> {
+    return this.http
+      .get<any>(`${this.apiUrl}/providerregion/${id}`, {
+        headers: new HttpHeaders(this.headerDict),
+      })
+      .pipe(catchError(() => of()));
+  }
+
   postProviderAccount(providerAccount: ProviderAccount): Observable<any> {
     return this.http
       .post(`${this.apiUrl}/provideraccount`, providerAccount, {
@@ -329,7 +335,7 @@ export class UtilioService {
       code: code,
       webSite: webSite,
     }
-    
+
     return this.http.put('https://localhost:7069/api/providers?id='+providerId,body)
   }
   deleteProvider(providerId: number) {

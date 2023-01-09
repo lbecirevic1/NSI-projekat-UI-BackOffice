@@ -55,6 +55,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { AnnouncementHandlerModule } from './views/handle-announcement/handle.announcement.module';
+import {BaseModule} from "./views/base/base.module";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
