@@ -1,3 +1,4 @@
+<p *ngIf="dataSource.data.length == 0">No regions available...</p>
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
   <mat-tree-node
     *matTreeNodeDef="let node"
@@ -9,27 +10,14 @@
       class="checklist-leaf-node"
       [checked]="checklistSelection.isSelected(node)"
       (change)="todoLeafItemSelectionToggle(node)"
-      >{{ node.item }}</mat-checkbox
+      >{{ node.data.name }}</mat-checkbox
     >
-  </mat-tree-node>
-
-  <mat-tree-node
-    *matTreeNodeDef="let node; when: hasNoContent"
-    matTreeNodePadding
-  >
-    <button mat-icon-button disabled></button>
-    <mat-form-field appearance="fill">
-      <mat-label>New item...</mat-label>
-      <input matInput #itemValue placeholder="Ex. Lettuce" />
-    </mat-form-field>
-    <button mat-button (click)="saveNode(node, itemValue.value)">Save</button>
   </mat-tree-node>
 
   <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
     <button
       mat-icon-button
       matTreeNodeToggle
-      [attr.aria-label]="'Toggle ' + node.item"
     >
       <mat-icon class="mat-icon-rtl-mirror">
         {{ treeControl.isExpanded(node) ? "expand_more" : "chevron_right" }}
@@ -39,7 +27,7 @@
       [checked]="descendantsAllSelected(node)"
       [indeterminate]="descendantsPartiallySelected(node)"
       (change)="todoItemSelectionToggle(node)"
-      >{{ node.item }}</mat-checkbox
+      >{{ node.data.name }}</mat-checkbox
     >
   </mat-tree-node>
 </mat-tree>

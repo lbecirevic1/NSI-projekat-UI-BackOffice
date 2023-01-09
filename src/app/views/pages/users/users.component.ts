@@ -5,6 +5,7 @@ import { ProviderAccount } from '../../../models/providerAccount';
 import { ProviderAccountRole } from '../../../models/providerAccountRole';
 import { FormBuilder, Validators } from '@angular/forms';
 import { cilCheckCircle } from '@coreui/icons';
+import { ProviderRegion } from 'src/app/models/providerRegion';
 
 
 @Component({
@@ -16,12 +17,18 @@ export class UsersComponent implements OnInit {
   accounts: ProviderAccount[] = [];
   providers: UtilioProvider[] = [];
   roles: ProviderAccountRole[] = [];
+
+  accountReaderRoles: any[] = [];
+  accountEditorRoles: any[] = [];
+  accountAdminRoles: any[] = [];
+
   selectedAccount?: ProviderAccount;
+  accountForm: any;
+  icons = { cilCheckCircle };
+
   formVisible = false;
   isEdit = false;
   alertVisible = false;
-  accountForm: any;
-  icons = { cilCheckCircle };
 
   readonly SAVE_CHANGES = 'Save changes';
   readonly CREATE_USER = 'Create new user';
@@ -43,14 +50,12 @@ export class UsersComponent implements OnInit {
   }
 
   onDelete(id: number): void {
-    console.log(id)
     this.service.deleteProviderAccount(id);
     this.fetchAccounts();
   }
 
   onSubmit(): void {
     if (this.accountForm.valid) {
-      console.log(this.accountForm.value);
       if (this.isEdit) {
         this.updateAccount();
       } else {
@@ -77,10 +82,13 @@ export class UsersComponent implements OnInit {
     this.accountForm.get('providerId')?.setValue(e.target.value, {
       onlySelf: true,
     });
+    this.accountEditorRoles = [];
+    this.accountAdminRoles = [];
+    this.accountReaderRoles = [];
   }
 
   changeList(e: any): void {
-    if(e.target.value != 'null'){
+    if (e.target.value != 'null'){
       this.service.getAccountsForProvider(e.target.value).subscribe((accounts: any) => {
         this.accounts = [...accounts];
       });
@@ -88,6 +96,50 @@ export class UsersComponent implements OnInit {
     else {
       this.fetchAccounts();
     }
+  }
+
+  getProviderId(): number {
+    return this.isEdit ? this.selectedAccount?.providerId : this.accountForm.value.providerId;
+  }
+
+  setReaderRoles(event: ProviderRegion[]) {
+    this.accountReaderRoles = [];
+
+    event.forEach(region => {
+      this.accountReaderRoles.push({
+        roleId: 2,
+        providerId: this.getProviderId(),
+        regionId: region.data.id
+      })
+    })
+  }
+
+  setEditorRoles(event: ProviderRegion[]) {
+    this.accountEditorRoles = [];
+
+    event.forEach(region => {
+      this.accountEditorRoles.push({
+        roleId: 3,
+        providerId: this.getProviderId(),
+        regionId: region.data.id
+      })
+    })
+  }
+
+  setAdminRoles(event: ProviderRegion[]) {
+    this.accountAdminRoles = [];
+
+    event.forEach(region => {
+      this.accountAdminRoles.push({
+        roleId: 1,
+        providerId: this.getProviderId(),
+        regionId: region.data.id
+      })
+    })
+  }
+  
+  getAccountRoles(roleId: number) {
+    return this.selectedAccount?.providerAccountRoles.filter(e => e.roleId === roleId);
   }
 
   private fetchAccounts(): void {
@@ -110,8 +162,10 @@ export class UsersComponent implements OnInit {
   }
 
   private createAccount(): void {
+    const user = {...this.accountForm.value};
+    user.providerAccountRoles = [...this.accountAdminRoles, ...this.accountEditorRoles, ...this.accountReaderRoles];
     this.service
-      .postProviderAccount(this.accountForm.value)
+      .postProviderAccount(user)
       .subscribe(() => {
         this.fetchAccounts();
 
@@ -123,9 +177,11 @@ export class UsersComponent implements OnInit {
   }
 
   private updateAccount(): void {
+    const user = {...this.accountForm.value};
+    user.providerAccountRoles = [...this.accountAdminRoles, ...this.accountEditorRoles, ...this.accountReaderRoles];
     if (this.selectedAccount)
       this.service
-        .updateProviderAccount(this.selectedAccount.id, this.accountForm.value)
+        .updateProviderAccount(this.selectedAccount.id, user)
         .subscribe(() => {
           this.alertVisible = true;
           this.fetchAccounts();
@@ -138,7 +194,7 @@ export class UsersComponent implements OnInit {
       lastName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       providerId: [null, [Validators.required]],
-      providerAccountRoles: this.formBuilder.array([]),
+      providerAccountRoles: [],
     });
   }
   
@@ -152,7 +208,7 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  private fillAccountForm() {
+  private fillAccountForm(): void {
     this.accountForm.patchValue({
       firstName: this.selectedAccount?.firstName,
       lastName: this.selectedAccount?.lastName,
@@ -163,7 +219,7 @@ export class UsersComponent implements OnInit {
     this.accountForm.get('providerId')?.disable();
   }
   
-  private emptyAccountForm() {
+  private emptyAccountForm(): void {
     this.accountForm.patchValue({
       firstName: '',
       lastName: '',

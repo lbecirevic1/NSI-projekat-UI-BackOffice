@@ -3,9 +3,10 @@ export class Region{
     public Id: number,
     public Name: string,
     public Code: string,
-    public RegionTypeId:number,
-    public ParentRegionId:number,
-    public CreateDate:any) {
+    public RegionTypeId?:number,
+    public ParentRegionId?:number,
+    public CreateDate?:any,
+    public children?: []) {
   }
 
 }
