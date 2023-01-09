@@ -18,6 +18,7 @@ import { IconModule } from '@coreui/icons-angular';
 import { LogsComponent } from './logs.component';
 import { LogsRoutingModule } from './logs-routing.module';
 import { DocsComponentsModule } from '@docs-components/docs-components.module';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [LogsComponent],
@@ -36,6 +37,7 @@ import { DocsComponentsModule } from '@docs-components/docs-components.module';
     IconModule,
     AccordionModule,
     SharedModule,
+    NgxPaginationModule,
   ],
 })
 export class LogsModule {}

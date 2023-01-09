@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as dayjs from 'dayjs';
+import { PaginationInstance } from 'ngx-pagination';
 import { Log, LogsResponse, LogWithTime, Paging } from '../../models/log';
 
 import { UtilioService } from '../../service/utilio.service';
@@ -27,6 +28,25 @@ export class LogsComponent implements OnInit {
   public req: string = '';
   public res?: string = '';
 
+  public config: PaginationInstance = {
+    id: 'advanced',
+    itemsPerPage: 5,
+    currentPage: 1,
+    totalItems: 20,
+  };
+
+  public maxSize: number = 7;
+  public directionLinks: boolean = true;
+  public autoHide: boolean = false;
+  public responsive: boolean = false;
+
+  public labels: any = {
+    previousLabel: 'Previous',
+    nextLabel: 'Next',
+    screenReaderPaginationLabel: 'Pagination',
+    screenReaderPageLabel: 'page',
+    screenReaderCurrentLabel: `You're on page`,
+  };
   constructor(private service: UtilioService) {}
 
   createLogsArray(data: LogsResponse) {
@@ -61,6 +81,12 @@ export class LogsComponent implements OnInit {
           { length: data.paging.pages || 1 },
           (value, key) => key + 1
         );
+        this.config = {
+          id: 'advanced',
+          itemsPerPage: this.paging.recordsPerPage!,
+          currentPage: this.paging.page!,
+          totalItems: this.paging.totalRecords!,
+        };
       });
   }
   ngOnInit() {
@@ -75,6 +101,10 @@ export class LogsComponent implements OnInit {
   onPageChange(page: number) {
     this.paging.page = page;
     this.setLogs(this.paging.page!);
+  }
+
+  onPageBoundsCorrection(number: number) {
+    this.config.currentPage = number;
   }
 
   onPageChangeNext(next: boolean) {
