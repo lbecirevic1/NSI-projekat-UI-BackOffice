@@ -85,7 +85,11 @@
             },
             "development": {
               "browserTarget": "coreui-free-angular-admin-template:build:development"
+              
             }
+          },
+          "options": {
+            "proxyConfig": "proxy.conf.json"
           },
           "defaultConfiguration": "development"
         },

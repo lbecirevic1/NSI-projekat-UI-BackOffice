@@ -15,11 +15,14 @@ import { ProviderRegion } from '../models/providerRegion';
 })
 export class UtilioService {
   readonly apiUrl = 'https://localhost:7069/api';
+  readonly realAPIUrl='https://utilio-core-service.azurewebsites.net/api/'
 
+  
   private headerDict = {
     'Content-Type': 'application/json',
     Accept: 'application/json',
     'Access-Control-Allow-Origin': '*',
+    'X-Requested-With': 'XMLHttpRequest'    
   };
 
   constructor(private http: HttpClient) {}
@@ -355,6 +358,55 @@ export class UtilioService {
       regionId: regionId,
     }
     return this.http.post<any>('https://localhost:7069/api/streets', body)
+  }
+
+  createSubscriber(subscriber: any): Observable<any>{
+    return this.http.post<any>(this.realAPIUrl + 'Subscriber', subscriber,{
+      headers: new HttpHeaders(this.headerDict),
+    });
+  }
+  getSubscribers(): Observable<any[]>{
+    return this.http.get<any[]>(this.realAPIUrl + 'Subscriber',{
+      headers: new HttpHeaders(this.headerDict),
+    });
+  }
+  getSubscriberById(id:number): Observable<any>{
+    return this.http.get<any>(this.realAPIUrl + 'Subscriber/' + id ,{
+      headers: new HttpHeaders(this.headerDict),
+    });
+  }
+  getSubscribtionsBySubscriberId(id:number): Observable<any>{
+    return this.http.get<any>(this.realAPIUrl + 'Subscription/user-id/' + id,{
+      headers: new HttpHeaders(this.headerDict),
+    });
+  }
+  addSubscriptionForUser(subscription:any ): Observable<any>{
+    return this.http.post<any>(this.realAPIUrl + 'Subscription', subscription);
+  }
+  getRegionById(id:number): Observable<any> {
+    return this.http.get<any>(this.realAPIUrl + 'regions' + id,{
+      headers: new HttpHeaders(this.headerDict),
+    });
+  }
+  getStreetById(id:number): Observable<any> {
+    return this.http.get<any>(this.realAPIUrl + 'streets' + id,{
+      headers: new HttpHeaders(this.headerDict),
+    });
+  }
+  addSubscriptionEntry(subscriptionEntry:any){
+    return this.http.post<any>(this.realAPIUrl + 'SubscriptionEntry', subscriptionEntry,{
+      headers: new HttpHeaders(this.headerDict),
+    });
+  }
+  deleteSubscription(id:number){
+    return this.http.delete<any>(this.realAPIUrl + 'Subscription?id=' + id,{
+      headers: new HttpHeaders(this.headerDict),
+    });
+  }
+  updateSubscriber(user:any){
+    return this.http.patch<any>(this.realAPIUrl + 'Subscriber?id=' + user.id, user,{
+      headers: new HttpHeaders(this.headerDict),
+    });
   }
   editStreet(streetId:number, name: string, regionId: number,createDate: string) {
     let body = {

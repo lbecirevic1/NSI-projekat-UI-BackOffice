@@ -1,0 +1,136 @@
+<c-row ngPreserveWhitespaces>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>User data</strong>
+        <div class="f-r">
+          <ng-container *ngTemplateOutlet="modalUserForm"></ng-container>
+          <!-- <button cButton class="me-1" color="primary"(click)="submitUserForm()">
+            Save
+          </button> -->
+        </div>
+      </c-card-header>
+      <c-card-body>
+          <form cForm [formGroup]="userForm" (ngSubmit)="onSubmitUserForm(userForm)">
+            <div class="row">
+              <div class="mb-3 col-md-6 ">
+                <label cLabel for="exampleFormControlInput1">Email address</label>
+                <input cFormControl
+                formControlName="Email"
+                id="exampleFormControlInput1"
+                placeholder="name@example.com"
+                type="email"
+                class="text-center"
+                />
+              </div>
+              <div class="mb-3 col-md-6">
+                <label cLabel for="exampleFormControlTextarea1">Name</label>
+                <input cFormControl id="Name" formControlName="Name" placeholder="Name" type="text" class="text-center" >
+              </div>
+            </div>
+            <div class="row">
+              <div class="mb-3 col-md-6">
+                <label cLabel for="region">Region</label>
+                <select cSelect  class="mb-3 text-center" (change)="changeRegion($event)" formControlName="Region">
+                  <option *ngFor="let region of Regions" [ngValue]="region.id" [selected]="region.id==regionId">
+                    {{ region.name }}
+                  </option>
+                </select>
+              </div>
+              <div class="mb-3 col-md-6">
+                <label cLabel for="street">Street</label>
+                <select cSelect  class="mb-3 text-center" (change)="changeStreet($event)" formControlName="Street">
+                  <option *ngFor="let street of Streets" [ngValue]="street.id" [selected]="streetId==street.id">
+                    {{ street.name }}
+                  </option>
+                </select>
+              </div>
+            </div>  
+          </form>
+      </c-card-body>
+    </c-card>
+  </c-col>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Subscribtions</strong>
+      </c-card-header>
+      <c-card-body>
+        
+          <table [hover]="true" cTable>
+            <thead>
+            <tr>
+              <th scope="col" class="text-center">Topic</th>
+              <th scope="col" class="text-center">Categories</th>
+              <th scope="col" class="text-center">Delivery Type</th>
+              <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let subscription of Subscriptions; index as i" >
+                <td class="text-center">
+                  {{ subscription.name }}
+                </td>
+                <td class="text-center">
+                  *
+                </td>
+                <td class="text-center">
+                  {{ subscription.subscriptionEntry.deliveryType }}
+                </td>
+                <td class="text-center">
+                  <c-button-group aria-label="Basic example" role="group">
+                      <!-- <button cButton class="me-1" color="primary" (click)="editSubscription(subscription.Topic.Id)">
+                          Edit
+                        </button> -->
+                        <button cButton class="me-1" color="danger"(click)="deleteSubscription(subscription.id)">
+                          Delete
+                        </button>
+                    </c-button-group>
+                </td>
+                </tr>
+            </tbody>
+          </table>
+          <ng-container *ngTemplateOutlet="modalAddNewSubscription"></ng-container>
+          <button cButton color="primary" (click)="addNewSubscription()">Add new</button>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
+
+
+<ng-template #modalUserForm>
+  <button (click)="togglemodalUserForm()" cButton>Save</button>
+  <c-modal id="modalUserFormModal" [visible]="modalUserFormVisible" (visibleChange)="handlemodalUserFormChange($event)">
+    <c-modal-header>
+      <h5 cModalTitle>Update user data</h5>
+      <button (click)="togglemodalUserForm()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>Are you sure you want to make these updates?</c-modal-body>
+    <c-modal-footer>
+      <button (click)="togglemodalUserForm()" cButton color="secondary">
+        Cancel
+      </button>
+      <button cButton color="primary" (click)="submitUserForm()">Save changes</button>
+    </c-modal-footer>
+  </c-modal>
+</ng-template>
+
+<ng-template #modalAddNewSubscription>
+  <c-modal id="modalAddNewSubscriptionModal" alignment="center" [visible]="modalAddNewSubscriptionVisible" (visibleChange)="handleModalAddNewSubscriptionChange($event)" class="w-80">
+    <c-modal-header class="text-center">
+      <h5 cModalTitle>Add new</h5>
+      <button (click)="toggleModalAddNewSubscription()" cButtonClose></button>
+    </c-modal-header>
+    <app-subscription-modal (newItemEvent)="addItem($event)" [editSubscriptionInfo]="informationForEditingSubscription" [user]="user"></app-subscription-modal>
+    <c-modal-footer >
+      <button (click)="toggleModalAddNewSubscription()" cButton color="secondary">
+        Cancel
+      </button>
+      <button cButton color="primary" *ngIf="!editMode" (click)="submitAddNewSubscriptionForm()">Add subscription</button>
+      <button cButton color="primary" *ngIf="editMode" (click)="editSubscriptionForm()">Edit subscription</button>
+    </c-modal-footer>
+    
+  </c-modal>
+  
+</ng-template>
+<c-toaster [ngClass]="'p-3'" position="fixed" placement="top-end"></c-toaster>

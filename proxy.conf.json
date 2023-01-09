@@ -1,0 +1,11 @@
+{
+    "/api/*": {
+      "target": "https://utilio-core-service.azurewebsites.net/api",
+      "pathRewrite": {
+        "^/api": ""
+      },
+      "changeOrigin": true,
+      "secure": false,
+      "logLevel": "debug"
+    }
+  }
