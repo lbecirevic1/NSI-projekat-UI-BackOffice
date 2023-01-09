@@ -156,29 +156,6 @@ import {LogsResponse, Paging} from "../../models/log";
           this.AllProviders.push(provider.Id)
         }
       })
-
-    // this.service.getRegions().subscribe(data=>{
-    //   for(let i=0;i<data.length;i++){
-    //     let region=new Region(data[i].id,data[i].name,data[i].code,data[i].regionTypeId,data[i].parentRegionId,data[i].createDate);
-    //     this.regions.push(region);
-    //     this.AllRegions.push(region.Id);
-    //   }
-    // })
-    // this.service.getRegionsAll().subscribe(data=>{
-    //   for(let i=0;i<data.length;i++){
-    //     let region=new RegionAll(data[i].id,data[i].name,data[i].code,data[i].regionTypeId,data[i].regionType,data[i].parentRegionId,data[i].parentRegion,data[i].createDate);
-    //     this.regionsAll.push(region);
-    //   }
-    // })
-    // this.service.getRegionTypes().subscribe(data=>{
-    //   for(let i=0;i<data.length;i++){
-    //     let region=new RegionType(data[i].id,data[i].name,data[i].code);
-    //     this.regionsTypes.push(region);
-        
-    //   }
-    // })
-
-
   }
   // onPageChange(page: number) {
   //   this.paging.page = page;
@@ -216,7 +193,6 @@ import {LogsResponse, Paging} from "../../models/log";
     this.editProvider = item;
     this.selectedRegion = item.ParentregionId;
     this.selectedType = item.RegionTypeId;
-    console.log(item,"ITEM",this.selectedRegion,this.selectedType)
     this.toggleEditDemo();
   }
 
@@ -234,14 +210,6 @@ import {LogsResponse, Paging} from "../../models/log";
     this.modelStartDate='';
     this.createFormVisible = !this.createFormVisible;
   }
-
-  showValue(event: any){
-
-    var Title = event.target.value;
-    console.log(Title);
-
-  }
-
 
   handleCreateProvider(event:boolean) {
     this.createProviderVisible=event;
@@ -355,7 +323,6 @@ import {LogsResponse, Paging} from "../../models/log";
 
 
   saveEdited(provider:any,values:any){
-    console.log(provider,this.selectedRegion)
     // @ts-ignore
     let name=document.getElementById('providerTitleInput1').value;
     // @ts-ignore

@@ -56,23 +56,23 @@
           </c-row>
           <c-row class="ml-5 pl-5">
             <table cTable hover>
-              <thead>
+              <thead class="ml-5 thead-height bg-warning bg-opacity-25">
               <tr class="pt-3 pb-3">
                 <!-- <th></th> -->
-                <th class="announcement-table-col-13">Name</th>
-                <th class="announcement-table-col-20">Code</th>
-                <th class="announcement-table-col-13">WebSite</th>
+                <th scope="col" class="col-sm-4 p-2 add-padding">Name</th>
+                <th scope="col" class="col-sm-4 p-2 add-padding">Code</th>
+                <th scope="col" class="col-sm-4 p-2 add-padding">WebSite</th>
+                <th scope="col" class="col-sm-2 p-2">Action</th>
               </tr>
               </thead>
               <tbody>
               <ng-container *ngFor="let value of providers; let i = index">
                 <tr class="pt-3 pb-3" class="clickable-row" (click)="toggleCollapse(i)">
-                  <td class="announcement-table-col-13">{{value.Name}}</td>
-                  <td class="announcement-table-col-20">{{value.Code}}</td>
-                  <td class="announcement-table-col-20">{{value.webSite}}</td>
-                  <td class="announcement-table-col-20">
+                  <td class="col-sm-4 p-2 add-padding">{{value.Name}}</td>
+                  <td class="col-sm-4 p-2 add-padding">{{value.Code}}</td>
+                  <td class="col-sm-4 p-2 add-padding">{{value.webSite}}</td>
 
-                  <td class="announcement-table-col-10">
+                  <td class="col-sm-2 p-2 ">
                     <c-button-group aria-label="Basic example" role="group">
                       <button cButton color="light" (click)="toggleEditButtonDemo(value)">Edit</button>
                       <button cButton color="danger" (click)="toggleDeleteButton(value.Id)">Delete</button>

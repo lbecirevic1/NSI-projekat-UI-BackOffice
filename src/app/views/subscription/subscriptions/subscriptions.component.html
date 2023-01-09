@@ -1,0 +1,91 @@
+<c-row ngPreserveWhitespaces>
+    <c-col xs="12">
+      <c-card class="mb-4">
+        <c-card-header>
+          <strong>Subscriptions Table</strong>
+          <div class="f-r">
+            <ng-container *ngTemplateOutlet="newUserModal"></ng-container>
+          </div>
+        </c-card-header>
+        <c-card-body>
+            <table [hover]="true" cTable>
+              <thead>
+              <tr>
+                <th class="text-center">Name</th>
+                <th class="text-center">Email</th>
+                <th class="text-center">Last time modified</th>
+              </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of Users; index as i" [id]="user.Id" (click)="openPageForSubscriber(user.Id)" >
+                  <td class="text-center">
+                    {{ user.Name }}
+                  </td>
+                  <td class="text-center">
+                    {{ user.Email }}
+                  </td>
+                  <td class="text-center">
+                    {{ user.DateModified | date:'EEEE d MMMM y' }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+        </c-card-body>
+      </c-card>
+    </c-col>
+</c-row>
+
+<ng-template #newUserModal>
+  <button (click)="toggleNewUserModal()" cButton>Add new user</button>
+  <c-modal id="newUserModal" size="lg" backdrop="static" [visible]="newUserModalVisible" (visibleChange)="handleNewUserModalChange($event)">
+    <c-modal-header>
+      <h5 cModalTitle>Enter user data</h5>
+      <button (click)="toggleNewUserModal()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+      <form cForm [formGroup]="userForm" (ngSubmit)="onSubmitUserForm(userForm)">
+        <div class="row">
+          <div class="mb-3 col-md-6">
+            <label cLabel for="exampleFormControlInput1">Email address</label>
+            <input cFormControl
+            formControlName="Email"
+            id="exampleFormControlInput1"
+            placeholder="name@example.com"
+            type="email"
+            />
+          </div>
+          <div class="mb-3 col-md-6">
+            <label cLabel for="exampleFormControlTextarea1">Name</label>
+            <input cFormControl id="Name" formControlName="Name" type="text" >
+          </div>
+        </div>
+        <div class="row">
+          <div class="mb-3 col-md-6">
+            <label cLabel for="region">Region</label>
+            <select cSelect  class="mb-3 text-center" (change)="changeRegion($event)" formControlName="Region">
+              <option *ngFor="let region of Regions" [ngValue]="region.id">
+                {{ region.name }}
+              </option>
+            </select>
+          </div>
+          <div class="mb-3 col-md-6">
+            <label cLabel for="street">Street</label>
+            <select cSelect  class="mb-3 text-center" (change)="changeStreet($event)" formControlName="Street">
+              <option *ngFor="let street of Streets" [ngValue]="street.id">
+                {{ street.name }}
+              </option>
+            </select>
+          </div>
+        </div>  
+      </form>
+    </c-modal-body>
+    <c-modal-footer>
+      <button (click)="toggleNewUserModal()" cButton color="secondary">
+        Cancel
+      </button>
+      <button cButton color="primary" (click)="submitUserForm()">Add user</button>
+    </c-modal-footer>
+  </c-modal>
+</ng-template>
+
+<c-toaster [ngClass]="'p-3'" position="fixed" placement="top-end"></c-toaster>

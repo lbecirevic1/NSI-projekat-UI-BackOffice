@@ -12,7 +12,23 @@ export const navItems: INavData[] = [
   },
   {
     title: true,
-    name: 'Theme',
+    name: 'Utilio'
+  },
+  {
+    name:'Announcements',
+    url:'/announcement'
+  },
+  {
+    title: true,
+    name: 'Subscription'
+  },
+  {
+    name:'Subscriptions',
+    url:'/subscription'
+  },
+  {
+    title: true,
+    name: 'Theme'
   },
   {
     name: 'Colors',

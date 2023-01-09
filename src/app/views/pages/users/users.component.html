@@ -106,7 +106,9 @@
   </c-col>
 </c-row>
 
-<div
+<c-modal
+  [visible]="formVisible"
+  (formVisibleChange)="handleAccountFormChange($event)"
 >
   <c-modal-header>
     <h5 cModalTitle>
@@ -219,4 +221,4 @@
       </button>
     </c-modal-footer>
   </form>
-</div>
+</c-modal>

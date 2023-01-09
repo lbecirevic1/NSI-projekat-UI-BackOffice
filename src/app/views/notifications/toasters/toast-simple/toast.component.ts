@@ -11,6 +11,7 @@ import { ToastComponent, ToasterService } from '@coreui/angular';
 export class AppToastComponent extends ToastComponent {
 
   @Input() closeButton = true;
+  @Input() text = '';
   @Input() title = '';
 
   constructor(
