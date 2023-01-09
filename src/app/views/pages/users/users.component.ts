@@ -6,6 +6,7 @@ import { ProviderAccountRole } from '../../../models/providerAccountRole';
 import { FormBuilder, Validators } from '@angular/forms';
 import { cilCheckCircle } from '@coreui/icons';
 
+
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -171,5 +172,11 @@ export class UsersComponent implements OnInit {
     });
 
     this.accountForm.get('providerId')?.enable();
+  }
+
+  searchText:string = '';
+
+  onSearchTextEntered(searchValue: string) {
+    this.searchText = searchValue;
   }
 }

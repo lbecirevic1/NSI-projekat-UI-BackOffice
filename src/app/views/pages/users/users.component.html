@@ -3,6 +3,7 @@
   rel="stylesheet"
   xmlns="http://www.w3.org/1999/html"
 />
+
 <c-row class="mt-5">
   <c-col md="1"></c-col>
   <c-col md="10">
@@ -50,18 +51,9 @@
 
           <c-col>
             <div class="input-fields">
-              <label cLabel for="title">Search</label>
-              <input
-                title="Search"
-                cFormControl
-                id="title"
-                rows="1"
-                name="newAnnouncTitle"
-                type="text"
-                ngModel
-                placeholder="Search by first or last name"
-              />
             </div>
+            <app-search (searchTextChange)="onSearchTextEntered($event)"></app-search>
+
           </c-col>
         </c-row>
 
@@ -77,9 +69,10 @@
                 <th class="users-table-col-20">Action</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody *ngFor="let account of accounts; let i = index">
               <tr
-                *ngFor="let account of accounts; let i = index"
+      
+                *ngIf="searchText==='' || account.firstName.toLowerCase().includes(searchText) || account.lastName.toLowerCase().includes(searchText)"
                 class="users-table-row"
               >
                 <td scope="row">{{ account.firstName }}</td>

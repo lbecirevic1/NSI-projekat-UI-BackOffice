@@ -44,6 +44,7 @@ import { RegionsSelectComponent } from './users/regions-select/regions-select.co
 import { MatTreeModule } from '@angular/material/tree';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { MatIconModule } from '@angular/material/icon';
     // RegionComponent,
     UsersComponent,
     RegionsSelectComponent,
+    SearchComponent,
   ],
   imports: [
     CommonModule,

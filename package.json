@@ -40,6 +40,7 @@
     "dayjs": "^1.11.7",
     "material-icons": "^1.13.1",
     "ng-multiselect-dropdown": "^0.3.9",
+    "ng2-search-filter": "^0.5.1",
     "ngx-bootstrap": "^9.0.0",
     "ngx-perfect-scrollbar": "^10.1.1",
     "rxjs": "~7.5.0",

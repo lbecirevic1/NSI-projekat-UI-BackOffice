@@ -1,0 +1,14 @@
+<div>
+<label cLabel for="title">Search</label>
+              <input
+                title="Search"
+                cFormControl
+                id="title"
+                name="search"
+                type="text"
+                [(ngModel)] = "enteredSearchValue"
+                placeholder="Search by first or last name"
+                (input)="onSearchTextChanged()"
+              />
+
+</div>
