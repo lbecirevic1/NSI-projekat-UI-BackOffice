@@ -139,7 +139,7 @@ export class UsersComponent implements OnInit {
   }
   
   getAccountRoles(roleId: number) {
-    return this.selectedAccount?.providerAccountRoles.filter(e => e.roleId === roleId);
+    return this.isEdit ? this.selectedAccount?.providerAccountRoles.filter(e => e.roleId === roleId) : [];
   }
 
   private fetchAccounts(): void {
