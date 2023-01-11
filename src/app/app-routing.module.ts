@@ -175,10 +175,10 @@ const routes: Routes = [
     },
   },
   {
-    path: 'users',
+    path: 'accounts',
     component: UsersComponent,
     data: {
-      title: 'Users Page',
+      title: 'Accounts Page',
     },
   },
   { path: '**', redirectTo: 'dashboard' },

@@ -205,6 +205,8 @@ export class RegionsSelectComponent {
     if(this.providerId !== 0) {
       _database.initializeData(this.providerId);
     }
+
+    this.saveSelectedNodes();
   }
 
   ngOnChanges(changes: SimpleChanges) {
