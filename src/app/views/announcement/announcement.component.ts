@@ -19,6 +19,7 @@ import {formatDate, JsonPipe} from "@angular/common";
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import {Paging} from "../../models/announcement";
 import {parseDate} from "ngx-bootstrap/chronos";
+import {PaginationInstance} from "ngx-pagination";
 
 @Injectable()
 export class CustomAdapter extends NgbDateAdapter<string> {
@@ -85,6 +86,13 @@ export class AnnouncementComponent implements OnInit {
   hourStep = 1;
   minuteStep = 1;
   secondStep = 30;
+
+  public config: PaginationInstance = {
+    id: 'advanced',
+    itemsPerPage: 5,
+    currentPage: 1,
+    totalItems: 20,
+  };
 
   dropdownSettingsRegions:IDropdownSettings={
     singleSelection: false,
@@ -167,7 +175,7 @@ export class AnnouncementComponent implements OnInit {
 
   public clickedStreets:number[]=[];
 
-  public clickedRegions:number[]=[];
+  public clickedRegions:any[]=[];
 
   public clickedProviders:number[]=[]
 
@@ -230,6 +238,13 @@ export class AnnouncementComponent implements OnInit {
           { length: data.paging.pages || 1 },
           (value, key) => key + 1
         );
+
+        this.config={
+          id:'advanced',
+          itemsPerPage:this.paging.recordsPerPage!,
+          currentPage:this.paging.page!,
+          totalItems:this.paging.totalRecords!,
+        }
       });
   }
 
@@ -331,7 +346,6 @@ export class AnnouncementComponent implements OnInit {
     this.setAnnouncements(this.paging.page!);
   }
   onDeselectRegions(item:any){
-    const index:number=this.clickedRegions.indexOf(item.Id);
     this.clickedRegions.forEach((element,index)=>{
       if(element==item.Id)this.clickedRegions.splice(index,1);
     })
@@ -367,7 +381,8 @@ export class AnnouncementComponent implements OnInit {
         if(element==item.Id)this.clickedRegions.splice(index,1);
       })
     }
-    this.regionClicked(item)
+    this.clickedRegions.push(item.Id);
+    this.clickedRegions.splice(this.clickedRegions.length-1,1);
   }
 
 
@@ -378,7 +393,8 @@ export class AnnouncementComponent implements OnInit {
         if(element==item.Id)this.clickedStreets.splice(index,1);
       })
     }
-    this.streetClicked(item)
+    this.clickedStreets.push(item.Id);
+    this.clickedStreets.splice(this.clickedStreets.length-1,1)
   }
 
   onProviderSelect(item: any) {
@@ -388,7 +404,7 @@ export class AnnouncementComponent implements OnInit {
         if(element==item.Id)this.clickedProviders.splice(index,1);
       })
     }
-    this.providerClicked(item)
+    else this.clickedProviders.push(item.Id);
   }
 
   toggleDeleteButton(itemId: number) {
@@ -472,8 +488,6 @@ export class AnnouncementComponent implements OnInit {
 
   toggleEditDemo() {
     this.editFormVisible = !this.editFormVisible;
-
-
   }
 
   toggleEditDemoClose() {
@@ -491,8 +505,6 @@ export class AnnouncementComponent implements OnInit {
     this.modelEndDate='';
     this.modelStartDate='';
     this.createAnnouncementVisible=!this.createAnnouncementVisible
-   // this.createFormVisible = !this.createFormVisible;
-
   }
 
   showValue(event: any){
@@ -501,10 +513,8 @@ export class AnnouncementComponent implements OnInit {
 
   }
 
-
   handleCreateAnnouncement(event:boolean) {
     this.createAnnouncementVisible=event;
-   // this.createFormVisible=event;
   }
 
   handleEditModalChange(event: boolean) {
@@ -552,11 +562,21 @@ export class AnnouncementComponent implements OnInit {
 
     startTime=this.timeFormat(this.timeStart)
     endTime=this.timeFormat(this.timeEnd)
+    let regionAdd:number[]=[]
+    for(let i=0;i<this.clickedRegions.length;i++){
+      regionAdd.push(this.clickedRegions.at(i).Id)
+    }
+    let streetAdd:number[]=[]
+    for(let i=0;i<this.clickedStreets.length;i++){
+      // @ts-ignore
+      streetAdd.push(this.clickedStreets.at(i).Id)
+    }
     if(providerId!=null)
-      this.service.postAnnouncement(providerId,values.newAnnouncTitle,
+      // @ts-ignore
+      this.service.postAnnouncement(providerId.Id,values.newAnnouncTitle,
         values.newAnnouncUrl,values.newAnnouncDescription,values.newAnnouncContent,
         values.newAnnouncAddInfo,startDate,endDate,
-        startTime,endTime,this.clickedRegions,this.clickedStreets).subscribe(data=>{
+        startTime,endTime,regionAdd,streetAdd).subscribe(data=>{
           this.handleCreateAnnouncement(false);
          // this.createFormVisible=!this.createFormVisible
           this.refreshAnnouncements()
@@ -574,40 +594,6 @@ export class AnnouncementComponent implements OnInit {
       this.handleDoubleAnnouncement(true);
     }
 
-  }
-
-  streetClicked(street:any){
-    let streetId=street.Id;
-    if(this.clickedStreets.includes(streetId)){
-      const index: number = this.clickedStreets.indexOf(streetId);
-      this.clickedStreets.forEach((element,index)=>{
-        if(element==streetId)this.clickedStreets.splice(index,1);
-      })
-    }
-    else this.clickedStreets.push(streetId);
-
-  }
-
-  regionClicked(region:any){
-    let regionId=region.Id
-    if(this.clickedRegions.includes(regionId)){
-      const index:number=this.clickedRegions.indexOf(regionId);
-      this.clickedRegions.forEach((element,index)=>{
-        if(element==regionId)this.clickedRegions.splice(index,1);
-      })
-    }
-    else this.clickedRegions.push(regionId);
-  }
-
-  providerClicked(provider:any){
-    let providerId=provider.Id
-    if(this.clickedProviders.includes(providerId)){
-      const index:number=this.clickedProviders.indexOf(providerId);
-      this.clickedProviders.forEach((element,index)=>{
-        if(element==providerId)this.clickedProviders.splice(index,1);
-      })
-    }
-    else this.clickedProviders.push(providerId);
   }
 
   providerEditClicked(provider:any){
@@ -700,21 +686,6 @@ export class AnnouncementComponent implements OnInit {
     return finalTime
   }
 
-  dateFormat(date:any){
-    let finalDate=''
-    finalDate=date.year+"-"
-    if(date.month.toString().length==1){
-      finalDate=finalDate+'0'+date.month+"-"
-    }
-    else finalDate=finalDate+date.month+"-"
-    if(date.day.toString().length==1){
-      finalDate=finalDate+'0'+date.day
-    }
-    else finalDate=finalDate+date.day
-
-    return finalDate
-  }
-
   onEditSelectAllRegions(items:any){
     this.editRegionsAnnouncement=this.AllRegions;
   }
@@ -737,10 +708,7 @@ export class AnnouncementComponent implements OnInit {
         if(element==item.Id)this.editRegionsAnnouncement.splice(index,1);
       })
     }
-    this.regionEditClicked(item)
-  }
-  regionEditClicked(region:any){
-    let regionId=region.Id
+    let regionId=item.Id
     this.editRegionsAnnouncement.push(regionId);
     this.editRegionsAnnouncement.splice(this.editRegionsAnnouncement.length-1,1);
   }
@@ -755,7 +723,6 @@ export class AnnouncementComponent implements OnInit {
   }
 
   onEditDeselectStreets(item:any){
-    const index:number=this.editStreetsAnnouncement.indexOf(item.Id);
     this.editStreetsAnnouncement.forEach((element,index)=>{
       if(element==item.Id)this.editStreetsAnnouncement.splice(index,1);
     })
@@ -763,19 +730,14 @@ export class AnnouncementComponent implements OnInit {
 
   onEditStreetSelect(item: any) {
     if(this.editStreetsAnnouncement.includes(item.Id)){
-      const index:number=this.editStreetsAnnouncement.indexOf(item.Id);
       this.editStreetsAnnouncement.forEach((element,index)=>{
         if(element==item.Id)this.editStreetsAnnouncement.splice(index,1);
       })
     }
-    this.streetEditClicked(item)
-  }
-  streetEditClicked(street:any){
-    let streetId=street.Id
+    let streetId=item.Id
     this.editStreetsAnnouncement.push(streetId);
     this.editStreetsAnnouncement.splice(this.editStreetsAnnouncement.length-1,1);
   }
-
 
   saveEdited(announcement:any,values:any){
     // @ts-ignore
@@ -798,6 +760,7 @@ export class AnnouncementComponent implements OnInit {
       regionsEdit.push(this.editRegionsAnnouncement.at(i).Id)
     }
     let streetsEdit:number[]=[]
+    console.log(this.editStreetsAnnouncement)
     for(let i=0;i<this.editStreetsAnnouncement.length;i++){
       // @ts-ignore
       streetsEdit.push(this.editStreetsAnnouncement.at(i).Id)

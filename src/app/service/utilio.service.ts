@@ -17,12 +17,12 @@ export class UtilioService {
   readonly apiUrl = 'https://localhost:7069/api';
   readonly realAPIUrl='https://utilio-core-service.azurewebsites.net/api/'
 
-  
+
   private headerDict = {
     'Content-Type': 'application/json',
     Accept: 'application/json',
     'Access-Control-Allow-Origin': '*',
-    'X-Requested-With': 'XMLHttpRequest'    
+    'X-Requested-With': 'XMLHttpRequest'
   };
 
   constructor(private http: HttpClient) {}
@@ -87,7 +87,7 @@ export class UtilioService {
 
     year=date[2]
 
-    console.log(dateEnd)
+
     referenceStartDate=year+"-"+month+"-"+day+"T"+startTime
 
     if(dateEnd[0].length==1) day='0'+dateEnd[0]

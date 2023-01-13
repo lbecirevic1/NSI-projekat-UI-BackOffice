@@ -67,89 +67,125 @@
             </tr>
             </thead>
             <tbody>
-            <ng-container *ngFor="let value of notifications; let i = index">
-                <tr class="pt-3 pb-3 clickable-row" (click)="toggleCollapse(i)">
-                  <td colspan="12">
+            <tr *ngFor="let value of notifications |paginate:config; let i = index" class="pt-3 pb-3 clickable-row" (click)="toggleCollapse(i)">
+
+                <td colspan="12">
                   <c-accordion>
                     <c-accordion-item #item0="cAccordionItem" [visible]="false" style="--cui-accordion-active-bg: white;--cui-accordion-active-color: black;">
-                    <ng-template cTemplateId="accordionHeaderTemplate">
-                      <button (click)="item0.toggleItem()"
-                        [collapsed]="!item0.visible"
-                        cAccordionButton
-                      >
-                        <td style="vertical-align: middle"  class="col-sm-2">{{providerName(value.ProviderId)}}</td>
-                        <td style="vertical-align: middle" class="col-sm-2">{{value.Title}}</td>
-                        <td style="vertical-align: middle" class="col-sm-2 add-padding">{{parseDate(value.PublishDate,1)}}</td>
-                        <td style="vertical-align: middle" class="col-sm-1">{{parseDate(value.PublishDate,2)}}</td>
-                        <td style="vertical-align: middle" class="col-sm-3 pr-5">
-                            <ul style="list-style: none;">
-                              <ng-container *ngFor="let region of value.regions">
-                                <li>{{region.name}}</li>
-                              </ng-container>
-                            </ul>
-                        </td>
-                        <td>
-                          <c-button-group aria-label="Basic example" role="group">
-                            <button cButton color="light" (click)="toggleEditButtonDemo(value)">Edit</button>
-                            <button cButton color="danger" (click)="toggleDeleteButton(value.Id)">Delete</button>
-                          </c-button-group>
-                        </td>
-                      </button>
-                    </ng-template>
-                    <ng-template cTemplateId="accordionBodyTemplate">
-                        <c-row class="accordion-body">
-                          <c-col class="col-sm-6">
-                            <p><strong>Source url:</strong>&nbsp;{{ value.SourceUrl }}</p>
-                            <p><strong>Start date:</strong>&nbsp;{{parseDate(value.ReferenceStartDate, 1)}}</p>
-                            <p><strong>End date:</strong>&nbsp;&nbsp;&nbsp;{{parseDate(value.ReferenceEndDate, 1)}}</p>
-                            <strong>Content:</strong>
-                            <p>{{value.Content}}</p>
-                            <strong>Description:</strong>
-                            <p>{{value.Description}}</p>
-                            <strong>Additional information:</strong>
-                            <p>{{value.AdditionalInformation}}</p>
-                          </c-col>
-                          <c-col class="col-sm-1"></c-col>
-                          <c-col class="col-sm-4" style="padding-left: 40px;">
-                            <strong>Streets:</strong>
-                              <ul>
-                                <ng-container *ngFor="let street of value.streets">
-                                  <li>{{street.name}}</li>
-                                </ng-container>
-                              </ul>
-                          </c-col>
-                      </c-row>
-                    </ng-template>
-                    </c-accordion-item>
-                  </c-accordion>
-                  </td>
-                </tr>
-            </ng-container>
+                      <ng-template cTemplateId="accordionHeaderTemplate">
+                        <button (click)="item0.toggleItem()"
+                                [collapsed]="!item0.visible"
+                                cAccordionButton
+                        >
+                <td style="vertical-align: middle"  class="col-sm-2">{{providerName(value.ProviderId)}}</td>
+                <td style="vertical-align: middle" class="col-sm-2">{{value.Title}}</td>
+                <td style="vertical-align: middle" class="col-sm-2 add-padding">{{parseDate(value.PublishDate,1)}}</td>
+                <td style="vertical-align: middle" class="col-sm-1">{{parseDate(value.PublishDate,2)}}</td>
+                <td style="vertical-align: middle" class="col-sm-3 pr-5">
+                  <ul style="list-style: none;">
+                    <ng-container *ngFor="let region of value.regions">
+                      <li>{{region.name}}</li>
+                    </ng-container>
+                  </ul>
+                </td>
+                <td>
+                  <c-button-group aria-label="Basic example" role="group">
+                    <button cButton color="light" (click)="toggleEditButtonDemo(value)">Edit</button>
+                    <button cButton color="danger" (click)="toggleDeleteButton(value.Id)">Delete</button>
+                  </c-button-group>
+                </td>
+                </button>
+                </ng-template>
+                <ng-template cTemplateId="accordionBodyTemplate">
+                  <c-row class="accordion-body">
+                    <c-col class="col-sm-6">
+                      <p><strong>Source url:</strong>&nbsp;{{ value.SourceUrl }}</p>
+                      <p><strong>Start date:</strong>&nbsp;{{parseDate(value.ReferenceStartDate, 1)}}</p>
+                      <p><strong>End date:</strong>&nbsp;&nbsp;&nbsp;{{parseDate(value.ReferenceEndDate, 1)}}</p>
+                      <strong>Content:</strong>
+                      <p>{{value.Content}}</p>
+                      <strong>Description:</strong>
+                      <p>{{value.Description}}</p>
+                      <strong>Additional information:</strong>
+                      <p>{{value.AdditionalInformation}}</p>
+                    </c-col>
+                    <c-col class="col-sm-1"></c-col>
+                    <c-col class="col-sm-4" style="padding-left: 40px;">
+                      <strong>Streets:</strong>
+                      <ul>
+                        <ng-container *ngFor="let street of value.streets">
+                          <li>{{street.name}}</li>
+                        </ng-container>
+                      </ul>
+                    </c-col>
+                  </c-row>
+                </ng-template>
+                </c-accordion-item>
+                </c-accordion>
+                </td>
+              </tr>
+
             </tbody>
           </table>
         </div>
         <c-row class="mt-2 mb-3">
-          <c-pagination align="start" aria-label="Page navigation example" style="--cui-pagination-color: red">
-            <c-page-item [disabled]="paging.page === 1">
-              <button cPageLink (click)="onPageChangeNext(false)" style="--cui-pagination-color: #354053" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </button>
-            </c-page-item>
-            <c-page-item *ngFor="let page of pages"
-                         [active]="paging.page === page"
-                         style="
-                --cui-pagination-color: #354053;
-                --cui-pagination-active-bg: #5cb85c;
-                --cui-pagination-active-border-color: #d6d2f8;
-                --cui-pagination-active-color: #354053;">
-              <button cPageLink (click)="onPageChange(page)">{{ page }}</button>
-            </c-page-item>
-            <c-page-item [disabled]="paging.page === paging.pages">
-              <button cPageLink (click)="onPageChangeNext(true)" style="--cui-pagination-color: #354053" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </button>
-            </c-page-item>
-          </c-pagination>
+          <pagination-template
+            #p="paginationApi"
+            [id]="config.id!"
+            (pageChange)="onPageChange($event)"
+          >
+            <div class="custom-pagination-wrapper">
+              <div class="custom-pagination">
+                <div
+                  class="pagination-previous"
+                  [class.disabled]="p.isFirstPage()"
+                >
+                  <button
+                    cButton
+                    color="light"
+                    [disabled]="paging.page === 1"
+                    (click)="p.previous()"
+                    style="
+                    --cui-btn-border-radius: 0.375rem 0 0 0.375rem;
+                    --cui-btn-line-height: 0.75rem;
+                  "
+                  >
+                    Previous
+                  </button>
+                </div>
+
+                <div
+                  *ngFor="let page of p.pages"
+                  [class.current]="p.getCurrent() === page.value"
+                  class="pages"
+                >
+                  <a
+                    (click)="p.setCurrent(page.value)"
+                    *ngIf="p.getCurrent() !== page.value"
+                  >
+                    <span>{{ page.label }}</span>
+                  </a>
+                  <div *ngIf="p.getCurrent() === page.value" class="active">
+                    <span>{{ page.label }}</span>
+                  </div>
+                </div>
+
+                <div class="pagination-next" [class.disabled]="p.isLastPage()">
+                  <button
+                    cButton
+                    color="success"
+                    (click)="p.next()"
+                    style="
+                    --cui-btn-border-radius: 0 0.375rem 0.375rem 0;
+                    --cui-btn-line-height: 0.75rem;
+                  "
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            </div>
+          </pagination-template>
         </c-row>
 
       </c-card-body>
@@ -175,11 +211,11 @@
 
 <ng-template #editForm>
   <form cForm #editAnnouncForm="ngForm" *ngIf=editFormVisible>
-  <c-modal id="editAnnouncForm" [visible]="editFormVisible" (visibleChange)="handleEditModalChange($event)">
-    <c-modal-header>
-      Edit form
-    </c-modal-header>
-    <c-modal-body>
+    <c-modal id="editAnnouncForm" [visible]="editFormVisible" (visibleChange)="handleEditModalChange($event)">
+      <c-modal-header>
+        Edit form
+      </c-modal-header>
+      <c-modal-body>
 
         <ng-multiselect-dropdown
           [placeholder]="'Providers'"
@@ -306,14 +342,14 @@
             (onDeSelectAll)="onEditDeselectAllStreets($event)"
           ></ng-multiselect-dropdown>
         </div>
-    </c-modal-body>
-    <c-modal-footer>
-      <button (click)="toggleEditDemoClose()" cButton color="secondary">
-        Close
-      </button>
-      <button cButton color="primary" type='submit' (click)="saveEdited(editAnnouncement,editAnnouncForm.value)">Save changes</button>
-    </c-modal-footer>
-  </c-modal>
+      </c-modal-body>
+      <c-modal-footer>
+        <button (click)="toggleEditDemoClose()" cButton color="secondary">
+          Close
+        </button>
+        <button cButton color="primary" type='submit' (click)="saveEdited(editAnnouncement,editAnnouncForm.value)">Save changes</button>
+      </c-modal-footer>
+    </c-modal>
   </form>
 </ng-template>
 
@@ -321,11 +357,11 @@
 <!-- Form for creating new announcement -->
 <ng-template #createDemo>
   <c-modal id="createFormModal" [visible]="createAnnouncementVisible" (visibleChange)="handleCreateAnnouncement($event)">
-  <form #createForm="ngForm" *ngIf="createAnnouncementVisible">
-    <c-modal-header>
-      Create new announcement
-    </c-modal-header>
-    <c-modal-body>
+    <form #createForm="ngForm" *ngIf="createAnnouncementVisible">
+      <c-modal-header>
+        Create new announcement
+      </c-modal-header>
+      <c-modal-body>
         <div class="mb-3">
           <ng-multiselect-dropdown
             [placeholder]="'Providers'"
@@ -334,6 +370,7 @@
             [(ngModel)]="clickedProviders"
             (onSelect)="onProviderSelect($event)"
             (onDeSelect)="onDeselectProviders($event)"
+            name="providers"
           >
           </ng-multiselect-dropdown>
         </div>
@@ -436,6 +473,7 @@
               (onSelectAll)="onSelectAllRegions($event)"
               (onDeSelect)="onDeselectRegions($event)"
               (onDeSelectAll)="onDeselectAllRegions($event)"
+              name="regions"
             >
             </ng-multiselect-dropdown>
           </div>
@@ -449,19 +487,20 @@
               (onSelectAll)="onSelectAllStreets($event)"
               (onDeSelect)="onDeselectStreets($event)"
               (onDeSelectAll)="onDeselectAllStreets($event)"
+              name="streets"
             >
             </ng-multiselect-dropdown>
           </div>
         </div>
 
-    </c-modal-body>
-    <c-modal-footer>
-      <button (click)="toggleCreateAnnouncementButton()" cButton color="secondary">
-        Close
-      </button>
-      <button cButton color="primary" type='submit' (click)="submitForm(createForm.value)">Save changes</button>
-    </c-modal-footer>
-  </form>
+      </c-modal-body>
+      <c-modal-footer>
+        <button (click)="toggleCreateAnnouncementButton()" cButton color="secondary">
+          Close
+        </button>
+        <button cButton color="primary" type='submit' (click)="submitForm(createForm.value)">Save changes</button>
+      </c-modal-footer>
+    </form>
   </c-modal>
 </ng-template>
 
