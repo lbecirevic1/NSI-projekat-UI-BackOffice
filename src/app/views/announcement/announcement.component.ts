@@ -578,7 +578,6 @@ export class AnnouncementComponent implements OnInit {
         values.newAnnouncAddInfo,startDate,endDate,
         startTime,endTime,regionAdd,streetAdd).subscribe(data=>{
           this.handleCreateAnnouncement(false);
-         // this.createFormVisible=!this.createFormVisible
           this.refreshAnnouncements()
         },
         error=>{
@@ -760,7 +759,6 @@ export class AnnouncementComponent implements OnInit {
       regionsEdit.push(this.editRegionsAnnouncement.at(i).Id)
     }
     let streetsEdit:number[]=[]
-    console.log(this.editStreetsAnnouncement)
     for(let i=0;i<this.editStreetsAnnouncement.length;i++){
       // @ts-ignore
       streetsEdit.push(this.editStreetsAnnouncement.at(i).Id)
